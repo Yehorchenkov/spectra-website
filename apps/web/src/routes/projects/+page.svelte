@@ -18,8 +18,8 @@
 	}));
 
 	const stateFilterItems = [
-		{ value: 'ongoing', label: 'Ongoing' },
-		{ value: 'finished', label: 'Finished' }
+		{ value: 'active', label: 'Active' },
+		{ value: 'completed', label: 'Completed' }
 	];
 
 	// Helper function to get responsible person from participants

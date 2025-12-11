@@ -7,7 +7,7 @@
 
 {#if state}
     <span
-        class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium capitalize {state === 'finished' ? 'bg-destructive/10 text-destructive' : 'bg-success/10 text-success'} {className}"
+        class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium capitalize {state === 'completed' ? 'bg-destructive/10 text-destructive' : 'bg-success/10 text-success'} {className}"
     >
         {state}
     </span>

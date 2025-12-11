@@ -8,7 +8,7 @@
 
 </script>
 
-<div class="bg-background flex w-full flex-col items-center">
+<div class="bg-background flex w-full flex-col items-center mb-8">
     <div class="flex max-w-screen-xl w-full justify-start px-2 mt-4">
         <Breadcrumb class="" currentPageTitle={currentPageTitle} />
     </div>

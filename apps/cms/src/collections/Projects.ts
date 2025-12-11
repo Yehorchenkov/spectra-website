@@ -238,8 +238,8 @@ export const Projects: CollectionConfig = {
               name: 'projectState',
               type: 'select',
               options: [
-                { label: 'Ongoing', value: 'ongoing' },
-                { label: 'Finished', value: 'finished' },
+                { label: 'Active', value: 'active' },
+                { label: 'Completed', value: 'completed' },
               ],
               defaultValue: 'ongoing',
               required: true,

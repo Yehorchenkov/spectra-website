@@ -676,7 +676,7 @@ export interface Project {
   /**
    * Current state of the project.
    */
-  projectState: 'ongoing' | 'finished';
+  projectState: 'active' | 'completed';
   /**
    * A short summary of the project article. Automatically generated from content.
    */
