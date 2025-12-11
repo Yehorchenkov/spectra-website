@@ -1,0 +1,29 @@
+{
+  "name": "spectra-website",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel dev",
+    "dev:web": "pnpm --filter web dev",
+    "dev:cms": "pnpm --filter cms dev",
+    "build": "pnpm --filter web build && pnpm --filter cms build",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp"
+    ],
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "payload": "*",
+        "@payloadcms/ui": "*",
+        "i18next": "*",
+        "date-fns-tz": "*",
+        "slug": "*"
+      }
+    }
+  }
+}

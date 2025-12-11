@@ -1,0 +1,68 @@
+{
+	"/": [
+		"src/routes/+page.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.js"
+	],
+	"/about": [
+		"src/routes/+layout.js"
+	],
+	"/api/coordinators": [
+		"src/routes/api/coordinators/+server.js"
+	],
+	"/api/news": [
+		"src/routes/api/news/+server.js"
+	],
+	"/api/partners": [
+		"src/routes/api/partners/+server.js"
+	],
+	"/api/programs": [
+		"src/routes/api/programs/+server.js"
+	],
+	"/api/projects": [
+		"src/routes/api/projects/+server.js"
+	],
+	"/api/team-members": [
+		"src/routes/api/team-members/+server.js"
+	],
+	"/blog": [
+		"src/routes/+layout.js"
+	],
+	"/events": [
+		"src/routes/+layout.js"
+	],
+	"/network": [
+		"src/routes/+layout.js"
+	],
+	"/news": [
+		"src/routes/news/+page.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.js"
+	],
+	"/projects": [
+		"src/routes/projects/+page.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.js"
+	],
+	"/projects/[slug]": [
+		"src/routes/projects/[slug]/+page.js",
+		"src/routes/+layout.js",
+		"src/routes/projects/[slug]/+server.js"
+	],
+	"/repository": [
+		"src/routes/+layout.js"
+	],
+	"/services": [
+		"src/routes/+layout.js"
+	],
+	"/team-members": [
+		"src/routes/team-members/+page.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.js"
+	],
+	"/team-members/[slug]": [
+		"src/routes/team-members/[slug]/+page.js",
+		"src/routes/+layout.js",
+		"src/routes/team-members/[slug]/+server.js"
+	]
+}

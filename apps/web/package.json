@@ -1,10 +1,10 @@
 {
-	"name": "frontend-bits-ui",
+	"name": "web",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev --port 5173",
 		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
@@ -40,7 +40,6 @@
 		"@internationalized/date": "^3.10.0",
 		"@payloadcms/richtext-lexical": "^3.59.1",
 		"bits-ui": "^2.11.4",
-		"d3": "^7.9.0",
 		"dotted-map": "^2.2.3",
 		"embla-carousel-svelte": "^8.6.0",
 		"mode-watcher": "^1.1.0",
