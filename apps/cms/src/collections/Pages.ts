@@ -13,7 +13,7 @@ export const Pages: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
-    description: 'Different pages, like About Spectra or Our Team.',
+    description: 'Different separate pages',
     group: 'Content',
   },
   versions: {

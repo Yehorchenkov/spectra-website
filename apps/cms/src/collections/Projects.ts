@@ -90,7 +90,7 @@ export const Projects: CollectionConfig = {
     projectState: true,
     startDate: true,
   },
-  defaultSort: ['-publishedDate', 'title'],
+  defaultSort: ['-publishDate', 'title'],
   versions: {
     drafts: true,
   },
@@ -102,40 +102,6 @@ export const Projects: CollectionConfig = {
           label: 'Content',
           description: 'Main content',
           fields: [
-            {
-              type: 'row',
-              fields: [
-                {
-                  name: 'program',
-                  type: 'relationship',
-                  relationTo: 'programs',
-                  hasMany: false,
-                  required: true,
-                },
-                {
-                  name: 'startDate',
-                  label: 'Start date',
-                  type: 'date',
-                  admin: {
-                    date: {
-                      pickerAppearance: 'dayOnly',
-                      displayFormat: 'd MMM yyy',
-                    },
-                  },
-                },
-                {
-                  name: 'finishDate',
-                  label: 'Planned or Actual Finish date',
-                  type: 'date',
-                  admin: {
-                    date: {
-                      pickerAppearance: 'dayOnly',
-                      displayFormat: 'd MMM yyy',
-                    },
-                  },
-                },
-              ],
-            },
             {
               name: 'projectLogo',
               label: 'Project logo',
@@ -235,19 +201,6 @@ export const Projects: CollectionConfig = {
           description: 'Additional details',
           fields: [
             {
-              name: 'projectState',
-              type: 'select',
-              options: [
-                { label: 'Active', value: 'active' },
-                { label: 'Completed', value: 'completed' },
-              ],
-              defaultValue: 'ongoing',
-              required: true,
-              admin: {
-                description: 'Current state of the project.',
-              },
-            },
-            {
               // Add the excerpt field
               name: 'excerpt',
               type: 'textarea',
@@ -261,7 +214,7 @@ export const Projects: CollectionConfig = {
               name: 'news',
               type: 'join',
               collection: 'news',
-              on: 'project',
+              on: 'projects',
               admin: {
                 hidden: true,
               },
@@ -270,6 +223,69 @@ export const Projects: CollectionConfig = {
           ],
         },
       ],
+    },
+    // Sidebar fields
+    {
+      name: 'program',
+      type: 'relationship',
+      relationTo: 'programs',
+      hasMany: false,
+      required: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'startDate',
+      label: 'Start date',
+      type: 'date',
+      admin: {
+        position: 'sidebar',
+        date: {
+          pickerAppearance: 'dayOnly',
+          displayFormat: 'dd.MM.yyyy',
+        },
+      },
+    },
+    {
+      name: 'finishDate',
+      label: 'Planned or Actual Finish date',
+      type: 'date',
+      admin: {
+        position: 'sidebar',
+        date: {
+          pickerAppearance: 'dayOnly',
+          displayFormat: 'dd.MM.yyyy',
+        },
+      },
+    },
+    {
+      name: 'publishDate',
+      type: 'date',
+      required: true,
+      admin: {
+        position: 'sidebar',
+        date: {
+          pickerAppearance: 'dayOnly',
+          displayFormat: 'dd.MM.yyyy',
+        },
+        description: 'The date this article was/will be published.',
+      },
+      defaultValue: () => new Date().toISOString(),
+    },
+    {
+      name: 'projectState',
+      type: 'select',
+      options: [
+        { label: 'Active', value: 'active' },
+        { label: 'Completed', value: 'completed' },
+      ],
+      defaultValue: 'active',
+      required: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Current state of the project.',
+      },
     },
   ],
 }

@@ -12,7 +12,7 @@ import { generateExcerpt } from './utils/generateExcerpt'
 
 // Plugins
 import { seoPlugin } from '@payloadcms/plugin-seo'
-import { addAuthorsFields } from '@shefing/authors-info'
+// import { addAuthorsFields } from '@shefing/authors-info'
 
 // Collections
 import { Users } from './collections/Users'
@@ -23,6 +23,8 @@ import { Programs } from './collections/Programs'
 import { Projects } from './collections/Projects'
 import { Pages } from './collections/Pages'
 import { TeamMembers } from './collections/TeamMembers'
+import { Events } from './collections/Events'
+import { EventTags } from './collections/EventTags'
 
 // Blocks
 import { ContentWithMedia } from './blocks/ContentWithMedia'
@@ -37,6 +39,8 @@ import { SocialPlatforms } from './collections/SocialPlatforms'
 import { ScientificPlatforms } from './collections/ScientificPlatforms'
 import { ProjectRoles } from './collections/ProjectRoles'
 import { UserMedia } from './collections/UserMedia'
+import { Footer } from './globals/Footer'
+import { PrivacyPolicy } from './globals/PrivacyPolicy'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -81,8 +85,10 @@ export default buildConfig({
     Projects,
     Pages,
     TeamMembers,
+    Events,
+    EventTags,
   ],
-  globals: [Hero],
+  globals: [Hero, Footer, PrivacyPolicy],
   endpoints: [coordinatorsEndpoint],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
@@ -108,10 +114,18 @@ export default buildConfig({
   plugins: [
     seoPlugin({
       tabbedUI: true,
-      collections: ['pages', 'news', 'projects'],
+      collections: ['pages', 'news', 'projects', 'events', 'team-members'],
       uploadsCollection: 'media',
       generateTitle: ({ doc, collectionSlug }) => {
-        const pageTitle = collectionSlug === 'projects' ? doc.acronym : doc.title
+        let pageTitle: string
+        if (collectionSlug === 'projects') {
+          pageTitle = doc.acronym
+        } else if (collectionSlug === 'team-members') {
+          pageTitle = doc.name
+        } else {
+          pageTitle = doc.title
+        }
+        
         const brandName = 'SPECTRA CE EU'
         const separator = ' | '
         const maxLength = 60
@@ -146,7 +160,10 @@ export default buildConfig({
 
         return `${truncatedPageTitle}${ellipsis}${brandSuffix}`
       },
-      generateDescription: ({ doc }) => generateExcerpt(doc.content, 150),
+      generateDescription: ({ doc, collectionSlug }) => {
+        const content = collectionSlug === 'team-members' ? doc.profile : doc.content
+        return generateExcerpt(content, 150)
+      },
       generateURL: ({ doc, collectionSlug }) => {
         const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
         return `${baseUrl}/${collectionSlug}/${doc.slug}/`
@@ -154,10 +171,10 @@ export default buildConfig({
     }),
     payloadCloudPlugin(),
     // storage-adapter-placeholder
-    addAuthorsFields({
-      excludedCollections: ['users'], //array of collections names to exclude
-      excludedGlobals: [], // array of globals names to exclude
-      usernameField: 'name', //name field to use from Users collection, 'user' by default
-    }),
+    // addAuthorsFields({
+    //   excludedCollections: ['users', 'news'], //array of collections names to exclude
+    //   excludedGlobals: [], // array of globals names to exclude
+    //   usernameField: 'name', //name field to use from Users collection, 'user' by default
+    // }),
   ],
 })

@@ -80,6 +80,8 @@ export interface Config {
     projects: Project;
     pages: Page;
     'team-members': TeamMember;
+    events: Event;
+    eventTags: EventTag;
     'payload-kv': PayloadKv;
     'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
@@ -111,6 +113,8 @@ export interface Config {
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
+    eventTags: EventTagsSelect<false> | EventTagsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -123,9 +127,13 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     hero: Hero;
+    footer: Footer;
+    'privacy-policy': PrivacyPolicy;
   };
   globalsSelect: {
     hero: HeroSelect<false> | HeroSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
+    'privacy-policy': PrivacyPolicySelect<false> | PrivacyPolicySelect<true>;
   };
   locale: null;
   user: User & {
@@ -189,12 +197,9 @@ export interface User {
 export interface Media {
   id: number;
   alt?: string | null;
-  creator?: string | null;
-  updator?: string | null;
-  process?: string | null;
-  createdAt: string;
-  updatedAt: string;
   folder?: (number | null) | FolderInterface;
+  updatedAt: string;
+  createdAt: string;
   url?: string | null;
   thumbnailURL?: string | null;
   filename?: string | null;
@@ -267,11 +272,8 @@ export interface UserMedia {
    * Alternative text for the media, describing its content for accessibility purposes.
    */
   alt: string;
-  creator?: string | null;
-  updator?: string | null;
-  process?: string | null;
-  createdAt: string;
   updatedAt: string;
+  createdAt: string;
   url?: string | null;
   thumbnailURL?: string | null;
   filename?: string | null;
@@ -557,11 +559,8 @@ export interface Partner {
   city: string;
   lat: number;
   lon: number;
-  creator?: string | null;
-  updator?: string | null;
-  process?: string | null;
-  createdAt: string;
   updatedAt: string;
+  createdAt: string;
 }
 /**
  * News articles and updates.
@@ -572,8 +571,6 @@ export interface Partner {
 export interface News {
   id: number;
   image?: (number | null) | Media;
-  project?: (number | Project)[] | null;
-  tags?: (number | NewsTag)[] | null;
   title: string;
   content: {
     root: {
@@ -604,13 +601,14 @@ export interface News {
      */
     image?: (number | null) | Media;
   };
-  creator?: string | null;
-  updator?: string | null;
-  process?: string | null;
-  publishDate?: string | null;
-  publisher?: string | null;
-  createdAt: string;
+  projects?: (number | Project)[] | null;
+  tags?: (number | NewsTag)[] | null;
+  /**
+   * The date this article was/will be published.
+   */
+  publishDate: string;
   updatedAt: string;
+  createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -621,9 +619,6 @@ export interface News {
  */
 export interface Project {
   id: number;
-  program: number | Program;
-  startDate?: string | null;
-  finishDate?: string | null;
   projectLogo?: (number | null) | Media;
   title: string;
   acronym: string;
@@ -674,10 +669,6 @@ export interface Project {
     [k: string]: unknown;
   };
   /**
-   * Current state of the project.
-   */
-  projectState: 'active' | 'completed';
-  /**
    * A short summary of the project article. Automatically generated from content.
    */
   excerpt?: string | null;
@@ -696,33 +687,20 @@ export interface Project {
      */
     image?: (number | null) | Media;
   };
-  creator?: string | null;
-  updator?: string | null;
-  process?: string | null;
-  publishDate?: string | null;
-  publisher?: string | null;
-  createdAt: string;
+  program: number | Program;
+  startDate?: string | null;
+  finishDate?: string | null;
+  /**
+   * The date this article was/will be published.
+   */
+  publishDate: string;
+  /**
+   * Current state of the project.
+   */
+  projectState: 'active' | 'completed';
   updatedAt: string;
+  createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * Programs for the projects
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "programs".
- */
-export interface Program {
-  id: number;
-  title: string;
-  logo?: (number | null) | Media;
-  description?: string | null;
-  slug?: string | null;
-  creator?: string | null;
-  updator?: string | null;
-  process?: string | null;
-  slugLock?: boolean | null;
-  createdAt: string;
-  updatedAt: string;
 }
 /**
  * SPECTRA team members.
@@ -738,6 +716,14 @@ export interface TeamMember {
    */
   title: string;
   photo?: (number | null) | UserMedia;
+  /**
+   * Email address of the team member.
+   */
+  email: string;
+  /**
+   * Physical address of the team member.
+   */
+  address?: string | null;
   /**
    * A brief summary of the team member's scientific profile and research interests.
    */
@@ -757,14 +743,6 @@ export interface TeamMember {
     [k: string]: unknown;
   } | null;
   /**
-   * Email address of the team member.
-   */
-  email: string;
-  /**
-   * Physical address of the team member.
-   */
-  address?: string | null;
-  /**
    * Any other relevant information about the team member.
    */
   additionalInfo?: {
@@ -782,11 +760,6 @@ export interface TeamMember {
     };
     [k: string]: unknown;
   } | null;
-  showOnLandingPage?: boolean | null;
-  /**
-   * Order in which team member appears on landing page (lower numbers appear first)
-   */
-  order?: number | null;
   /**
    * Links to the team member's social profiles or personal website.
    */
@@ -813,18 +786,28 @@ export interface TeamMember {
         id?: string | null;
       }[]
     | null;
-  slug?: string | null;
-  creator?: string | null;
-  updator?: string | null;
-  process?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   projects?: {
     docs?: (number | Project)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
+  showOnLandingPage?: boolean | null;
+  /**
+   * Order in which team member appears on landing page (lower numbers appear first)
+   */
+  order?: number | null;
+  slug?: string | null;
   slugLock?: boolean | null;
-  createdAt: string;
   updatedAt: string;
+  createdAt: string;
 }
 /**
  * Social Platforms
@@ -835,11 +818,8 @@ export interface TeamMember {
 export interface SocialPlatform {
   id: number;
   platformName: string;
-  creator?: string | null;
-  updator?: string | null;
-  process?: string | null;
-  createdAt: string;
   updatedAt: string;
+  createdAt: string;
 }
 /**
  * Scientific Platforms
@@ -850,11 +830,8 @@ export interface SocialPlatform {
 export interface ScientificPlatform {
   id: number;
   platformName: string;
-  creator?: string | null;
-  updator?: string | null;
-  process?: string | null;
-  createdAt: string;
   updatedAt: string;
+  createdAt: string;
 }
 /**
  * Project Roles
@@ -865,11 +842,24 @@ export interface ScientificPlatform {
 export interface ProjectRole {
   id: number;
   roleName: string;
-  creator?: string | null;
-  updator?: string | null;
-  process?: string | null;
-  createdAt: string;
   updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Programs for the projects
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programs".
+ */
+export interface Program {
+  id: number;
+  title: string;
+  logo?: (number | null) | Media;
+  description?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Tags for the news
@@ -881,14 +871,11 @@ export interface NewsTag {
   id: number;
   name: string;
   description?: string | null;
-  creator?: string | null;
-  updator?: string | null;
-  process?: string | null;
-  createdAt: string;
   updatedAt: string;
+  createdAt: string;
 }
 /**
- * Different pages, like About Spectra or Our Team.
+ * Different separate pages
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
@@ -921,14 +908,72 @@ export interface Page {
      */
     image?: (number | null) | Media;
   };
-  creator?: string | null;
-  updator?: string | null;
-  process?: string | null;
-  publishDate?: string | null;
-  publisher?: string | null;
-  createdAt: string;
   updatedAt: string;
+  createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * Events.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  title: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Automatically calculated from dates
+   */
+  eventState?: ('upcoming' | 'ongoing' | 'past') | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  startDate: string;
+  finishDate?: string | null;
+  projects?: (number | Project)[] | null;
+  tags?: (number | EventTag)[] | null;
+  /**
+   * The date this article was/will be published.
+   */
+  publishDate: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Tags for the events
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "eventTags".
+ */
+export interface EventTag {
+  id: number;
+  name: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1005,6 +1050,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'team-members';
         value: number | TeamMember;
+      } | null)
+    | ({
+        relationTo: 'events';
+        value: number | Event;
+      } | null)
+    | ({
+        relationTo: 'eventTags';
+        value: number | EventTag;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -1084,12 +1137,9 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
-  creator?: T;
-  updator?: T;
-  process?: T;
-  createdAt?: T;
-  updatedAt?: T;
   folder?: T;
+  updatedAt?: T;
+  createdAt?: T;
   url?: T;
   thumbnailURL?: T;
   filename?: T;
@@ -1140,11 +1190,8 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface UserMediaSelect<T extends boolean = true> {
   alt?: T;
-  creator?: T;
-  updator?: T;
-  process?: T;
-  createdAt?: T;
   updatedAt?: T;
+  createdAt?: T;
   url?: T;
   thumbnailURL?: T;
   filename?: T;
@@ -1182,11 +1229,8 @@ export interface PartnersSelect<T extends boolean = true> {
   city?: T;
   lat?: T;
   lon?: T;
-  creator?: T;
-  updator?: T;
-  process?: T;
-  createdAt?: T;
   updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1194,8 +1238,6 @@ export interface PartnersSelect<T extends boolean = true> {
  */
 export interface NewsSelect<T extends boolean = true> {
   image?: T;
-  project?: T;
-  tags?: T;
   title?: T;
   content?: T;
   excerpt?: T;
@@ -1208,13 +1250,11 @@ export interface NewsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
-  creator?: T;
-  updator?: T;
-  process?: T;
+  projects?: T;
+  tags?: T;
   publishDate?: T;
-  publisher?: T;
-  createdAt?: T;
   updatedAt?: T;
+  createdAt?: T;
   _status?: T;
 }
 /**
@@ -1224,11 +1264,8 @@ export interface NewsSelect<T extends boolean = true> {
 export interface NewsTagsSelect<T extends boolean = true> {
   name?: T;
   description?: T;
-  creator?: T;
-  updator?: T;
-  process?: T;
-  createdAt?: T;
   updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1236,11 +1273,8 @@ export interface NewsTagsSelect<T extends boolean = true> {
  */
 export interface SocialPlatformsSelect<T extends boolean = true> {
   platformName?: T;
-  creator?: T;
-  updator?: T;
-  process?: T;
-  createdAt?: T;
   updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1248,11 +1282,8 @@ export interface SocialPlatformsSelect<T extends boolean = true> {
  */
 export interface ScientificPlatformsSelect<T extends boolean = true> {
   platformName?: T;
-  creator?: T;
-  updator?: T;
-  process?: T;
-  createdAt?: T;
   updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1260,11 +1291,8 @@ export interface ScientificPlatformsSelect<T extends boolean = true> {
  */
 export interface ProjectRolesSelect<T extends boolean = true> {
   roleName?: T;
-  creator?: T;
-  updator?: T;
-  process?: T;
-  createdAt?: T;
   updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1275,21 +1303,15 @@ export interface ProgramsSelect<T extends boolean = true> {
   logo?: T;
   description?: T;
   slug?: T;
-  creator?: T;
-  updator?: T;
-  process?: T;
   slugLock?: T;
-  createdAt?: T;
   updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects_select".
  */
 export interface ProjectsSelect<T extends boolean = true> {
-  program?: T;
-  startDate?: T;
-  finishDate?: T;
   projectLogo?: T;
   title?: T;
   acronym?: T;
@@ -1310,7 +1332,6 @@ export interface ProjectsSelect<T extends boolean = true> {
         id?: T;
       };
   content?: T;
-  projectState?: T;
   excerpt?: T;
   news?: T;
   slug?: T;
@@ -1322,13 +1343,13 @@ export interface ProjectsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
-  creator?: T;
-  updator?: T;
-  process?: T;
+  program?: T;
+  startDate?: T;
+  finishDate?: T;
   publishDate?: T;
-  publisher?: T;
-  createdAt?: T;
+  projectState?: T;
   updatedAt?: T;
+  createdAt?: T;
   _status?: T;
 }
 /**
@@ -1347,13 +1368,8 @@ export interface PagesSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
-  creator?: T;
-  updator?: T;
-  process?: T;
-  publishDate?: T;
-  publisher?: T;
-  createdAt?: T;
   updatedAt?: T;
+  createdAt?: T;
   _status?: T;
 }
 /**
@@ -1364,12 +1380,10 @@ export interface TeamMembersSelect<T extends boolean = true> {
   name?: T;
   title?: T;
   photo?: T;
-  profile?: T;
   email?: T;
   address?: T;
+  profile?: T;
   additionalInfo?: T;
-  showOnLandingPage?: T;
-  order?: T;
   socialLinks?:
     | T
     | {
@@ -1384,14 +1398,56 @@ export interface TeamMembersSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
-  slug?: T;
-  creator?: T;
-  updator?: T;
-  process?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   projects?: T;
+  showOnLandingPage?: T;
+  order?: T;
+  slug?: T;
   slugLock?: T;
-  createdAt?: T;
   updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  eventState?: T;
+  slug?: T;
+  slugLock?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  startDate?: T;
+  finishDate?: T;
+  projects?: T;
+  tags?: T;
+  publishDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "eventTags_select".
+ */
+export interface EventTagsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1468,11 +1524,84 @@ export interface Hero {
     [k: string]: unknown;
   };
   image?: (number | null) | Media;
-  creator?: string | null;
-  updator?: string | null;
-  process?: string | null;
-  createdAt?: string | null;
   updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  /**
+   * Short description displayed below the logo
+   */
+  brandDescription: string;
+  quickLinks?:
+    | {
+        label: string;
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
+  contact: {
+    email: string;
+    location: string;
+  };
+  socialLinks?:
+    | {
+        platform: 'linkedin' | 'facebook' | 'X' | 'instagram' | 'youtube';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Copyright holder name (year is auto-generated)
+   */
+  copyrightText?: string | null;
+  bottomLinks?:
+    | {
+        label: string;
+        href: string;
+        /**
+         * Opens in new tab
+         */
+        external?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacy-policy".
+ */
+export interface PrivacyPolicy {
+  id: number;
+  title: string;
+  /**
+   * When was this policy last updated?
+   */
+  lastUpdated?: string | null;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1482,11 +1611,60 @@ export interface HeroSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   image?: T;
-  creator?: T;
-  updator?: T;
-  process?: T;
-  createdAt?: T;
   updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  brandDescription?: T;
+  quickLinks?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        id?: T;
+      };
+  contact?:
+    | T
+    | {
+        email?: T;
+        location?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  copyrightText?: T;
+  bottomLinks?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        external?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "privacy-policy_select".
+ */
+export interface PrivacyPolicySelect<T extends boolean = true> {
+  title?: T;
+  lastUpdated?: T;
+  content?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
   globalType?: T;
 }
 /**

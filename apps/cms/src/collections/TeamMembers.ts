@@ -24,118 +24,119 @@ export const TeamMembers: CollectionConfig = {
   },
   fields: [
     {
-      name: 'name',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-      admin: {
-        description: 'Job title or position, e.g., Project Manager, etc.',
-      },
-    },
-    {
-      name: 'photo',
-      type: 'upload',
-      relationTo: 'user-media',
-    },
-    {
-      name: 'profile',
-      type: 'richText',
-      required: false,
-      admin: {
-        description:
-          "A brief summary of the team member's scientific profile and research interests.",
-      },
-    },
-    {
-      name: 'email',
-      type: 'email',
-      required: true,
-      admin: {
-        description: 'Email address of the team member.',
-      },
-    },
-    {
-      name: 'address',
-      type: 'text',
-      admin: {
-        placeholder: 'Odbojárov 10, P.O.Box 95, 820 18 Bratislava, Slovakia',
-        description: 'Physical address of the team member.',
-      },
-    },
-    {
-      name: 'additionalInfo',
-      type: 'richText',
-      admin: {
-        description: 'Any other relevant information about the team member.',
-      },
-    },
-    {
-      type: 'row',
-      fields: [
+      type: 'tabs',
+      tabs: [
         {
-          name: 'showOnLandingPage',
-          type: 'checkbox',
-          defaultValue: true,
+          label: 'Basic Info',
+          fields: [
+            {
+              name: 'name',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+              admin: {
+                description: 'Job title or position, e.g., Project Manager, etc.',
+              },
+            },
+            {
+              name: 'photo',
+              type: 'upload',
+              relationTo: 'user-media',
+            },
+            {
+              name: 'email',
+              type: 'email',
+              required: true,
+              admin: {
+                description: 'Email address of the team member.',
+              },
+            },
+            {
+              name: 'address',
+              type: 'text',
+              admin: {
+                placeholder: 'Odbojárov 10, P.O.Box 95, 820 18 Bratislava, Slovakia',
+                description: 'Physical address of the team member.',
+              },
+            },
+          ],
         },
         {
-          name: 'order',
-          type: 'number',
-          defaultValue: 0,
-          admin: {
-            description:
-              'Order in which team member appears on landing page (lower numbers appear first)',
-          },
-        },
-      ],
-    },
-    {
-      name: 'socialLinks',
-      type: 'array',
-      admin: {
-        description: "Links to the team member's social profiles or personal website.",
-      },
-      fields: [
-        {
-          name: 'platform',
-          type: 'relationship',
-          relationTo: 'socialPlatforms',
-          required: true,
+          label: 'Profile',
+          fields: [
+            {
+              name: 'profile',
+              type: 'richText',
+              required: false,
+              admin: {
+                description:
+                  "A brief summary of the team member's scientific profile and research interests.",
+              },
+            },
+            {
+              name: 'additionalInfo',
+              type: 'richText',
+              admin: {
+                description: 'Any other relevant information about the team member.',
+              },
+            },
+          ],
         },
         {
-          name: 'url',
-          type: 'text',
-          required: true,
-          admin: {
-            description: 'The full URL to the profile.',
-          },
-        },
-      ],
-    },
-    {
-      name: 'scientificLinks',
-      type: 'array',
-      admin: {
-        description:
-          "Links to the team member's scientific profiles like ORCID, Google Scholar, etc.",
-      },
-      fields: [
-        {
-          name: 'platform',
-          type: 'relationship',
-          relationTo: 'scientificPlatforms',
-          required: true,
-        },
-        {
-          name: 'url',
-          type: 'text',
-          required: true,
-          admin: {
-            description: 'The full URL to the profile or identifier.',
-          },
+          label: 'Links',
+          fields: [
+            {
+              name: 'socialLinks',
+              type: 'array',
+              admin: {
+                description: "Links to the team member's social profiles or personal website.",
+              },
+              fields: [
+                {
+                  name: 'platform',
+                  type: 'relationship',
+                  relationTo: 'socialPlatforms',
+                  required: true,
+                },
+                {
+                  name: 'url',
+                  type: 'text',
+                  required: true,
+                  admin: {
+                    description: 'The full URL to the profile.',
+                  },
+                },
+              ],
+            },
+            {
+              name: 'scientificLinks',
+              type: 'array',
+              admin: {
+                description:
+                  "Links to the team member's scientific profiles like ORCID, Google Scholar, etc.",
+              },
+              fields: [
+                {
+                  name: 'platform',
+                  type: 'relationship',
+                  relationTo: 'scientificPlatforms',
+                  required: true,
+                },
+                {
+                  name: 'url',
+                  type: 'text',
+                  required: true,
+                  admin: {
+                    description: 'The full URL to the profile or identifier.',
+                  },
+                },
+              ],
+            },
+          ],
         },
       ],
     },
@@ -146,6 +147,25 @@ export const TeamMembers: CollectionConfig = {
       on: 'projectParticipants.participantName',
       admin: {
         hidden: true,
+      },
+    },
+    // Sidebar fields
+    {
+      name: 'showOnLandingPage',
+      type: 'checkbox',
+      defaultValue: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'order',
+      type: 'number',
+      defaultValue: 0,
+      admin: {
+        position: 'sidebar',
+        description:
+          'Order in which team member appears on landing page (lower numbers appear first)',
       },
     },
     ...SlugField('name'),

@@ -29,16 +29,17 @@ export const News: CollectionConfig = {
     useAsTitle: 'title',
     description: 'News articles and updates.',
     group: 'Content',
+    defaultColumns: ['title', 'image', 'tags', 'publishDate'],
   },
   defaultPopulate: {
     title: true,
     slug: true,
     image: true,
-    project: true,
+    projects: true,
     excerpt: true,
     publishDate: true,
   },
-  defaultSort: ['-updatedAt', 'title'],
+  defaultSort: ['-publishDate', 'title'],
   versions: {
     drafts: true,
   },
@@ -54,23 +55,6 @@ export const News: CollectionConfig = {
               name: 'image',
               type: 'upload',
               relationTo: 'media',
-            },
-            {
-              type: 'row',
-              fields: [
-                {
-                  name: 'project',
-                  type: 'relationship',
-                  relationTo: 'projects',
-                  hasMany: true,
-                },
-                {
-                  name: 'tags',
-                  type: 'relationship',
-                  relationTo: 'newsTags',
-                  hasMany: true,
-                },
-              ],
             },
             {
               name: 'title',
@@ -102,6 +86,39 @@ export const News: CollectionConfig = {
           ],
         },
       ],
+    },
+    // Sidebar fields
+    {
+      name: 'projects',
+      type: 'relationship',
+      relationTo: 'projects',
+      hasMany: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'tags',
+      type: 'relationship',
+      relationTo: 'newsTags',
+      hasMany: true,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'publishDate',
+      type: 'date',
+      required: true,
+      admin: {
+        position: 'sidebar',
+        date: {
+          pickerAppearance: 'dayOnly',
+          displayFormat: 'dd.MM.yyyy',
+        },
+        description: 'The date this article was/will be published.',
+      },
+      defaultValue: () => new Date().toISOString(),
     },
   ],
 }

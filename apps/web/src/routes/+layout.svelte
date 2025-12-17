@@ -6,7 +6,7 @@
 	import SiteHeader from '$lib/ui/site-header.svelte';
 	import SiteFooter from '$lib/ui/site-footer.svelte';
 
-	let { children } = $props();
+	let { children, data } = $props();
 </script>
 
 <ModeWatcher />
@@ -17,4 +17,4 @@
 	{@render children()}
 </div>
 
-<SiteFooter />
+<SiteFooter footer={data.footerData} />

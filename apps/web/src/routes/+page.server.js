@@ -33,7 +33,7 @@ export async function load({ fetch }) {
             heroData,
             newsData,
             partnersData,
-            teamMembersData
+            teamMembersData,
         };
     } catch (error) {
         console.error('Failed to load page data:', error);
@@ -41,7 +41,7 @@ export async function load({ fetch }) {
             heroData: null,
             newsData: null,
             partnersData: null,
-            teamMembersData: null
+            teamMembersData: null,
         };
     }
 }

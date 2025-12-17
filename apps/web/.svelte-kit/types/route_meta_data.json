@@ -2,10 +2,13 @@
 	"/": [
 		"src/routes/+page.server.js",
 		"src/routes/+layout.js",
-		"src/routes/+layout.js"
+		"src/routes/+layout.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
 	],
 	"/about": [
-		"src/routes/+layout.js"
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
 	],
 	"/api/coordinators": [
 		"src/routes/api/coordinators/+server.js"
@@ -26,43 +29,61 @@
 		"src/routes/api/team-members/+server.js"
 	],
 	"/blog": [
-		"src/routes/+layout.js"
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
 	],
 	"/events": [
-		"src/routes/+layout.js"
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
 	],
 	"/network": [
-		"src/routes/+layout.js"
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
 	],
 	"/news": [
 		"src/routes/news/+page.server.js",
 		"src/routes/+layout.js",
-		"src/routes/+layout.js"
+		"src/routes/+layout.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
+	],
+	"/privacy-policy": [
+		"src/routes/privacy-policy/+page.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
 	],
 	"/projects": [
 		"src/routes/projects/+page.server.js",
 		"src/routes/+layout.js",
-		"src/routes/+layout.js"
+		"src/routes/+layout.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
 	],
 	"/projects/[slug]": [
 		"src/routes/projects/[slug]/+page.js",
 		"src/routes/+layout.js",
+		"src/routes/+layout.server.js",
 		"src/routes/projects/[slug]/+server.js"
 	],
 	"/repository": [
-		"src/routes/+layout.js"
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
 	],
 	"/services": [
-		"src/routes/+layout.js"
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
 	],
 	"/team-members": [
 		"src/routes/team-members/+page.server.js",
 		"src/routes/+layout.js",
-		"src/routes/+layout.js"
+		"src/routes/+layout.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js"
 	],
 	"/team-members/[slug]": [
 		"src/routes/team-members/[slug]/+page.js",
 		"src/routes/+layout.js",
+		"src/routes/+layout.server.js",
 		"src/routes/team-members/[slug]/+server.js"
 	]
 }

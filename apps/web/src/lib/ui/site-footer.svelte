@@ -1,12 +1,24 @@
 <script>
-    import { siteConfig } from "$lib/config/site.js";
     import Envelope from 'phosphor-svelte/lib/Envelope';
     import MapPin from 'phosphor-svelte/lib/MapPin';
     import LinkedinLogo from 'phosphor-svelte/lib/LinkedinLogo';
-    import XLogo from 'phosphor-svelte/lib/TwitterLogo';
+    import XLogo from 'phosphor-svelte/lib/XLogo';
+    import YoutubeLogo from 'phosphor-svelte/lib/YoutubeLogo';
     import FacebookLogo from 'phosphor-svelte/lib/FacebookLogo';
+    import InstagramLogo from 'phosphor-svelte/lib/InstagramLogo';
     import IconNav from "$lib/ui/header/icon-nav.svelte";
     import ButtonLink from "$lib/ui/components/ButtonLink.svelte";
+
+    /** @type {{ footer: import('$lib/types').Footer }} */
+    let { footer } = $props();
+
+    const socialIcons = {
+        linkedin: LinkedinLogo,
+        facebook: FacebookLogo,
+        X: XLogo,
+        youtube: YoutubeLogo,
+        instagram: InstagramLogo,
+    };
 </script>
 
 <footer class="bg-muted border-t border-border mt-auto w-full">
@@ -15,87 +27,91 @@
             <!-- Brand & Logo -->
             <div class="space-y-4 md:col-span-2">
                 <IconNav class="!flex" />
-                <p class="text-sm text-muted-foreground leading-relaxed max-w-sm">
-                    Centre of Excellence for advancing research, innovation, and education across Europe and Ukraine.
-                </p>
+                {#if footer?.brandDescription}
+                    <p class="text-sm text-muted-foreground leading-relaxed max-w-sm">
+                        {footer.brandDescription}
+                    </p>
+                {/if}
             </div>
 
             <!-- Quick Links -->
-            <div class="space-y-4">
-                <h4 class="text-sm font-semibold text-foreground uppercase tracking-wider">Quick Links</h4>
-                <nav class="flex flex-col space-y-2">
-                    <ButtonLink href="/projects" variant="muted" size="sm">Projects</ButtonLink>
-                    <ButtonLink href="/team-members" variant="muted" size="sm">Team</ButtonLink>
-                    <ButtonLink href="/publications" variant="muted" size="sm">Publications</ButtonLink>
-                    <ButtonLink href="/about" variant="muted" size="sm">About Us</ButtonLink>
-                </nav>
-            </div>
+            {#if footer?.quickLinks?.length}
+                <div class="space-y-4">
+                    <h4 class="text-sm font-semibold text-foreground uppercase tracking-wider">Quick Links</h4>
+                    <nav class="flex flex-col space-y-2">
+                        {#each footer.quickLinks as link}
+                            <ButtonLink href={link.href} variant="muted" size="sm">{link.label}</ButtonLink>
+                        {/each}
+                    </nav>
+                </div>
+            {/if}
 
             <!-- Contact -->
             <div class="space-y-4">
                 <h4 class="text-sm font-semibold text-foreground uppercase tracking-wider">Contact</h4>
                 <div class="space-y-3">
-                    <ButtonLink href="mailto:contact@spectra-ce.eu" variant="muted" size="sm">
-                        {#snippet icon()}
-                            <Envelope class="text-lg" />
-                        {/snippet}
-                        contact@spectra-ce.eu
-                    </ButtonLink>
-                    <div class="flex items-start gap-2 text-sm text-muted-foreground">
-                        <MapPin class="text-lg shrink-0 mt-0.5" />
-                        <span>Kyiv, Ukraine</span>
-                    </div>
+                    {#if footer?.contact?.email}
+                        <ButtonLink href="mailto:{footer.contact.email}" variant="muted" size="sm">
+                            {#snippet icon()}
+                                <Envelope class="text-lg" />
+                            {/snippet}
+                            {footer.contact.email}
+                        </ButtonLink>
+                    {/if}
+                    {#if footer?.contact?.location}
+                        <div class="flex items-start gap-2 text-sm text-muted-foreground">
+                            <MapPin class="text-lg shrink-0 mt-0.5" />
+                            <span>{footer.contact.location}</span>
+                        </div>
+                    {/if}
                 </div>
 
                 <!-- Social Links -->
-                <div class="flex items-center gap-3 pt-2">
-                    <a 
-                        href="https://linkedin.com" 
-                        target="_blank" 
-                        rel="noreferrer"
-                        class="p-2 rounded-full bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
-                        aria-label="LinkedIn"
-                    >
-                        <LinkedinLogo class="text-lg" />
-                    </a>
-                    <a 
-                        href="https://twitter.com" 
-                        target="_blank" 
-                        rel="noreferrer"
-                        class="p-2 rounded-full bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
-                        aria-label="X (Twitter)"
-                    >
-                        <XLogo class="text-lg" />
-                    </a>
-                    <a 
-                        href="https://facebook.com" 
-                        target="_blank" 
-                        rel="noreferrer"
-                        class="p-2 rounded-full bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
-                        aria-label="Facebook"
-                    >
-                        <FacebookLogo class="text-lg" />
-                    </a>
-                </div>
+                {#if footer?.socialLinks?.length}
+                    <div class="flex items-center gap-3 pt-2">
+                        {#each footer.socialLinks as social}
+                            {@const IconComponent = socialIcons[social.platform]}
+                            {#if IconComponent}
+                                <a 
+                                    href={social.url} 
+                                    target="_blank" 
+                                    rel="noreferrer"
+                                    class="p-2 rounded-full bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
+                                    aria-label={social.platform}
+                                >
+                                    <IconComponent class="text-lg" />
+                                </a>
+                            {/if}
+                        {/each}
+                    </div>
+                {/if}
             </div>
         </div>
 
         <!-- Bottom Bar -->
         <div class="border-t border-border mt-8 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p class="text-sm text-muted-foreground">
-                &copy; {new Date().getFullYear()} Spectra Centre of Excellence EU. All rights reserved.
-            </p>
-            <div class="flex items-center gap-4 text-sm">
-                <ButtonLink href="/privacy" variant="muted" size="sm">Privacy Policy</ButtonLink>
-                <span class="text-muted-foreground">•</span>
-                <ButtonLink href="https://www.bits-ui.com" external variant="muted" size="sm">
-                    Built with Bits UI
-                </ButtonLink>
-                <span class="text-muted-foreground">•</span>
-                <ButtonLink href="https://payloadcms.com" external variant="muted" size="sm">
-                    Powered by Payload CMS
-                </ButtonLink>
-            </div>
+            {#if footer?.copyrightText}
+                <p class="text-sm text-muted-foreground">
+                    &copy; {new Date().getFullYear()} {footer.copyrightText}
+                </p>
+            {/if}
+            {#if footer?.bottomLinks?.length}
+                <div class="flex items-center gap-4 text-sm">
+                    {#each footer.bottomLinks as link, i}
+                        {#if i > 0}
+                            <span class="text-muted-foreground">•</span>
+                        {/if}
+                        <ButtonLink 
+                            href={link.href} 
+                            external={link.external} 
+                            variant="muted" 
+                            size="sm"
+                        >
+                            {link.label}
+                        </ButtonLink>
+                    {/each}
+                </div>
+            {/if}
         </div>
     </div>
 </footer>

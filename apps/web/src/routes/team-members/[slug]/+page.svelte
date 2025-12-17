@@ -21,8 +21,8 @@
 
     let teamMember = $derived(data.teamMember);
 
-    // Filter state: 'ongoing' or 'all'
-    let projectFilter = $state('ongoing');
+    // Filter state: 'active' or 'all'
+    let projectFilter = $state('active');
     
     // Responsibility filter: 'responsible' or 'all'
     let responsibilityFilter = $state('all');
@@ -61,8 +61,8 @@
         let filtered = projects;
         
         // Filter by project state
-        if (projectFilter === 'ongoing') {
-            filtered = filtered.filter((p) => p.projectState === 'ongoing');
+        if (projectFilter === 'active') {
+            filtered = filtered.filter((p) => p.projectState === 'active');
         }
         
         // Filter by responsibility
@@ -94,7 +94,9 @@
                                 href={`mailto:${teamMember.email}`}
                                 text="Send Email"
                             >
-                                <Envelope class="text-xl" />
+                                {#snippet icon()}
+                                    <Envelope class="text-xl" />
+                                {/snippet}
                                 <span>{teamMember.email}</span>
                             </ButtonLink>
                         </li>
@@ -137,7 +139,9 @@
                                         external={true}
                                         href={link.url}
                                     >
-                                        <Icon class="text-xl" />
+                                        {#snippet icon()}
+                                            <Icon class="text-xl" />
+                                        {/snippet}
                                         <span>{link.platform.platformName}</span>
                                     </ButtonLink>
                                 </li>
@@ -181,10 +185,10 @@
                                     <!-- <FunnelSimple class="text-lg text-muted-foreground" /> -->
                                     <span class="text-sm text-muted-foreground">Status:</span>
                                     <Button.Root
-                                        class="px-3 py-1 text-sm font-medium rounded-full transition-colors cursor-pointer {projectFilter === 'ongoing' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'}"
-                                        onclick={() => projectFilter = 'ongoing'}
+                                        class="px-3 py-1 text-sm font-medium rounded-full transition-colors cursor-pointer {projectFilter === 'active' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'}"
+                                        onclick={() => projectFilter = 'active'}
                                     >
-                                        Ongoing
+                                        Active
                                     </Button.Root>
                                     <Button.Root
                                         class="px-3 py-1 text-sm font-medium rounded-full transition-colors cursor-pointer {projectFilter === 'all' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'}"
@@ -193,7 +197,7 @@
                                         All
                                     </Button.Root>
                                 </div>
-                                
+
                                 <!-- Responsibility Filter -->
                                 <div class="flex gap-2 items-center">
                                     <span class="text-sm text-muted-foreground">Role:</span>
@@ -212,11 +216,11 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         {#if filteredProjects().length > 0}
                             <div class="space-y-4">
                                 {#each filteredProjects() as project}
-                                    <article class="border-l-2 pl-4 py-3 {project.projectState === 'finished' ? 'border-destructive/50' : 'border-primary'}">
+                                    <article class="border-l-2 pl-4 py-3 {project.projectState === 'complited' ? 'border-destructive/50' : 'border-primary'}">
                                         <div class="flex flex-col gap-2">
                                             <div class="flex items-center gap-2">
                                                 <span class="font-bold text-lg text-primary">{project.acronym}</span>
@@ -247,7 +251,7 @@
                                 {/each}
                             </div>
                         {:else}
-                            <p class="text-muted-foreground">No {projectFilter === 'ongoing' ? 'ongoing ' : ''}{responsibilityFilter === 'responsible' ? 'projects where responsible ' : 'projects '}found.</p>
+                            <p class="text-muted-foreground">No {projectFilter === 'active' ? 'active' : ''}{responsibilityFilter === 'responsible' ? 'projects where responsible ' : 'projects '}found.</p>
                         {/if}
                     </section>
                 {/if}
