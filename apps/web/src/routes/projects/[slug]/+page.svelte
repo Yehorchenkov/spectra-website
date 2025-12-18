@@ -188,7 +188,7 @@
                             <h2 class="text-2xl font-bold text-foreground border-b-2 border-primary pb-2 mb-4">
                                 Project Description
                             </h2>
-                            <div class="prose dark:prose-invert max-w-none text-foreground">
+                            <div class="max-w-none text-foreground">
                                 <RichTextRenderer content={project.content} />
                             </div>
                         </section>

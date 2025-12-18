@@ -2,6 +2,7 @@ import { CollectionConfig } from 'payload'
 import { anyone } from '@/access/anyone'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
+import { validateUrl } from '@/utils/validateUrl'
 
 export const TeamMembers: CollectionConfig = {
   slug: 'team-members',
@@ -109,6 +110,7 @@ export const TeamMembers: CollectionConfig = {
                   admin: {
                     description: 'The full URL to the profile.',
                   },
+                  validate: validateUrl,
                 },
               ],
             },

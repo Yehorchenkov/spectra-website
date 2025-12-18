@@ -4,6 +4,7 @@ import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
 import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 import type { CollectionBeforeChangeHook, CollectionBeforeValidateHook } from 'payload'
 import { generateExcerpt } from '@/utils/generateExcerpt'
+import { validateUrl } from '@/utils/validateUrl';
 import { ValidationError } from 'payload'
 
 // Hook to generate excerpt before saving
@@ -125,13 +126,7 @@ export const Projects: CollectionConfig = {
               admin: {
                 description: 'URL of the project website.',
               },
-              validate: (value: unknown) => {
-                if (!value) return true
-                const urlRegex = /^https?:\/\/.+/i
-                return urlRegex.test(value as string)
-                  ? true
-                  : 'Please enter a valid URL starting with http:// or https://'
-              },
+              validate: validateUrl,
             },
             {
               name: 'projectAcknowledgement',

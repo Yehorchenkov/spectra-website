@@ -3,16 +3,13 @@
     import Avatar from '$lib/ui/components/Avatar.svelte';
     import RichTextRenderer from '$lib/RichTextRenderer.svelte';
     import ProjectStateBadge from '$lib/ui/components/ProjectStateBadge.svelte';
+    import SocialIcon from '$lib/ui/components/SocialIcon.svelte';
 
     import { Button } from 'bits-ui';
 
     // Import Phosphor icons for social media platforms
     import Envelope from 'phosphor-svelte/lib/Envelope';
     import Building from 'phosphor-svelte/lib/Building';
-    import FacebookLogo from 'phosphor-svelte/lib/FacebookLogo';
-    import InstagramLogo from 'phosphor-svelte/lib/InstagramLogo';
-    import XLogo from 'phosphor-svelte/lib/TwitterLogo';
-    import LinkedinLogo from 'phosphor-svelte/lib/LinkedinLogo';
     import Globe from 'phosphor-svelte/lib/Globe';
     import Link from 'phosphor-svelte/lib/Link';
     import FunnelSimple from 'phosphor-svelte/lib/FunnelSimple';
@@ -26,21 +23,6 @@
     
     // Responsibility filter: 'responsible' or 'all'
     let responsibilityFilter = $state('all');
-
-    const iconMap = {
-        facebook: FacebookLogo,
-        instagram: InstagramLogo,
-        x: XLogo,
-        linkedin: LinkedinLogo,
-        website: Globe
-    };
-
-    const getIconComponent = (platformName) => {
-        if (!platformName || typeof platformName !== 'string') {
-            return Link;
-        }
-        return iconMap[platformName.toLowerCase()] || Link;
-    };
 
     // Check if the team member is responsible for a project
     const isResponsibleForProject = (project) => {
@@ -111,28 +93,27 @@
 
                 {#if teamMember.scientificLinks?.length > 0}
                     <div class="w-full space-y-3 pt-4 border-t border-border">
-                    <h3 class="text-md font-semibold text-muted-foreground uppercase tracking-wider">
-                        Scientific Profiles
-                    </h3>
-                    <ul class="space-y-2">
-                        {#each teamMember.scientificLinks as link}
-                            <li class="">
-                                <span class="font-semibold text-foreground">{link.platform.platformName}:</span>
-                                <span class="text-muted-foreground break-all"> {link.url}</span>
-                            </li>
-                        {/each}
-                    </ul>
-                </div>
-            {/if}
+                        <h3 class="text-md font-semibold text-muted-foreground uppercase tracking-wider">
+                            Scientific Profiles
+                        </h3>
+                        <ul class="space-y-2">
+                            {#each teamMember.scientificLinks as link}
+                                <li class="">
+                                    <span class="font-semibold text-foreground">{link.platform.platformName}:</span>
+                                    <span class="text-muted-foreground break-all"> {link.url}</span>
+                                </li>
+                            {/each}
+                        </ul>
+                    </div>
+                {/if}
 
-            {#if teamMember.socialLinks?.length > 0}
-                <div class="w-full space-y-3 pt-4 border-t border-border">
-                    <h3 class="text-md font-semibold text-muted-foreground uppercase tracking-wider">
+                <!-- {#if teamMember.socialLinks?.length > 0}
+                    <div class="w-full space-y-3 pt-4 border-t border-border">
+                        <h3 class="text-md font-semibold text-muted-foreground uppercase tracking-wider">
                             Social Media
                         </h3>
                         <ul class="space-y-2">
                             {#each teamMember.socialLinks as link}
-                                {@const Icon = getIconComponent(link.platform.platformName)}
                                 <li>
                                     <ButtonLink
                                         class="gap-3 group"
@@ -140,7 +121,7 @@
                                         href={link.url}
                                     >
                                         {#snippet icon()}
-                                            <Icon class="text-xl" />
+                                            <SocialIcon platform={link.platform.platformName} class="text-xl" />
                                         {/snippet}
                                         <span>{link.platform.platformName}</span>
                                     </ButtonLink>
@@ -148,6 +129,26 @@
                             {/each}
                         </ul>
                     </div>
+                {/if} -->
+                {#if teamMember.socialLinks?.length > 0}
+                    <div class="w-full space-y-3 pt-4 border-t border-border">
+                        <h3 class="text-md font-semibold text-muted-foreground uppercase tracking-wider">
+                            Social Media
+                        </h3>
+                        <div class="flex items-center gap-3 pt-2">
+                            {#each teamMember.socialLinks as social}
+                                <a 
+                                    href={social.url} 
+                                    target="_blank" 
+                                    rel="noreferrer"
+                                    class="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
+                                    aria-label={social.platform.platformName}
+                                >
+                                    <SocialIcon platform={social.platform.platformName} class="text-lg" />
+                                </a>
+                            {/each}
+                        </div>
+                    </div>  
                 {/if}
             </aside>
 
@@ -251,7 +252,7 @@
                                 {/each}
                             </div>
                         {:else}
-                            <p class="text-muted-foreground">No {projectFilter === 'active' ? 'active' : ''}{responsibilityFilter === 'responsible' ? 'projects where responsible ' : 'projects '}found.</p>
+                            <p class="text-muted-foreground">No {projectFilter === 'active' ? 'active ' : ''}{responsibilityFilter === 'responsible' ? 'projects where responsible ' : 'projects '}found.</p>
                         {/if}
                     </section>
                 {/if}

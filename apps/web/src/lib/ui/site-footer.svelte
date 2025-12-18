@@ -1,24 +1,13 @@
 <script>
     import Envelope from 'phosphor-svelte/lib/Envelope';
     import MapPin from 'phosphor-svelte/lib/MapPin';
-    import LinkedinLogo from 'phosphor-svelte/lib/LinkedinLogo';
-    import XLogo from 'phosphor-svelte/lib/XLogo';
-    import YoutubeLogo from 'phosphor-svelte/lib/YoutubeLogo';
-    import FacebookLogo from 'phosphor-svelte/lib/FacebookLogo';
-    import InstagramLogo from 'phosphor-svelte/lib/InstagramLogo';
     import IconNav from "$lib/ui/header/icon-nav.svelte";
     import ButtonLink from "$lib/ui/components/ButtonLink.svelte";
+    import SocialIcon from "$lib/ui/components/SocialIcon.svelte";
 
-    /** @type {{ footer: import('$lib/types').Footer }} */
     let { footer } = $props();
 
-    const socialIcons = {
-        linkedin: LinkedinLogo,
-        facebook: FacebookLogo,
-        X: XLogo,
-        youtube: YoutubeLogo,
-        instagram: InstagramLogo,
-    };
+    // console.log('Footer data:', footer);
 </script>
 
 <footer class="bg-muted border-t border-border mt-auto w-full">
@@ -70,18 +59,15 @@
                 {#if footer?.socialLinks?.length}
                     <div class="flex items-center gap-3 pt-2">
                         {#each footer.socialLinks as social}
-                            {@const IconComponent = socialIcons[social.platform]}
-                            {#if IconComponent}
-                                <a 
-                                    href={social.url} 
-                                    target="_blank" 
-                                    rel="noreferrer"
-                                    class="p-2 rounded-full bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
-                                    aria-label={social.platform}
-                                >
-                                    <IconComponent class="text-lg" />
-                                </a>
-                            {/if}
+                            <a 
+                                href={social.url} 
+                                target="_blank" 
+                                rel="noreferrer"
+                                class="p-2 rounded-full bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
+                                aria-label={social.platform.platformName}
+                            >
+                                <SocialIcon platform={social.platform.platformName} class="text-lg" />
+                            </a>
                         {/each}
                     </div>
                 {/if}

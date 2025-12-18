@@ -1,6 +1,7 @@
 import { GlobalConfig } from 'payload'
 import { anyone } from '@/access/anyone'
 import { isLoggedIn } from '@/access/isLoggedIn'
+import { validateUrl } from '@/utils/validateUrl'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
@@ -61,20 +62,18 @@ export const Footer: GlobalConfig = {
       fields: [
         {
           name: 'platform',
-          type: 'select',
+          type: 'relationship',
+          relationTo: 'socialPlatforms',
           required: true,
-          options: [
-            { label: 'LinkedIn', value: 'linkedin' },
-            { label: 'Facebook', value: 'facebook' },
-            { label: 'X', value: 'X' },
-            { label: 'Instagram', value: 'instagram' },
-            { label: 'YouTube', value: 'youtube' },
-          ],
         },
         {
           name: 'url',
           type: 'text',
           required: true,
+          admin: {
+            description: 'The full URL to the profile.',
+          },
+          validate: validateUrl,
         },
       ],
     },

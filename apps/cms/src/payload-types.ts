@@ -1550,7 +1550,10 @@ export interface Footer {
   };
   socialLinks?:
     | {
-        platform: 'linkedin' | 'facebook' | 'X' | 'instagram' | 'youtube';
+        platform: number | SocialPlatform;
+        /**
+         * The full URL to the profile.
+         */
         url: string;
         id?: string | null;
       }[]
