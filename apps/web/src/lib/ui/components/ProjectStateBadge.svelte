@@ -1,5 +1,6 @@
 <script>
     import Badge from "$lib/ui/components/Badge.svelte";
+    import { twMerge } from "tailwind-merge";
 
     let { state, class: className = '' } = $props();
 
@@ -9,7 +10,7 @@
 </script>
 
 {#if state}
-    <Badge className={`px-3 py-1 text-sm capitalize ${stateClasses} ${className}`}>
+    <Badge className={twMerge(`px-3 py-1 text-sm capitalize ${stateClasses}`, className)}>
         {state}
     </Badge>
 {/if}

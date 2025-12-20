@@ -27,8 +27,9 @@ export {};
 
 declare module "$app/types" {
 	export interface AppTypes {
-		RouteId(): "/" | "/about" | "/api" | "/api/coordinators" | "/api/news" | "/api/partners" | "/api/programs" | "/api/projects" | "/api/team-members" | "/blog" | "/events" | "/main-page" | "/network" | "/news" | "/privacy-policy" | "/projects" | "/projects/[slug]" | "/repository" | "/services" | "/team-members" | "/team-members/[slug]";
+		RouteId(): "/" | "/about" | "/api" | "/api/coordinators" | "/api/news" | "/api/partners" | "/api/programs" | "/api/projects" | "/api/team-members" | "/blog" | "/events" | "/main-page" | "/network" | "/news" | "/news/[slug]" | "/privacy-policy" | "/projects" | "/projects/[slug]" | "/repository" | "/services" | "/team-members" | "/team-members/[slug]";
 		RouteParams(): {
+			"/news/[slug]": { slug: string };
 			"/projects/[slug]": { slug: string };
 			"/team-members/[slug]": { slug: string }
 		};
@@ -46,7 +47,8 @@ declare module "$app/types" {
 			"/events": Record<string, never>;
 			"/main-page": Record<string, never>;
 			"/network": Record<string, never>;
-			"/news": Record<string, never>;
+			"/news": { slug?: string };
+			"/news/[slug]": { slug: string };
 			"/privacy-policy": Record<string, never>;
 			"/projects": { slug?: string };
 			"/projects/[slug]": { slug: string };
@@ -55,7 +57,7 @@ declare module "$app/types" {
 			"/team-members": { slug?: string };
 			"/team-members/[slug]": { slug: string }
 		};
-		Pathname(): "/" | "/about" | "/about/" | "/api" | "/api/" | "/api/coordinators" | "/api/coordinators/" | "/api/news" | "/api/news/" | "/api/partners" | "/api/partners/" | "/api/programs" | "/api/programs/" | "/api/projects" | "/api/projects/" | "/api/team-members" | "/api/team-members/" | "/blog" | "/blog/" | "/events" | "/events/" | "/main-page" | "/main-page/" | "/network" | "/network/" | "/news" | "/news/" | "/privacy-policy" | "/privacy-policy/" | "/projects" | "/projects/" | `/projects/${string}` & {} | `/projects/${string}/` & {} | "/repository" | "/repository/" | "/services" | "/services/" | "/team-members" | "/team-members/" | `/team-members/${string}` & {} | `/team-members/${string}/` & {};
+		Pathname(): "/" | "/about" | "/about/" | "/api" | "/api/" | "/api/coordinators" | "/api/coordinators/" | "/api/news" | "/api/news/" | "/api/partners" | "/api/partners/" | "/api/programs" | "/api/programs/" | "/api/projects" | "/api/projects/" | "/api/team-members" | "/api/team-members/" | "/blog" | "/blog/" | "/events" | "/events/" | "/main-page" | "/main-page/" | "/network" | "/network/" | "/news" | "/news/" | `/news/${string}` & {} | `/news/${string}/` & {} | "/privacy-policy" | "/privacy-policy/" | "/projects" | "/projects/" | `/projects/${string}` & {} | `/projects/${string}/` & {} | "/repository" | "/repository/" | "/services" | "/services/" | "/team-members" | "/team-members/" | `/team-members/${string}` & {} | `/team-members/${string}/` & {};
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
 		Asset(): "/.well-known/appspecific/com.chrome.devtools.json" | "/favicon.png" | string & {};
 	}

@@ -47,6 +47,12 @@
 		"src/routes/+layout.js",
 		"src/routes/+layout.server.js"
 	],
+	"/news/[slug]": [
+		"src/routes/news/[slug]/+page.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js",
+		"src/routes/news/[slug]/+server.js"
+	],
 	"/privacy-policy": [
 		"src/routes/privacy-policy/+page.server.js",
 		"src/routes/+layout.js",

@@ -9,7 +9,9 @@
     import Filter from '$lib/ui/components/Filter.svelte';
     import placeholderNews from '$lib/images/night-city-2-placeholder.png';
     import Badge from '$lib/ui/components/Badge.svelte';
+    import ProjectBadge from '$lib/ui/components/ProjectBadge.svelte';
     import FilterSortBar from '$lib/ui/components/FilterSortBar.svelte';
+    import { page } from '$app/state';
 
     let { data } = $props();
 
@@ -102,7 +104,7 @@
                     <div class="flex w-full flex-col justify-between p-2 leading-normal md:p-4">
                         <ButtonLink
                             class="mb-2 text-left text-xl font-bold tracking-tight"
-                            href="/news/{item.slug}"
+                            href={`/news/${item.slug}${page.url.search}`}
                         >
                             {item.title}
                         </ButtonLink>
@@ -123,14 +125,13 @@
 
                             {#if item.projects?.length > 0}
                                 <div class="flex items-center gap-2 flex-wrap">
-                                    <Folder class="text-muted-foreground size-4 flex-shrink-0" />
+                                    <Folder class="text-muted-foreground size-4 shrink-0" />
                                     {#each item.projects as project}
-                                        <ButtonLink
-                                            href="/projects/{project.slug}"
-                                            class="bg-primary/10 text-primary inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium hover:bg-primary/20"
-                                        >
-                                            {project.acronym || project.title}
-                                        </ButtonLink>
+                                        <ProjectBadge
+                                            label={project.acronym}
+                                            href={`/projects/${project.slug}`}
+                                            class="text-xs"
+                                        />
                                     {/each}
                                 </div>
                             {/if}

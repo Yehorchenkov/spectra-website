@@ -22,7 +22,7 @@
 {#if data.privacyData}
     <div class="w-full max-w-screen-xl mx-auto p-4 md:p-8 font-sans">
         <!-- Header -->
-        <header class="space-y-4 mb-8">
+        <header class="space-y-4 mb-4 border-b-2 border-primary pb-2">
             <h1 class="text-2xl font-bold text-primary">{data.privacyData.title}</h1>
             
             {#if data.privacyData.lastUpdated}
@@ -38,7 +38,7 @@
             <main>
                 <RichTextRenderer 
                     content={data.privacyData.content} 
-                    class="text-left prose-headings:text-foreground prose-headings:font-semibold prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-3 prose-p:my-4 prose-p:leading-relaxed prose-ul:my-4 prose-ul:list-disc prose-ul:pl-6 prose-ol:my-4 prose-ol:list-decimal prose-ol:pl-6 prose-li:my-1"
+                    class="text-left prose dark:prose-invert"
                 />
             </main>
 

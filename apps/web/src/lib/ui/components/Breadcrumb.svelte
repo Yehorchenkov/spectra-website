@@ -61,12 +61,15 @@
 			})
 	);
 
-  $effect(() => {
-    console.log('current page title:', currentPageTitle);
-  });
+	const withPreservedQuery = (href: string) => {
+		// Preserve query only when returning to these index pages
+		const preserveFor = new Set(['/news', '/projects', '/events']); // adjust as you need
 
-	// The commented out $effect for segments is not needed due to $derived.
-	// The older $effect for maxLength is also superseded by the refined one above.
+		if (preserveFor.has(href)) {
+			return href + page.url.search; // includes "?" or ""
+		}
+		return href;
+	};
 </script>
 
 <nav class={twMerge('flex', className)} aria-label="Breadcrumb">
@@ -78,7 +81,7 @@
 			</a>
 		{:else if segments.length > 1}
 			<a
-				href={segments[segments.length - 2].href}
+				href={withPreservedQuery(segments[segments.length - 2].href)}
 				class="text-foreground hover:text-primary inline-flex items-center font-medium"
 			>
 				<ArrowLeft class="me-2 h-4 w-4" weight="bold" />
@@ -102,7 +105,7 @@
 						</span>
 					{:else}
 						<a
-							href={segment.href}
+							href={withPreservedQuery(segment.href)}
 							class="text-foreground hover:text-primary ms-1 font-medium transition-colors md:ms-2"
 						>
 							{truncateString(segment.name, maxLength)}

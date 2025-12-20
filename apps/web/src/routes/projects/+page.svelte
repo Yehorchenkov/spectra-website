@@ -11,6 +11,7 @@
 	import ProjectStateBadge from '$lib/ui/components/ProjectStateBadge.svelte';
 	import Badge from '$lib/ui/components/Badge.svelte';
 	import FilterSortBar from '$lib/ui/components/FilterSortBar.svelte';
+	import { page } from '$app/state';
 
 	let { data } = $props();
 
@@ -106,7 +107,7 @@
                     <div class="flex w-full flex-col justify-between p-2 leading-normal md:p-4">
                         <ButtonLink
                             class="mb-2 text-left text-xl font-bold tracking-tight"
-                            href="/projects/{project.slug}"
+                            href={`/projects/${project.slug}${page.url.search}`}
                         >
                             {project.title}
                         </ButtonLink>
