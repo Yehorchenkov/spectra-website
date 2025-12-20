@@ -9,13 +9,17 @@
 	import Filter from '$lib/ui/components/Filter.svelte';
 	import ProjectLogo from '$lib/ui/components/ProjectLogo.svelte';
 	import ProjectStateBadge from '$lib/ui/components/ProjectStateBadge.svelte';
+	import Badge from '$lib/ui/components/Badge.svelte';
+	import FilterSortBar from '$lib/ui/components/FilterSortBar.svelte';
 
 	let { data } = $props();
 
-	const filterItems = data.programs.docs.map((program) => ({
+	const numProjects = $derived(data.projects?.docs?.length ?? 0);
+
+	const programFilterItems = $derived(data.programs.docs.map((program) => ({
 		value: program.id,
 		label: program.title
-	}));
+	})));
 
 	const stateFilterItems = [
 		{ value: 'active', label: 'Active' },
@@ -33,64 +37,62 @@
 	<p class="text-foreground mb-8 text-2xl">The list of project we are involved in</p>
 
 	<!-- Filter and Sort Controls -->
-	<div class="mb-8 w-full max-w-screen-xl px-4 lg:px-2">
-		<div class="bg-muted/30 border-border flex flex-col gap-4 rounded-xl border p-4 shadow-sm backdrop-blur-sm sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-			<!-- Left side: Filters -->
-			<div class="flex flex-1 flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-				<div class="flex items-center gap-2">
-					<FunnelSimple class="text-primary size-5" weight="bold" />
-					<span class="text-muted-foreground text-sm font-medium">Filter:</span>
-				</div>
-				<Filter
-					items={filterItems}
-					classTrigger="w-full sm:w-[200px]"
-					classContent="w-[200px]"
-					placeholder="All Programs"
-					filterField="program.id"
-				/>
-				<Filter
-					items={stateFilterItems}
-					classTrigger="w-full sm:w-[140px]"
-					classContent="w-[140px]"
-					placeholder="All States"
-					filterField="projectState"
-				/>
+	<FilterSortBar
+		count={numProjects}
+		countLabel="project"
+		resetParams={[
+			'where[program.id][equals]',
+			'where[projectState][equals]',
+			'sort',
+			]}
+	>
+
+		{#snippet filters()}
+			<div class="flex items-center gap-2">
+				<FunnelSimple class="text-primary size-5" weight="bold" />
+				<span class="text-muted-foreground text-sm font-medium">Filter:</span>
 			</div>
 
-			<!-- Divider for larger screens -->
-			<div class="bg-border hidden h-8 w-px lg:block"></div>
+			<Filter
+				items={programFilterItems}
+				classTrigger="w-full sm:w-[200px]"
+				classContent="w-[200px]"
+				placeholder="All Programs"
+				filterField="program.id"
+			/>
+			<Filter
+				items={stateFilterItems}
+				classTrigger="w-full sm:w-[140px]"
+				classContent="w-[140px]"
+				placeholder="All States"
+				filterField="projectState"
+			/>
+		{/snippet}
 
-			<!-- Right side: Sorting -->
-			<div class="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
-				<div class="flex items-center gap-2">
-					<SortAscending class="text-primary size-5" weight="bold" />
-					<span class="text-muted-foreground text-sm font-medium">Sort:</span>
-				</div>
-				<Order
-					items={[
-						{ value: '-startDate', label: 'Newest First' },
-						{ value: 'startDate', label: 'Oldest First' },
-						{ value: 'title', label: 'Title A-Z' },
-						{ value: '-title', label: 'Title Z-A' }
-					]}
-					defaultOrder={'-startDate'}
-					placeholder={'Select order'}
-					classTrigger="w-full sm:w-[160px]"
-					classContent="w-[160px]"
-				/>
+		{#snippet sort()}
+			<div class="flex items-center gap-2">
+				<SortAscending class="text-primary size-5" weight="bold" />
+				<span class="text-muted-foreground text-sm font-medium">Sort:</span>
 			</div>
-		</div>
 
-		<!-- Results count badge -->
-		<div class="mt-3 flex items-center gap-2">
-			<span class="bg-primary/10 text-primary inline-flex items-center rounded-full px-3 py-1 text-sm font-medium">
-				{data.projects.docs.length} project{data.projects.docs.length !== 1 ? 's' : ''} found
-			</span>
-		</div>
-	</div>
+			<Order
+				items={[
+					{ value: '-publishDate', label: 'Newest First' },
+					{ value: 'publishDate', label: 'Oldest First' },
+					{ value: 'title', label: 'Title A-Z' },
+					{ value: '-title', label: 'Title Z-A' }
+				]}
+				defaultOrder="-publishDate"
+				placeholder="Select order"
+				classTrigger="w-full sm:w-[180px]"
+				classContent="w-[180px]"
+			/>
+		{/snippet}
+	</FilterSortBar>
+
 
 	<div class="flex w-full max-w-screen-xl flex-col gap-6 px-4 lg:px-2">
-        {#if data.projects.docs.length > 0}
+        {#if numProjects > 0}
             {#each data.projects.docs as project, index (project.slug)}
                 {@const responsiblePerson = getResponsiblePerson(project)}
                 <div
@@ -160,7 +162,7 @@
                         </p>
                     </div>
                 </div>
-                {#if index < data.projects.docs.length - 1}
+                {#if index < numProjects - 1}
                     <!-- Beautiful divider -->
                     <div class="flex w-full justify-center">
                         <div class="bg-primary my-4 h-0.5 w-3/4 rounded-full md:w-2/3"></div>

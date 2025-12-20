@@ -14,7 +14,7 @@
 		...restProps
 	} = $props();
 
-	const selectedLabel = $derived(items.find((item) => item.value === value)?.label);
+	const selectedLabel = $derived(items.find((item) => String(item.value) === String(value))?.label);
 </script>
 
 

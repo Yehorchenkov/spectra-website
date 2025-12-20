@@ -1,14 +1,15 @@
 <script>
-    /**
-     * @type {{ state: 'ongoing' | 'finished' | string, class?: string }}
-     */
+    import Badge from "$lib/ui/components/Badge.svelte";
+
     let { state, class: className = '' } = $props();
+
+    const stateClasses = $derived(state === 'completed'
+        ? 'bg-destructive/10 text-destructive'
+        : 'bg-success/10 text-success');
 </script>
 
 {#if state}
-    <span
-        class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium capitalize {state === 'completed' ? 'bg-destructive/10 text-destructive' : 'bg-success/10 text-success'} {className}"
-    >
+    <Badge className={`px-3 py-1 text-sm capitalize ${stateClasses} ${className}`}>
         {state}
-    </span>
+    </Badge>
 {/if}

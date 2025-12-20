@@ -612,7 +612,7 @@ export interface News {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Ongoing and finished projects.
+ * Active and completed projects.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects".

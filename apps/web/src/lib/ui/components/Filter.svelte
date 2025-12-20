@@ -1,51 +1,73 @@
 <script>
-	import { twMerge } from 'tailwind-merge';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
-	import Select from '$lib/ui/components/Select.svelte';
+    import { twMerge } from 'tailwind-merge';
+    import { goto } from '$app/navigation';
+    import { page } from '$app/state';
+    import Select from '$lib/ui/components/Select.svelte';
 
-	let { items, placeholder, classMain, classTrigger, classContent, filterField } = $props();
+    let {
+        items,
+        placeholder,
+        classMain,
+        classTrigger,
+        classContent,
+        filterField,
+        includeNone = false,
+        noneLabel = 'None',
+        noneValue = '__none__',
+    } = $props();
 
-    const filterItems = $derived([{ value: 'all', label: placeholder }, ...items]);
+    const filterItems = $derived([
+        { value: 'all', label: placeholder },
+        ...(includeNone ? [{ value: noneValue, label: noneLabel }] : []),
+        ...items
+    ]);
 
-	// Updated query parameter key
-	const queryParamKey = `where[${filterField}][equals]`;
+    const equalsKey = $derived(`where[${filterField}][equals]`);
+    const noneKey   = $derived(`where[${filterField}][exists]`);
 
-	// Initialize filter state from the new query parameter key
-	let value = $state(page.url.searchParams.get(queryParamKey) ?? 'all');
+    // 1. Derive the value directly from the URL.
+    // This makes the UI automatically react to the URL (Back/Forward buttons)
+    // without needing an $effect.
+    const currentValue = $derived.by(() => {
+        if (page.url.searchParams.get(noneKey) === 'false') return noneValue;
+        return page.url.searchParams.get(equalsKey) || 'all';
+    });
 
-	// Effect to update URL when filter changes
-	$effect(() => {
-		const newVal = value;
-		const url = new URL(page.url);
+    // 2. Handle changes by updating the URL.
+    // This is called only when the user interacts with the Select.
+    function handleUpdate(newValue) {
+        if (newValue === currentValue) return;
 
-		if (newVal === 'all') {
-			url.searchParams.delete(queryParamKey); // Remove the parameter if 'all' is selected
-		} else {
-			url.searchParams.set(queryParamKey, newVal); // Set the new filter value
-		}
+        const url = new URL(page.url);
 
-		const fullUrl = url.toString();
+        if (newValue === 'all') {
+            url.searchParams.delete(equalsKey);
+            url.searchParams.delete(noneKey);
+        } else if (newValue === noneValue) {
+            url.searchParams.delete(equalsKey);
+            url.searchParams.set(noneKey, 'false');
+        } else {
+            url.searchParams.delete(noneKey);
+            url.searchParams.set(equalsKey, newValue);
+        }
 
-		if (fullUrl !== page.url.toString()) {
-			console.log('filter changed, updating URL to: ', fullUrl);
-			goto(fullUrl, {
-				replaceState: true,
-				noScroll: true,
-				keepFocus: true
-			});
-		}
-	});
+        goto(url.toString(), { 
+            replaceState: true, 
+            noScroll: true, 
+            keepFocus: true 
+        });
+    }
 </script>
 
 <div class={twMerge('flex items-center justify-start', classMain)}>
     <Select
-        bind:value
+        value={currentValue}
+        onValueChange={handleUpdate}
         items={filterItems}
         placeholder={placeholder}
         classTrigger={classTrigger}
         classContent={classContent}
-        id="filter"
+        id={filterField}
         type="single"
     />
 </div>

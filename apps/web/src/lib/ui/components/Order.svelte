@@ -14,7 +14,7 @@
     } = $props();
 
     // Initialize state from URL or default
-    let sortOrder = $state(page.url.searchParams.get('sort') || defaultOrder);
+    let sortOrder = $derived(page.url.searchParams.get('sort') || defaultOrder);
 
     // Sync URL when sortOrder changes
     $effect(() => {

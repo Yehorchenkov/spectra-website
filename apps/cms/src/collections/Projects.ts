@@ -77,7 +77,7 @@ export const Projects: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'acronym',
-    description: 'Ongoing and finished projects.',
+    description: 'Active and completed projects.',
     group: 'Content',
   },
   defaultPopulate: {
