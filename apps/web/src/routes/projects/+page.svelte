@@ -11,11 +11,15 @@
 	import ProjectStateBadge from '$lib/ui/components/ProjectStateBadge.svelte';
 	import Badge from '$lib/ui/components/Badge.svelte';
 	import FilterSortBar from '$lib/ui/components/FilterSortBar.svelte';
+	import Pagination from '$lib/ui/components/Pagination.svelte';
 	import { page } from '$app/state';
+	import { PROJECTS_PAGINATION_LIMIT } from '$lib/config/constants.js';
 
 	let { data } = $props();
 
-	const numProjects = $derived(data.projects?.docs?.length ?? 0);
+	const totalProjects = $derived(data.projects?.totalDocs ?? 0);
+    const perPage = $derived(data.projects?.limit ?? PROJECTS_PAGINATION_LIMIT);
+    const paginatedDocs = $derived(data.projects?.docs ?? []);
 
 	const programFilterItems = $derived(data.programs.docs.map((program) => ({
 		value: program.id,
@@ -39,7 +43,7 @@
 
 	<!-- Filter and Sort Controls -->
 	<FilterSortBar
-		count={numProjects}
+		count={totalProjects}
 		countLabel="project"
 		resetParams={[
 			'where[program.id][equals]',
@@ -93,8 +97,8 @@
 
 
 	<div class="flex w-full max-w-screen-xl flex-col gap-6 px-4 lg:px-2">
-        {#if numProjects > 0}
-            {#each data.projects.docs as project, index (project.slug)}
+        {#if totalProjects > 0}
+            {#each paginatedDocs as project, index (project.slug)}
                 {@const responsiblePerson = getResponsiblePerson(project)}
                 <div
                     class="text-foreground flex w-full flex-col items-stretch gap-4 md:flex-row md:items-center md:justify-items-start md:gap-0"
@@ -163,13 +167,24 @@
                         </p>
                     </div>
                 </div>
-                {#if index < numProjects - 1}
+                {#if index < totalProjects - 1}
                     <!-- Beautiful divider -->
                     <div class="flex w-full justify-center">
                         <div class="bg-primary my-4 h-0.5 w-3/4 rounded-full md:w-2/3"></div>
                     </div>
                 {/if}
             {/each}
+			{#if totalProjects > perPage}
+                <Pagination 
+                    count={totalProjects} 
+                    perPage={perPage} 
+					itemLabel="project"
+                />
+            {/if}
+		<!-- {:else}
+            <div class="py-20 text-center">
+                <p class="text-muted-foreground">No projects found.</p>
+            </div> -->
         {/if}
     </div>
 </div>

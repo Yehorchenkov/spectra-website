@@ -3,7 +3,7 @@
 	import RichTextRenderer from '$lib/RichTextRenderer.svelte';
 
 	let { heroContent } = $props();
-	let { title, description, image } = heroContent;
+	let { title, description, image } = $derived(heroContent);
 </script>
 
 <div

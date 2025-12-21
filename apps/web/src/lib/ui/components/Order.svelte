@@ -13,25 +13,34 @@
         classContent 
     } = $props();
 
-    // Initialize state from URL or default
-    let sortOrder = $derived(page.url.searchParams.get('sort') || defaultOrder);
+    // 1. Derive the current sort order directly from the URL.
+    // This ensures the UI stays in sync if the user hits the "Back" button.
+    const sortOrder = $derived(page.url.searchParams.get('sort') || defaultOrder);
 
-    // Sync URL when sortOrder changes
-    $effect(() => {
-        const currentSortInUrl = page.url.searchParams.get('sort');
+    // 2. Handle the update explicitly when the user changes the selection.
+    function handleUpdate(newValue) {
+        if (newValue === sortOrder) return;
 
-        if (sortOrder !== currentSortInUrl) {
-            const params = new URLSearchParams(page.url.searchParams);
-            params.set('sort', sortOrder);
-            goto(`?${params.toString()}`, { keepFocus: true, noScroll: true, replaceState: true });
-        }
-    });
+        const url = new URL(page.url);
+
+        // Update the sort parameter
+        url.searchParams.set('sort', newValue);
+
+        url.searchParams.delete('page');
+
+        goto(url.toString(), { 
+            keepFocus: true, 
+            noScroll: true, 
+            replaceState: true 
+        });
+    }
 </script>
 
 <div class={twMerge("flex items-center justify-start gap-1.5", classMain)}>
     <Select
         {items}
-        bind:value={sortOrder}
+        value={sortOrder}
+        onValueChange={handleUpdate}
         {placeholder}
         {classTrigger}
         {classContent}

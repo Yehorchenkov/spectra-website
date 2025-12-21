@@ -7,22 +7,25 @@
     import ButtonLink from '$lib/ui/components/ButtonLink.svelte';
     import Order from '$lib/ui/components/Order.svelte';
     import Filter from '$lib/ui/components/Filter.svelte';
-    import placeholderNews from '$lib/images/night-city-2-placeholder.png';
     import Badge from '$lib/ui/components/Badge.svelte';
     import ProjectBadge from '$lib/ui/components/ProjectBadge.svelte';
     import FilterSortBar from '$lib/ui/components/FilterSortBar.svelte';
+    import Pagination from '$lib/ui/components/Pagination.svelte';
+    import { NEWS_PLACEHOLDER } from '$lib/config/constants.js';
+    import { NEWS_PAGINATION_LIMIT } from '$lib/config/constants.js';
     import { page } from '$app/state';
 
     let { data } = $props();
 
-    const numNews = $derived(data.news?.docs?.length ?? 0);
+    const totalNews = $derived(data.news?.totalDocs ?? 0);
+    const perPage = $derived(data.news?.limit ?? NEWS_PAGINATION_LIMIT);
+    const paginatedDocs = $derived(data.news?.docs ?? []);
 
+    // console.log('paginatedDocs:', paginatedDocs);
     const projectFilterItems = $derived(data.projects.docs.map((project) => ({
 		value: project.id,
 		label: project.acronym
 	})));
-
-    // console.log('news data:', data);
 </script>
 
 <div class="flex w-full flex-col items-center overflow-x-hidden">
@@ -31,7 +34,7 @@
 
     <!-- Filter and Sort Controls -->
 	<FilterSortBar
-		count={numNews}
+		count={totalNews}
 		countLabel="news item"
 		resetParams={[
 			'where[projects][equals]',
@@ -79,13 +82,13 @@
 	</FilterSortBar>
 
     <div class="flex w-full max-w-screen-xl flex-col gap-6 px-4 lg:px-2">
-        {#if numNews > 0}
-            {#each data.news.docs as item, index (item.slug)}
+        {#if totalNews > 0}
+            {#each paginatedDocs as item, index (item.slug)}
                 <div
                     class="text-foreground flex w-full flex-col items-stretch gap-4 md:flex-row md:items-center md:justify-items-start md:gap-0"
                 >
                     <div
-                        class="flex flex-shrink-0 items-center justify-center rounded-lg bg-transparent md:mr-8 md:h-48 md:w-48"
+                        class="flex shrink-0 items-center justify-center rounded-lg bg-transparent md:mr-8 md:h-48 md:w-48"
                     >
                         {#if item.image?.url}
                             <img
@@ -95,7 +98,7 @@
                             />
                         {:else}
                             <img
-                                src={placeholderNews}
+                                src={NEWS_PLACEHOLDER}
                                 alt="News placeholder"
                                 class="size-32 rounded-lg object-cover md:size-40"
                             />
@@ -112,7 +115,7 @@
                         <div class="mb-2 flex flex-wrap items-center gap-x-8 gap-y-2">
                             {#if item.publishDate}
                                 <div class="flex items-center gap-2">
-                                    <CalendarDots class="text-muted-foreground size-5 flex-shrink-0" />
+                                    <CalendarDots class="text-muted-foreground size-5 shrink-0" />
                                     <time datetime={item.publishDate} class="text-muted-foreground text-left text-base">
                                         {new Date(item.publishDate).toLocaleDateString('en-GB', {
                                             day: 'numeric',
@@ -143,7 +146,7 @@
 
                         {#if item?.tags?.length ?? 0}
                             <div class="flex flex-wrap items-center gap-2">
-                                <Tag class="text-muted-foreground size-4 flex-shrink-0" />
+                                <Tag class="text-muted-foreground size-4 shrink-0" />
                                 {#each item.tags as tag}
                                     <Badge className="bg-secondary/50 text-secondary-foreground px-2 py-0.5 text-xs">
                                         {tag.name || tag}
@@ -153,13 +156,25 @@
                         {/if}
                     </div>
                 </div>
-                {#if index < numNews - 1}
+                {#if index < totalNews - 1}
                     <!-- Beautiful divider -->
                     <div class="flex w-full justify-center">
                         <div class="bg-primary my-4 h-0.5 w-3/4 rounded-full md:w-2/3"></div>
                     </div>
                 {/if}
             {/each}
+            {#if totalNews > perPage}
+                <Pagination 
+                    count={totalNews} 
+                    perPage={perPage} 
+                    itemLabel="news item"
+                    itemLabelPlural="news items"
+                />
+            {/if}
+        <!-- {:else}
+            <div class="py-20 text-center">
+                <p class="text-muted-foreground">No news found.</p>
+            </div> -->
         {/if}
     </div>
 </div>

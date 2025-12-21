@@ -17,7 +17,7 @@
 <div class="mt-4 md:mt-8 lg:mt-16">
 	<div class="mx-auto flex max-w-screen-xl flex-col items-center px-4 lg:px-6">
 		<h2 class="text-foreground mb-4 text-center text-2xl font-extrabold lg:text-4xl">News</h2>
-		<News data={data.newsData}/>
+		<News newsData={data.newsData}/>
 	</div>
 </div>
 

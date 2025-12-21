@@ -1,5 +1,12 @@
+import { NEWS_PAGINATION_LIMIT } from '$lib/config/constants.js';
+
 export async function load({ fetch, url }) {
+    const page = url.searchParams.get('page') || '1';
+    const limit = url.searchParams.get('limit') || NEWS_PAGINATION_LIMIT.toString();
+    
     const newsParams = new URLSearchParams(url.searchParams);
+    newsParams.set('page', page);
+    newsParams.set('limit', limit);
     
     const newsSelectFields = [
         'title',

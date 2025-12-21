@@ -39,6 +39,7 @@
         if (newValue === currentValue) return;
 
         const url = new URL(page.url);
+        url.searchParams.delete('page');
 
         if (newValue === 'all') {
             url.searchParams.delete(equalsKey);

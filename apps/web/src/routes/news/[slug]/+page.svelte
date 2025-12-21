@@ -6,7 +6,7 @@
 	import Badge from '$lib/ui/components/Badge.svelte';
 	import ProjectBadge from '$lib/ui/components/ProjectBadge.svelte';
 	import RichTextRenderer from '$lib/RichTextRenderer.svelte';
-    import placeholderNews from '$lib/images/night-city-2-placeholder.png';
+    import { NEWS_PLACEHOLDER } from '$lib/config/constants.js';
 
 	let { data } = $props();
 
@@ -14,7 +14,7 @@
 
 	// Always show a header image: use the article image when available, otherwise a placeholder.
 	// NOTE: Update this path if your placeholder lives elsewhere.
-	const headerImageUrl = $derived(newsItem?.image?.url ?? placeholderNews);
+	const headerImageUrl = $derived(newsItem?.image?.url ?? NEWS_PLACEHOLDER);
 	const headerImageAlt = $derived(newsItem?.image?.alt ?? newsItem?.title ?? 'News');
 
 	const publishDateLabel = $derived(
@@ -69,11 +69,11 @@
 					</div>
 
 					<!-- Image first on mobile, on the right on desktop -->
-					<figure class="order-first md:order-none md:justify-self-end">
+					<figure class="order-first md:order-0 md:justify-self-end">
 						<img
 							src={headerImageUrl}
 							alt={headerImageAlt}
-							class="w-full md:w-[360px] aspect-[16/10] rounded-xl border border-border object-cover"
+							class="w-full md:w-[360px] aspect-16/10 rounded-xl border border-border object-cover"
 							loading="lazy"
 						/>
 					</figure>

@@ -1,6 +1,13 @@
+import { PROJECTS_PAGINATION_LIMIT } from '$lib/config/constants.js';
+
 export async function load({ fetch, url }) {
+    const page = url.searchParams.get('page') || '1';
+    const limit = url.searchParams.get('limit') || PROJECTS_PAGINATION_LIMIT.toString();
+
     // --- Project Fetching ---
-    const projectParams = new URLSearchParams(url.searchParams); // Start with existing params from the URL
+    const projectParams = new URLSearchParams(url.searchParams);
+    projectParams.set('page', page);
+    projectParams.set('limit', limit);
 
     // Define the specific fields you want in the final response,
     // PLUS any fields required by your backend hooks (like 'projectParticipants').
