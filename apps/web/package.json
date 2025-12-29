@@ -37,6 +37,7 @@
 		"vite": "^7.1.9"
 	},
 	"dependencies": {
+		"@ethercorps/sveltekit-og": "^4.2.1",
 		"@internationalized/date": "^3.10.0",
 		"@payloadcms/richtext-lexical": "^3.59.1",
 		"bits-ui": "^2.11.4",

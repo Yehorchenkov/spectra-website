@@ -1,7 +1,7 @@
 import { GlobalConfig } from 'payload'
 import { anyone } from '@/access/anyone'
 import { isLoggedIn } from '@/access/isLoggedIn'
-import { validateUrl } from '@/utils/validateUrl'
+import { validateUrl } from '@/utils/utils'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',

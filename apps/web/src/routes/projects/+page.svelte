@@ -104,7 +104,7 @@
                     class="text-foreground flex w-full flex-col items-stretch gap-4 md:flex-row md:items-center md:justify-items-start md:gap-0"
                 >
                     <div
-                        class="flex flex-shrink-0 items-center justify-center gap-3 rounded-lg bg-transparent md:mr-8 md:h-48 md:w-48"
+                        class="flex shrink-0 items-center justify-center gap-3 rounded-lg bg-transparent md:mr-8 md:h-48 md:w-48"
                     >
                         <ProjectLogo {project} />
                     </div>

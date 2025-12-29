@@ -8,7 +8,8 @@ import { buildConfig, SharpDependency } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { generateExcerpt } from './utils/generateExcerpt'
+// import { generateExcerpt } from './utils/generateExcerpt'
+import { buildTitle, generateExcerpt } from './utils/seo'
 
 // Plugins
 import { seoPlugin } from '@payloadcms/plugin-seo'
@@ -41,6 +42,7 @@ import { ProjectRoles } from './collections/ProjectRoles'
 import { UserMedia } from './collections/UserMedia'
 import { Footer } from './globals/Footer'
 import { PrivacyPolicy } from './globals/PrivacyPolicy'
+import { SeoSettings } from './collections/SeoSettings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -87,6 +89,7 @@ export default buildConfig({
     TeamMembers,
     Events,
     EventTags,
+    SeoSettings,
   ],
   globals: [Hero, Footer, PrivacyPolicy],
   endpoints: [coordinatorsEndpoint],
@@ -114,67 +117,48 @@ export default buildConfig({
   plugins: [
     seoPlugin({
       tabbedUI: true,
-      collections: ['pages', 'news', 'projects', 'events', 'team-members'],
+      collections: ['pages', 'news', 'projects', 'events', 'team-members', 'seo-settings'],
       uploadsCollection: 'media',
+
       generateTitle: ({ doc, collectionSlug }) => {
-        let pageTitle: string
+        let rawTitle = doc.title || doc.name || 'Page'
+
         if (collectionSlug === 'projects') {
-          pageTitle = doc.acronym
-        } else if (collectionSlug === 'team-members') {
-          pageTitle = doc.name
-        } else {
-          pageTitle = doc.title
-        }
-        
-        const brandName = 'SPECTRA CE EU'
-        const separator = ' | '
-        const maxLength = 60
-        const ellipsis = '...'
-
-        const baseTitle = `${pageTitle}${separator}${brandName}`
-
-        if (baseTitle.length <= maxLength) {
-          return baseTitle
+          rawTitle =
+            doc.acronym && doc.title
+              ? `${doc.acronym}: ${doc.title}`
+              : doc.acronym || doc.title || rawTitle
         }
 
-        const brandSuffix = `${separator}${brandName}`
-        const availableLengthForPageTitle = maxLength - brandSuffix.length - ellipsis.length
-
-        // Not enough space for meaningful title with brand
-        if (availableLengthForPageTitle < 5) {
-          const maxTitleLength = maxLength - ellipsis.length
-          let truncated = pageTitle.substring(0, maxTitleLength)
-          const lastSpace = truncated.lastIndexOf(' ')
-          if (lastSpace > Math.floor(maxTitleLength / 2)) {
-            truncated = truncated.substring(0, lastSpace)
-          }
-          return `${truncated}${ellipsis}`
-        }
-
-        let truncatedPageTitle = pageTitle.substring(0, availableLengthForPageTitle)
-        const lastSpaceIndex = truncatedPageTitle.lastIndexOf(' ')
-
-        if (lastSpaceIndex > 0) {
-          truncatedPageTitle = truncatedPageTitle.substring(0, lastSpaceIndex)
-        }
-
-        return `${truncatedPageTitle}${ellipsis}${brandSuffix}`
+        return buildTitle(rawTitle)
       },
+
       generateDescription: ({ doc, collectionSlug }) => {
         const content = collectionSlug === 'team-members' ? doc.profile : doc.content
-        return generateExcerpt(content, 150)
+        return generateExcerpt(content) // Uses DESCRIPTION_MAX
       },
+
       generateURL: ({ doc, collectionSlug }) => {
-        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+        // 1. Use a robust fallback for the base URL
+        const baseUrl = (process.env.PUBLIC_SITE_URL || 'http://localhost:3000').replace(
+          /\/$/,
+          '',
+        )
+
+        // 2. Handle the Homepage special case
+        if (collectionSlug === 'pages' && doc.slug === 'home') {
+          return `${baseUrl}/`
+        }
+
+        // 3. Handle Top-Level Pages (remove the "pages" prefix)
+        if (collectionSlug === 'pages') {
+          return `${baseUrl}/${doc.slug}/`
+        }
+
+        // 4. Handle Nested Collections (news, projects, etc.)
         return `${baseUrl}/${collectionSlug}/${doc.slug}/`
       },
     }),
     payloadCloudPlugin(),
-    // storage-adapter-placeholder
-    // addAuthorsFields({
-    //   excludedCollections: ['users', 'news'], //array of collections names to exclude
-    //   excludedGlobals: [], // array of globals names to exclude
-    //   usernameField: 'name', //name field to use from Users collection, 'user' by default
-    // }),
   ],
 })

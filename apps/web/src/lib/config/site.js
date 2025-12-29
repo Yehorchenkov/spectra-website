@@ -1,6 +1,7 @@
 export const siteConfig = {
-    name: "Spectra CE EU",
-    url: "spectra-perseus.org",
+    name: "SPECTRA CE EU",
+    url: "https://spectra-perseus.org",
+    brandSuffix: " - ",
     description: "Spectra Centre of Excellence EU, Slovakia",
     keywords: `Spectra Centre of Excellence EU, Spatial Planning, Urban Development, Climate Change, Territory Management, European Projects, Horizon 2020, Erasmus+, Interreg`,
 }

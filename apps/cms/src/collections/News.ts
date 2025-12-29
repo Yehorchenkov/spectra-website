@@ -3,12 +3,13 @@ import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
 import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 import type { CollectionBeforeChangeHook } from 'payload'
-import { generateExcerpt } from '@/utils/generateExcerpt'
+import { generateExcerpt } from '@/utils/seo'
+import { requireMetaOnPublish } from '@/utils/utils'
 
 // Hook to generate excerpt before saving
 const generateNewsExcerptHook: CollectionBeforeChangeHook = ({ data, req, operation }) => {
   if (data.content && (operation === 'create' || operation === 'update')) {
-    data.excerpt = generateExcerpt(data.content, 150)
+    data.excerpt = generateExcerpt(data.content, 500)
   }
   return data
 }
@@ -18,6 +19,7 @@ export const News: CollectionConfig = {
   hooks: {
     // Add hooks configuration
     beforeChange: [generateNewsExcerptHook],
+    beforeValidate: [requireMetaOnPublish],
   },
   access: {
     read: isLoggedInOrPublished,

@@ -7,6 +7,7 @@
 	import ProjectBadge from '$lib/ui/components/ProjectBadge.svelte';
 	import RichTextRenderer from '$lib/RichTextRenderer.svelte';
     import { NEWS_PLACEHOLDER } from '$lib/config/constants.js';
+	import SEO from '$lib/seo.svelte';
 
 	let { data } = $props();
 
@@ -21,6 +22,12 @@
 		newsItem?.publishDate ? new Date(newsItem.publishDate).toLocaleDateString() : null
 	);
 </script>
+
+<SEO
+	title={newsItem.meta.title}
+	description={newsItem.meta?.description}
+	collection="News Article"
+/>
 
 {#if newsItem}
 	<div class="w-full max-w-screen-xl mx-auto p-4 md:p-8 font-sans">
@@ -73,7 +80,7 @@
 						<img
 							src={headerImageUrl}
 							alt={headerImageAlt}
-							class="w-full md:w-[360px] aspect-16/10 rounded-xl border border-border object-cover"
+							class="w-full md:w-[360px] aspect-16/10 rounded-xl border border-border object-cover shadow-sm"
 							loading="lazy"
 						/>
 					</figure>

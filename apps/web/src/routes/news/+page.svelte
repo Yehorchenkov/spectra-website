@@ -14,11 +14,14 @@
     import { NEWS_PLACEHOLDER } from '$lib/config/constants.js';
     import { NEWS_PAGINATION_LIMIT } from '$lib/config/constants.js';
     import { page } from '$app/state';
+    import SEO from '$lib/SEO.svelte';
+    import { resolveSeo, getFilterContext, getPageParam } from '$lib/utils/seoFactory';
 
     let { data } = $props();
 
     const totalNews = $derived(data.news?.totalDocs ?? 0);
     const perPage = $derived(data.news?.limit ?? NEWS_PAGINATION_LIMIT);
+    // const totalPages = $derived(() => Math.max(1, Math.ceil(totalNews / perPage)));
     const paginatedDocs = $derived(data.news?.docs ?? []);
 
     // console.log('paginatedDocs:', paginatedDocs);
@@ -26,7 +29,33 @@
 		value: project.id,
 		label: project.acronym
 	})));
+
+    // 1. URL State
+    const qs = $derived(page.url.searchParams);
+    const currentPageNum = $derived(getPageParam(qs));
+
+    // 2. Compute SEO
+    const seo = $derived.by(() => {
+        const filterText = getFilterContext(qs, data);
+
+        return resolveSeo(data.seoSettings, {
+            url: page.url,
+            context: {
+                filters: filterText, // Used in "{{filter}}" template
+                page: currentPageNum,
+            },
+            allowParams: ['where[projects][equals]'] // Keep project filter in canonical
+        })
+    });
 </script>
+
+<SEO 
+    title={seo.title}
+    description={seo.description}
+    canonical={seo.canonical}
+    noindex={seo.noindex}
+    collection={data.seoSettings?.label || 'News Archive'}
+/>
 
 <div class="flex w-full flex-col items-center overflow-x-hidden">
     <h1 class="text-foreground mt-8 mb-2 text-3xl font-bold tracking-tight">News</h1>
@@ -94,13 +123,13 @@
                             <img
                                 src={item.image.url}
                                 alt={item.title}
-                                class="size-32 rounded-lg object-cover md:size-40"
+                                class="size-32 rounded-lg object-cover md:size-40 shadow-sm"
                             />
                         {:else}
                             <img
                                 src={NEWS_PLACEHOLDER}
                                 alt="News placeholder"
-                                class="size-32 rounded-lg object-cover md:size-40"
+                                class="size-32 rounded-lg object-cover md:size-40 shadow-sm"
                             />
                         {/if}
                     </div>

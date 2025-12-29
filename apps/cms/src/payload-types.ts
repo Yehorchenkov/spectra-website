@@ -82,6 +82,7 @@ export interface Config {
     'team-members': TeamMember;
     events: Event;
     eventTags: EventTag;
+    'seo-settings': SeoSetting;
     'payload-kv': PayloadKv;
     'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
@@ -115,6 +116,7 @@ export interface Config {
     'team-members': TeamMembersSelect<false> | TeamMembersSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     eventTags: EventTagsSelect<false> | EventTagsSelect<true>;
+    'seo-settings': SeoSettingsSelect<false> | SeoSettingsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -977,6 +979,38 @@ export interface EventTag {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo-settings".
+ */
+export interface SeoSetting {
+  id: number;
+  label: string;
+  /**
+   * Unique key used by the code (e.g., "news-archive"). DO NOT CHANGE AFTER CREATION.
+   */
+  key: string;
+  filteredTemplates?: {
+    /**
+     * Use {{filters}} and {{page}}
+     */
+    titleTemplate?: string | null;
+    /**
+     * Use {{filter}}
+     */
+    descriptionTemplate?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -1058,6 +1092,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'eventTags';
         value: number | EventTag;
+      } | null)
+    | ({
+        relationTo: 'seo-settings';
+        value: number | SeoSetting;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -1446,6 +1484,29 @@ export interface EventsSelect<T extends boolean = true> {
 export interface EventTagsSelect<T extends boolean = true> {
   name?: T;
   description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seo-settings_select".
+ */
+export interface SeoSettingsSelect<T extends boolean = true> {
+  label?: T;
+  key?: T;
+  filteredTemplates?:
+    | T
+    | {
+        titleTemplate?: T;
+        descriptionTemplate?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

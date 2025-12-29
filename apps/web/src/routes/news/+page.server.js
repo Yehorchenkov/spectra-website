@@ -1,12 +1,10 @@
 import { NEWS_PAGINATION_LIMIT } from '$lib/config/constants.js';
+import { buildQuery, buildSelectQuery } from '$lib/utils/apiHandler.js';
+import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 
 export async function load({ fetch, url }) {
     const page = url.searchParams.get('page') || '1';
     const limit = url.searchParams.get('limit') || NEWS_PAGINATION_LIMIT.toString();
-    
-    const newsParams = new URLSearchParams(url.searchParams);
-    newsParams.set('page', page);
-    newsParams.set('limit', limit);
     
     const newsSelectFields = [
         'title',
@@ -18,22 +16,33 @@ export async function load({ fetch, url }) {
         'projects',
     ];
 
-    newsSelectFields.forEach((field) => {
-        newsParams.set(`select[${field}]`, 'true');
+    const newsParams = buildQuery({
+        baseParams: url.searchParams,
+        page,
+        limit,
+        select: newsSelectFields,
     });
 
-    const newsQuery = newsParams.toString();
-    const newsRes = await fetch(`/api/news?${newsQuery}`);
-    const news = await newsRes.json();
+    const projectParams = buildSelectQuery(['acronym', 'id'], 100);
 
-    // --- Project Fetching ---
-    const projectParams = new URLSearchParams();
-    projectParams.set('select[acronym]', 'true');
-    projectParams.set('select[id]', 'true');
+    const seoParams = buildSeoQuery('news-archive');
 
-    const projectQuery = projectParams.toString();
-    const projectsRes = await fetch(`/api/projects?${projectQuery}`);
-    const projects = await projectsRes.json();
-    
-    return { news, projects }
+    const [newsRes, projectsRes, seoRes] = await Promise.all([
+		fetch(`/api/news?${newsParams.toString()}`),
+		fetch(`/api/projects?${projectParams.toString()}`),
+		fetch(`/api/seo-settings?${seoParams.toString()}`)
+	]);
+
+	const [news, projects, seoData] = await Promise.all([
+		newsRes.json(),
+		projectsRes.json(),
+		seoRes.json()
+	]);
+
+    return {
+		news,
+		projects,
+		// Return the first document found, or null if not configured in CMS
+		seoSettings: seoData.docs?.[0] || null
+	};
 }

@@ -1,4 +1,4 @@
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
+// import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
 
 /**
@@ -8,15 +8,22 @@ import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintex
  * @returns The generated excerpt string.
  */
 export function generateExcerpt(
-  content: SerializedEditorState | undefined | null,
+  content: any,
   maxLength: number = 150,
 ): string {
-  if (!content || !content.root || !content.root.children || content.root.children.length === 0) {
+  if (!content) {
     return ''
   }
 
-  const textContent = convertLexicalToPlaintext({ data: content })
-  const trimmedText = textContent.trim()
+  let textContent = '';
+
+  if (typeof content === 'object' && content !== null && 'root' in content) {
+    textContent = convertLexicalToPlaintext({ data: content })
+  } else if (typeof content === 'string') {
+    textContent = content
+  }
+
+  const trimmedText = textContent.trim().replace(/\s+/g, ' ') // Remove double spaces/newlines
 
   if (trimmedText.length <= maxLength) {
     return trimmedText

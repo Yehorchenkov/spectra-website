@@ -3,8 +3,9 @@ import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
 import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 import type { CollectionBeforeChangeHook, CollectionBeforeValidateHook } from 'payload'
-import { generateExcerpt } from '@/utils/generateExcerpt'
-import { validateUrl } from '@/utils/validateUrl';
+import { generateExcerpt } from '@/utils/seo'
+import { validateUrl } from '@/utils/utils';
+import { requireMetaOnPublish } from '@/utils/utils'
 import { ValidationError } from 'payload'
 
 // Hook to generate excerpt before saving
@@ -67,7 +68,7 @@ export const Projects: CollectionConfig = {
   hooks: {
     // Add hooks configuration
     beforeChange: [generateProjectExcerptHook],
-    beforeValidate: [enforceResponsible],
+    beforeValidate: [enforceResponsible, requireMetaOnPublish],
   },
   access: {
     read: isLoggedInOrPublished,

@@ -5,6 +5,7 @@
 	import DotsThree from "phosphor-svelte/lib/DotsThree";
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
+	import { getPageParam } from "$lib/utils/seoFactory";
 
 	let { 
 		count, 
@@ -27,8 +28,8 @@
 	// </Pagination>
 
   
-
-	const currentPage = $derived(Number(page.url.searchParams.get('page')) || 1);
+	const qs = $derived(page.url.searchParams);
+	const currentPage = $derived(getPageParam(qs, 'page'));
 
 	// Basic pluralization logic
 	const displayLabel = $derived(() => {
@@ -37,10 +38,30 @@
 	});
 
 	function handlePageChange(newPage: number) {
-		const newUrl = new URL(page.url);
-		newUrl.searchParams.set('page', newPage.toString());
-		goto(newUrl.toString(), { keepFocus: true, noScroll: false });
-	}
+		const url = new URL(page.url);
+
+		// Enforce trailingSlash = 'always'
+		if (!url.pathname.endsWith("/")) url.pathname = `${url.pathname}/`;
+
+		// SEO/clean-URL best practice:
+		// Don't keep ?page=1. Page 1 should be the base URL.
+		if (newPage <= 1) {
+			url.searchParams.delete("page");
+		} else {
+			url.searchParams.set("page", String(newPage));
+		}
+
+		// Use relative navigation (pathname + query + hash)
+		const next = `${url.pathname}${url.search}${url.hash}`;
+
+		goto(next, { keepFocus: true, noScroll: false });
+  	}
+
+	// function handlePageChange(newPage: number) {
+	// 	const newUrl = new URL(page.url);
+	// 	newUrl.searchParams.set('page', newPage.toString());
+	// 	goto(newUrl.toString(), { keepFocus: true, noScroll: false });
+	// }
 </script>
 
 <Pagination.Root
