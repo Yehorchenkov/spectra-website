@@ -144,16 +144,22 @@ export function getFilterContext(qs, data) {
 		if (project) list.push(project.acronym);
 	}
 
-	const programId = qs.get('where[program][equals]');
+	const programId = qs.get('where[program.id][equals]');
 	if (programId && data.programs?.docs) {
 		const program = data.programs.docs.find((p) => String(p.id) === programId);
-		if (program) list.push(program.name);
+		if (program) list.push(program.title);
 	}
 
 	const coordId = qs.get('where[coordinator][equals]');
 	if (coordId && data.coordinators?.docs) {
 		const coord = data.coordinators.docs.find((c) => String(c.id) === coordId);
 		if (coord) list.push(coord.name);
+	}
+
+    const state = qs.get('where[projectState][equals]');
+	if (state) {
+		const map = { active: 'Active', completed: 'Completed' };
+		list.push(map[state] || state);
 	}
 
 	return joinFilters(list);

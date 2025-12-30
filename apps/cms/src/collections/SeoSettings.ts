@@ -36,7 +36,7 @@ export const SeoSettings: CollectionConfig = {
           type: 'textarea',
           label: 'Dynamic Description Template',
           admin: {
-            description: 'Use {{filter}}',
+            description: 'Use {{filters}}',
           },
         },
       ],

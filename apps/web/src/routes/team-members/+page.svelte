@@ -1,6 +1,7 @@
 <script>
 	import ButtonLink from '$lib/ui/components/ButtonLink.svelte';
     import Avatar from '$lib/ui/components/Avatar.svelte';
+    import SEO from '$lib/SEO.svelte';
 
 	let { data } = $props();
 
@@ -10,9 +11,13 @@
 			.sort((a, b) => a.order - b.order)
 	);
 
-    // console.log('Team Members Sorted:', teamMembers);
-
 </script>
+
+<SEO 
+    title={data.seoSettings?.meta?.title || 'Our Team'}
+    description={data.seoSettings?.meta?.description || 'Meet the members of our team'}
+    collection={data.seoSettings?.label || 'Team Members'}
+/>
 
 <div class="flex w-full flex-col items-center">
     <h1 class="text-foreground mt-8 mb-2 text-3xl font-bold tracking-tight">Our Team</h1>

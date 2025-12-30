@@ -118,6 +118,7 @@ export default buildConfig({
     seoPlugin({
       tabbedUI: true,
       collections: ['pages', 'news', 'projects', 'events', 'team-members', 'seo-settings'],
+      globals: ['privacy-policy', 'hero'],
       uploadsCollection: 'media',
 
       generateTitle: ({ doc, collectionSlug }) => {
@@ -128,6 +129,11 @@ export default buildConfig({
             doc.acronym && doc.title
               ? `${doc.acronym}: ${doc.title}`
               : doc.acronym || doc.title || rawTitle
+        }
+
+        if (collectionSlug === 'team-members') {
+          rawTitle =
+            doc.name ? doc.name : rawTitle
         }
 
         return buildTitle(rawTitle)

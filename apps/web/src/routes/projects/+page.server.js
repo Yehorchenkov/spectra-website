@@ -1,49 +1,51 @@
 import { PROJECTS_PAGINATION_LIMIT } from '$lib/config/constants.js';
+import { buildQuery, buildSelectQuery } from '$lib/utils/apiHandler.js';
+import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 
 export async function load({ fetch, url }) {
-    const page = url.searchParams.get('page') || '1';
-    const limit = url.searchParams.get('limit') || PROJECTS_PAGINATION_LIMIT.toString();
+	const page = url.searchParams.get('page') || '1';
+	const limit = url.searchParams.get('limit') || PROJECTS_PAGINATION_LIMIT.toString();
 
-    // --- Project Fetching ---
-    const projectParams = new URLSearchParams(url.searchParams);
-    projectParams.set('page', page);
-    projectParams.set('limit', limit);
+	const projectSelectFields = [
+		'title',
+		'acronym',
+		'slug',
+		'excerpt',
+		'projectLogo',
+		'program',
+		'startDate',
+		'finishDate',
+		'publishDate',
+		'projectParticipants',
+		'projectState'
+	];
 
-    // Define the specific fields you want in the final response,
-    // PLUS any fields required by your backend hooks (like 'projectParticipants').
-    const projectSelectFields = [
-        'title',
-        'acronym',
-        'slug',
-        'excerpt',
-        'projectLogo',
-        'program',
-        'startDate',
-        'finishDate',
-        'publishDate',
-        'projectParticipants',
-        'projectState',
-    ];
+	const projectParams = buildQuery({
+		baseParams: url.searchParams,
+		page,
+		limit,
+		select: projectSelectFields
+	});
 
-    projectSelectFields.forEach((field) => {
-        projectParams.set(`select[${field}]`, 'true');
-    });
+	const programParams = buildSelectQuery(['title', 'id'], 100);
 
-    // Depth is still needed to populate 'projectParticipants' before the hook runs
-    // projectParams.set('depth', '2');
+	const seoParams = buildSeoQuery('projects-archive');
 
-    const projectQuery = projectParams.toString();
-    const projectsRes = await fetch(`/api/projects?${projectQuery}`);
-    const projects = await projectsRes.json();
+	const [projectRes, programRes, seoRes] = await Promise.all([
+		fetch(`/api/projects?${projectParams.toString()}`),
+		fetch(`/api/programs?${programParams.toString()}`),
+		fetch(`/api/seo-settings?${seoParams.toString()}`)
+	]);
 
-    // --- Program Fetching ---
-    const programParams = new URLSearchParams();
-    programParams.set('select[title]', 'true');
-    programParams.set('select[id]', 'true');
+	const [projects, programs, seoData] = await Promise.all([
+		projectRes.json(),
+		programRes.json(),
+		seoRes.json()
+	]);
 
-    const programQuery = programParams.toString();
-    const programsRes = await fetch(`/api/programs?${programQuery}`);
-    const programs = await programsRes.json();
-
-    return { projects, programs };
+	return {
+		projects,
+		programs,
+		seoSettings: seoData.docs?.[0] || null
+	};
 }

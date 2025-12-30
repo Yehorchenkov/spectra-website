@@ -5,31 +5,14 @@
 	import Projects from './main-page/projects.svelte';
 	import Team from './main-page/team.svelte';
 	import SEO from '$lib/SEO.svelte';
-	import { resolveSeo } from '$lib/utils/seoFactory';
-	import { page } from '$app/state';
 
 	let { data } = $props();
-
-	// console.log('Home page data:', data);
-
-	// const seo = $derived.by(() => 
-	// 	resolveSeo(
-	// 		data.seoSettings ?? { label: 'Home' },
-	// 		{
-	// 			pathname: page.url.pathname,
-	// 			searchParams: page.url.searchParams
-	// 		}
-	// 	));
-
-	const seo = $derived.by(() =>
-		resolveSeo(data.seoSettings ?? { label: 'Home' })
-	);
 
 </script>
 
 <SEO
-	title={seo.title}
-	description={seo.description}
+	title={data.heroData.meta.title}
+	description={data.heroData.meta.description}
 	collection="Home Page"
 />
 

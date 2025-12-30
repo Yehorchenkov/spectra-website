@@ -994,7 +994,7 @@ export interface SeoSetting {
      */
     titleTemplate?: string | null;
     /**
-     * Use {{filter}}
+     * Use {{filters}}
      */
     descriptionTemplate?: string | null;
   };
@@ -1585,6 +1585,14 @@ export interface Hero {
     [k: string]: unknown;
   };
   image?: (number | null) | Media;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1663,6 +1671,14 @@ export interface PrivacyPolicy {
     };
     [k: string]: unknown;
   };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1675,6 +1691,13 @@ export interface HeroSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   image?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1726,6 +1749,13 @@ export interface PrivacyPolicySelect<T extends boolean = true> {
   title?: T;
   lastUpdated?: T;
   content?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   _status?: T;
   updatedAt?: T;
   createdAt?: T;

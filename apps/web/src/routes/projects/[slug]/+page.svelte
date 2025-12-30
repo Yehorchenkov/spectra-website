@@ -7,6 +7,7 @@
     import Avatar from '$lib/ui/components/Avatar.svelte';
     import ProjectLogo from '$lib/ui/components/ProjectLogo.svelte';
     import ProjectStateBadge from '$lib/ui/components/ProjectStateBadge.svelte';
+    import SEO from '$lib/seo.svelte';
     import { Tabs } from "bits-ui";
 
     import { convertContentToHTML } from '$lib/convertHtml';
@@ -27,6 +28,12 @@
     console.log('Project Data:', data);
 
 </script>
+
+<SEO
+	title={project.meta.title}
+	description={project.meta?.description}
+	collection="Project Profile"
+/>
 
 {#if project}
     <div class="w-full max-w-screen-xl mx-auto p-4 md:p-8 font-sans">

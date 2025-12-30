@@ -2,6 +2,7 @@ import type { CollectionConfig, CollectionAfterReadHook } from 'payload'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
 import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
+import { requireMetaOnPublish } from '@/utils/utils'
 
 // Hook to automatically calculate event state based on dates
 const calculateEventStateHook: CollectionAfterReadHook = ({ doc }) => {
@@ -26,6 +27,7 @@ export const Events: CollectionConfig = {
   slug: 'events',
   hooks: {
     afterRead: [calculateEventStateHook],
+    beforeValidate: [requireMetaOnPublish],
   },
   access: {
     read: isLoggedInOrPublished,

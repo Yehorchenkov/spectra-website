@@ -8,6 +8,9 @@
 	import ButtonRefAnim from '$lib/ui/components/ButtonRefAnim.svelte';
 	import { NEWS_LIMIT } from '$lib/config/constants.js';
 	import { NEWS_PLACEHOLDER } from '$lib/config/constants.js';
+	import CalendarDots from 'phosphor-svelte/lib/CalendarDots';
+	import Tag from 'phosphor-svelte/lib/Tag';
+	import Badge from '$lib/ui/components/Badge.svelte';
 
 	let { newsData } = $props();
 
@@ -81,11 +84,23 @@
 							</div>
 							<div class="flex grow flex-col p-5">
 								<h5 class="text-foreground mb-2 font-bold line-clamp-2 text-lg">{item.title}</h5>
-								<p class="text-muted-foreground mb-4 line-clamp-3 text-sm">{item.excerpt}</p>
+								{#if item.publishDate}
+									<div class="flex items-center gap-2 mb-2">
+										<CalendarDots class="text-muted-foreground size-5 shrink-0" />
+										<time datetime={item.publishDate} class="text-muted-foreground text-left text-sm">
+											{new Date(item.publishDate).toLocaleDateString('en-GB', {
+												day: 'numeric',
+												month: 'long',
+												year: 'numeric'
+											})}
+										</time>
+									</div>
+                            	{/if}
+								<p class="text-foreground mb-4 line-clamp-3 text-sm">{item.excerpt}</p>
 								<ButtonLink class="mt-auto" href="/news/{item.slug}">Read More</ButtonLink>
 							</div>
 						</div>
-					</div>
+					</div>``
 				{/each}
 			</div>
 		</div>

@@ -2,6 +2,7 @@
     import RichTextRenderer from '$lib/RichTextRenderer.svelte';
     import TableOfContents from '$lib/ui/components/TableOfContents.svelte';
     import CalendarDots from 'phosphor-svelte/lib/CalendarDots';
+    import SEO from '$lib/SEO.svelte';
     
     let { data } = $props();
 
@@ -15,9 +16,11 @@
     };
 </script>
 
-<svelte:head>
-    <title>{data.privacyData?.title || 'Privacy Policy'} | SPECTRA CE EU</title>
-</svelte:head>
+<SEO 
+    title={data.privacyData?.meta?.title || 'Privacy Policy'}
+    description={data.privacyData?.meta?.description || 'Read our privacy policy to understand how we handle your data.'}
+    collection="Privacy Policy"
+/>
 
 {#if data.privacyData}
     <div class="w-full max-w-screen-xl mx-auto p-4 md:p-8 font-sans">

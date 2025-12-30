@@ -25,7 +25,7 @@
 		class="bg-card text-card-foreground max-w-lg md:top-0 md:z-10 md:-mt-24 md:max-w-2xl md:rounded-lg md:shadow-lg lg:mt-0 lg:-mr-16 lg:w-3/5 lg:self-center"
 	>
 		<!-- Text Wrapper -->
-		<div class="flex flex-col p-12 md:px-16">
+		<div class="flex flex-col p-6 sm:p-10 md:px-16">
 			<h2 class="text-foreground text-center text-2xl font-medium uppercase md:text-left lg:text-3xl">
 				{title}
 			</h2>
@@ -33,9 +33,9 @@
 				<RichTextRenderer content={description} />
 			</div>
 
-			<div class="mt-8 flex items-center justify-between px-6 space-x-3">
-				<ButtonRefAnim href="/about" class="w-36" text="About Us" />
-				<ButtonRefAnim href="/network" class="w-36" text="Our Network" />
+			<div class="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+  				<ButtonRefAnim href="/about" class="w-full sm:w-36" text="About Us" />
+  				<ButtonRefAnim href="/network" class="w-full sm:w-36" text="Our Network" />
 			</div>
 		</div>
 		<!-- Close Text Wrapper -->

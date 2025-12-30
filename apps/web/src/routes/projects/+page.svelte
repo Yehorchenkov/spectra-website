@@ -14,6 +14,8 @@
 	import Pagination from '$lib/ui/components/Pagination.svelte';
 	import { page } from '$app/state';
 	import { PROJECTS_PAGINATION_LIMIT } from '$lib/config/constants.js';
+	import SEO from '$lib/SEO.svelte';
+    import { resolveSeo, getFilterContext, getPageParam } from '$lib/utils/seoFactory';
 
 	let { data } = $props();
 
@@ -35,7 +37,33 @@
 	function getResponsiblePerson(project) {
 		return project.projectParticipants?.find((p) => p.isResponsible);
 	}
+
+	const qs = $derived(page.url.searchParams);
+    const currentPageNum = $derived(getPageParam(qs));
+
+	const seo = $derived.by(() => {
+		const filterText = getFilterContext(qs, data);
+
+		return resolveSeo(data.seoSettings, {
+			url: page.url,
+			context: {
+				filters: filterText, // Used in "{{filters}}" template
+				page: currentPageNum,
+			},
+			allowParams: ['where[program.id][equals]', 'where[projectState][equals]'] // Keep filters in canonical
+		})
+	});
+
+	console.log("SEO projects:", seo);
 </script>
+
+<SEO 
+    title={seo.title}
+    description={seo.description}
+    canonical={seo.canonical}
+    noindex={seo.noindex}
+    collection={data.seoSettings?.label || 'Projects Archive'}
+/>
 
 <div class="flex w-full flex-col items-center overflow-x-hidden">
 	<h1 class="text-foreground mt-8 mb-2 text-3xl font-bold tracking-tight">Projects</h1>

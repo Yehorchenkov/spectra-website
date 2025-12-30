@@ -4,6 +4,7 @@
     import RichTextRenderer from '$lib/RichTextRenderer.svelte';
     import ProjectStateBadge from '$lib/ui/components/ProjectStateBadge.svelte';
     import SocialIcon from '$lib/ui/components/SocialIcon.svelte';
+    import SEO from '$lib/SEO.svelte';
 
     import { Button } from 'bits-ui';
 
@@ -20,7 +21,7 @@
 
     // Filter state: 'active' or 'all'
     let projectFilter = $state('active');
-    
+
     // Responsibility filter: 'responsible' or 'all'
     let responsibilityFilter = $state('all');
 
@@ -29,8 +30,8 @@
         if (!project.projectParticipants) return false;
         return project.projectParticipants.some((participant) => {
             // participantName contains the team member ID reference
-            const participantId = typeof participant.participantName === 'object' 
-                ? participant.participantName.id 
+            const participantId = typeof participant.participantName === 'object'
+                ? participant.participantName.id
                 : participant.participantName;
             return participantId === teamMember.id && participant.isResponsible;
         });
@@ -39,22 +40,28 @@
     // Sort projects by start date (newest first) and filter by state and responsibility
     const filteredProjects = $derived(() => {
         const projects = teamMember.projects?.docs ?? [];
-        
+
         let filtered = projects;
-        
+
         // Filter by project state
         if (projectFilter === 'active') {
             filtered = filtered.filter((p) => p.projectState === 'active');
         }
-        
+
         // Filter by responsibility
         if (responsibilityFilter === 'responsible') {
             filtered = filtered.filter((p) => isResponsibleForProject(p));
         }
-        
+
         return filtered.slice().sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
     });
 </script>
+
+<SEO
+    title={teamMember.meta?.title || teamMember?.name || 'Team Member'}
+    description={teamMember.meta?.description || `Profile of ${teamMember?.name || 'our team member'}`}
+    collection={teamMember.meta?.label || 'Team Members'}
+/>
 
 {#if teamMember}
     <div class="w-full max-w-screen-xl mx-auto p-4 md:p-8 font-sans">
@@ -137,9 +144,9 @@
                         </h3>
                         <div class="flex items-center gap-3 pt-2">
                             {#each teamMember.socialLinks as social}
-                                <a 
-                                    href={social.url} 
-                                    target="_blank" 
+                                <a
+                                    href={social.url}
+                                    target="_blank"
                                     rel="noreferrer"
                                     class="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-colors"
                                     aria-label={social.platform.platformName}
@@ -148,7 +155,7 @@
                                 </a>
                             {/each}
                         </div>
-                    </div>  
+                    </div>
                 {/if}
             </aside>
 
@@ -232,7 +239,7 @@
                                                     </span>
                                                 {/if}
                                             </div>
-                                            <ButtonLink 
+                                            <ButtonLink
                                                 href={`/projects/${project.slug}`}
                                             >
                                                 {project.title}

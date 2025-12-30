@@ -1,15 +1,20 @@
+import { buildSelectQuery } from '$lib/utils/apiHandler.js';
+import { buildSeoQuery } from '$lib/utils/seoFactory.js';
+
 export async function load({ fetch, url }) {
-	const teamMemberParams = new URLSearchParams(url.searchParams); // Start with existing params
 
-	const teamMemberSelectFields = ['name', 'title', 'slug', 'photo', 'order'];
+	const teamMembersParams = buildSelectQuery(['name', 'title', 'slug', 'photo', 'order'], 100);
+	const seoParams = buildSeoQuery('team-members');
 
-	teamMemberSelectFields.forEach((field) => {
-		teamMemberParams.set(`select[${field}]`, 'true');
-	});
+	const [teamMembersRes, seoRes] = await Promise.all([
+		fetch(`/api/team-members?${teamMembersParams.toString()}`),
+		fetch(`/api/seo-settings?${seoParams.toString()}`)
+	]);
 
-	const teamMemberQuery = teamMemberParams.toString();
-	const teamMembersRes = await fetch(`/api/team-members?${teamMemberQuery}`);
-	const teamMembers = await teamMembersRes.json();
+	const [teamMembers, seoData] = await Promise.all([teamMembersRes.json(), seoRes.json()]);
 
-	return { teamMembers };
+	return {
+		teamMembers,
+		seoSettings: seoData.docs?.[0] || null
+	};
 }
