@@ -8,11 +8,13 @@
 
 	let { data } = $props();
 
+	console.log("Home page data:", data.teamMembersData);
+
 </script>
 
 <SEO
-	title={data.heroData.meta.title}
-	description={data.heroData.meta.description}
+	title={data.heroData?.meta.title}
+	description={data.heroData?.meta.description}
 	collection="Home Page"
 />
 

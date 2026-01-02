@@ -13,7 +13,7 @@
 
 <SiteHeader />
 
-<div class="pt-16 md:pt-32 overflow-x-hidden">
+<div class="pt-16 md:pt-32">
 	{@render children()}
 </div>
 

@@ -1,8 +1,14 @@
 // collections/SeoSettings.ts
-import { CollectionConfig } from 'payload/types'
+import { anyone } from '@/access/anyone'
+import { isLoggedIn } from '@/access/isLoggedIn'
+import { CollectionConfig } from 'payload'
 
 export const SeoSettings: CollectionConfig = {
   slug: 'seo-settings',
+  access: {
+      read: anyone,
+      update: isLoggedIn,
+  },
   admin: {
     useAsTitle: 'label',
   },

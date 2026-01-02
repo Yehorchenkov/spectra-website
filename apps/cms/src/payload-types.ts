@@ -83,6 +83,7 @@ export interface Config {
     events: Event;
     eventTags: EventTag;
     'seo-settings': SeoSetting;
+    search: Search;
     'payload-kv': PayloadKv;
     'payload-folders': FolderInterface;
     'payload-locked-documents': PayloadLockedDocument;
@@ -117,6 +118,7 @@ export interface Config {
     events: EventsSelect<false> | EventsSelect<true>;
     eventTags: EventTagsSelect<false> | EventTagsSelect<true>;
     'seo-settings': SeoSettingsSelect<false> | SeoSettingsSelect<true>;
+    search: SearchSelect<false> | SearchSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -942,6 +944,10 @@ export interface Event {
    * Automatically calculated from dates
    */
   eventState?: ('upcoming' | 'ongoing' | 'past') | null;
+  /**
+   * A short summary of the event article. Automatically generated from content.
+   */
+  excerpt?: string | null;
   slug?: string | null;
   slugLock?: boolean | null;
   meta?: {
@@ -1006,6 +1012,36 @@ export interface SeoSetting {
      */
     image?: (number | null) | Media;
   };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search".
+ */
+export interface Search {
+  id: number;
+  title?: string | null;
+  priority?: number | null;
+  doc:
+    | {
+        relationTo: 'news';
+        value: number | News;
+      }
+    | {
+        relationTo: 'projects';
+        value: number | Project;
+      }
+    | {
+        relationTo: 'events';
+        value: number | Event;
+      }
+    | {
+        relationTo: 'team-members';
+        value: number | TeamMember;
+      };
   updatedAt: string;
   createdAt: string;
 }
@@ -1096,6 +1132,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'seo-settings';
         value: number | SeoSetting;
+      } | null)
+    | ({
+        relationTo: 'search';
+        value: number | Search;
       } | null)
     | ({
         relationTo: 'payload-folders';
@@ -1459,6 +1499,7 @@ export interface EventsSelect<T extends boolean = true> {
   title?: T;
   content?: T;
   eventState?: T;
+  excerpt?: T;
   slug?: T;
   slugLock?: T;
   meta?:
@@ -1507,6 +1548,17 @@ export interface SeoSettingsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search_select".
+ */
+export interface SearchSelect<T extends boolean = true> {
+  title?: T;
+  priority?: T;
+  doc?: T;
   updatedAt?: T;
   createdAt?: T;
 }

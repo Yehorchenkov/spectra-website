@@ -39,6 +39,9 @@
 		"src/routes/+layout.server.js"
 	],
 	"/events": [
+		"src/routes/events/+page.server.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js",
 		"src/routes/+layout.js",
 		"src/routes/+layout.server.js"
 	],

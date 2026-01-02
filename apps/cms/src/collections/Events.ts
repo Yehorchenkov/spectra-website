@@ -3,6 +3,8 @@ import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
 import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 import { requireMetaOnPublish } from '@/utils/utils'
+import type { CollectionBeforeChangeHook } from 'payload'
+import { generateExcerpt } from '@/utils/seo'
 
 // Hook to automatically calculate event state based on dates
 const calculateEventStateHook: CollectionAfterReadHook = ({ doc }) => {
@@ -23,11 +25,26 @@ const calculateEventStateHook: CollectionAfterReadHook = ({ doc }) => {
   return doc
 }
 
+const generateEventsExcerptHook: CollectionBeforeChangeHook = ({ data, req, operation }) => {
+  if (data.content && (operation === 'create' || operation === 'update')) {
+    data.excerpt = generateExcerpt(data.content, 500)
+  }
+  return data
+}
+
+const setFinishDateHook: CollectionBeforeChangeHook = ({ data, operation }) => {
+  if ((operation === 'create' || operation === 'update') && data.startDate && !data.finishDate) {
+    data.finishDate = data.startDate
+  }
+  return data
+}
+
 export const Events: CollectionConfig = {
   slug: 'events',
   hooks: {
     afterRead: [calculateEventStateHook],
     beforeValidate: [requireMetaOnPublish],
+    beforeChange: [setFinishDateHook, generateEventsExcerptHook],
   },
   access: {
     read: isLoggedInOrPublished,
@@ -82,6 +99,22 @@ export const Events: CollectionConfig = {
               admin: {
                 readOnly: true,
                 description: 'Automatically calculated from dates',
+              },
+            },
+          ],
+        },
+        {
+          label: 'Details',
+          description: 'Additional details',
+          fields: [
+            {
+              // Add the excerpt field
+              name: 'excerpt',
+              type: 'textarea',
+              admin: {
+                description:
+                  'A short summary of the event article. Automatically generated from content.',
+                readOnly: true,
               },
             },
             ...SlugField('title'),

@@ -5,13 +5,17 @@
 	let { data } = $props();
 
 	// filter and order team members
+	// let teamMembers = $derived(
+	// 	(data?.docs ?? [])
+	// 		.filter((member) => member.showOnLandingPage)
+	// 		.sort((a, b) => a.order - b.order)
+	// );
+
 	let teamMembers = $derived(
-		(data?.docs ?? [])
-			.filter((member) => member.showOnLandingPage)
-			.sort((a, b) => a.order - b.order)
+		data?.docs ?? []
 	);
 
-	// console.log('teamMembers', teamMembers);
+	console.log('teamMembers', data);
 </script>
 
 <div class="mx-auto w-full text-center">

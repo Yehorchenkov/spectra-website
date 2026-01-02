@@ -6,10 +6,14 @@
 	let { data } = $props();
 
     // filter and order team members
-	let teamMembers = $derived(
-		(data.teamMembers.docs ?? [])
-			.sort((a, b) => a.order - b.order)
-	);
+	// let teamMembers = $derived(
+	// 	(data.teamMembers.docs ?? [])
+	// 		.sort((a, b) => a.order - b.order)
+	// );
+
+    let teamMembers = $derived(
+        data.teamMembers.docs ?? []
+    );
 
 </script>
 

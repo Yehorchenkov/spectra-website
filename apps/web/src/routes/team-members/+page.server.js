@@ -4,6 +4,8 @@ import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 export async function load({ fetch, url }) {
 
 	const teamMembersParams = buildSelectQuery(['name', 'title', 'slug', 'photo', 'order'], 100);
+	teamMembersParams.set('sort', 'order');
+	
 	const seoParams = buildSeoQuery('team-members');
 
 	const [teamMembersRes, seoRes] = await Promise.all([

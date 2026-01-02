@@ -48,7 +48,7 @@
                         </ButtonLink>
                     {/if}
                     {#if footer?.contact?.location}
-                        <div class="flex items-start gap-2 text-sm text-muted-foreground">
+                        <div class="flex items-start gap-1 text-sm text-muted-foreground">
                             <MapPin class="text-lg shrink-0 mt-0.5" />
                             <span>{footer.contact.location}</span>
                         </div>
@@ -82,7 +82,7 @@
                 </p>
             {/if}
             {#if footer?.bottomLinks?.length}
-                <div class="flex items-center gap-4 text-sm">
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
                     {#each footer.bottomLinks as link, i}
                         {#if i > 0}
                             <span class="text-muted-foreground">•</span>

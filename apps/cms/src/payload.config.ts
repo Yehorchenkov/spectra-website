@@ -8,12 +8,12 @@ import { buildConfig, SharpDependency } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-// import { generateExcerpt } from './utils/generateExcerpt'
+// Utils
 import { buildTitle, generateExcerpt } from './utils/seo'
 
 // Plugins
 import { seoPlugin } from '@payloadcms/plugin-seo'
-// import { addAuthorsFields } from '@shefing/authors-info'
+import { searchPlugin } from '@payloadcms/plugin-search'
 
 // Collections
 import { Users } from './collections/Users'
@@ -115,6 +115,9 @@ export default buildConfig({
   db,
   sharp: sharp as unknown as SharpDependency,
   plugins: [
+    searchPlugin({
+      collections: ['news', 'projects', 'events', 'team-members'],
+    }),
     seoPlugin({
       tabbedUI: true,
       collections: ['pages', 'news', 'projects', 'events', 'team-members', 'seo-settings'],
