@@ -28,13 +28,18 @@
 	<div class="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-16">
 		{#each teamMembers as member}
 			<div class="text-center">
-				<Avatar photo={member.photo} class="mx-auto mb-4 h-36 w-36" />
-				<ButtonLink
+				<Avatar
+					photo={member.photo}
+					class="mx-auto mb-4 h-36 w-36"
+					href={"/team-members/" + member.slug}
+					hoverScale
+					ariaLabel={"View " + member.name}
+				/>
+				<p
 					class="text-foreground mb-1 text-xl font-bold tracking-tight"
-					href="/team-members/{member.slug}"
 				>
 					{member.name}
-				</ButtonLink>
+				</p>
 				<p class="text-muted-foreground">{member.title}</p>
 			</div>
 		{/each}

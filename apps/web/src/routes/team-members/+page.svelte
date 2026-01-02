@@ -32,13 +32,18 @@
     >
         {#each teamMembers as member (member.id)}
             <div class="text-center">
-                <Avatar photo={member.photo} class="mx-auto mb-4 h-36 w-36" />
-                <ButtonLink
+                <Avatar
+					photo={member.photo}
+					class="mx-auto mb-4 h-36 w-36"
+					href={"/team-members/" + member.slug}
+					hoverScale
+					ariaLabel={"View " + member.name}
+				/>
+                <p
                     class="text-foreground mb-1 text-xl font-bold tracking-tight"
-                    href="/team-members/{member.slug}"
                 >
                     {member.name}
-                </ButtonLink>
+                </p>
                 <p class="text-muted-foreground">{member.title}</p>
             </div>
         {/each}
