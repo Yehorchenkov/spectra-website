@@ -2,7 +2,7 @@ import type { CollectionConfig, CollectionAfterReadHook } from 'payload'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
 import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
-import { requireMetaOnPublish } from '@/utils/utils'
+import { requireMetaOnPublish, validateDateRange } from '@/utils/utils'
 import type { CollectionBeforeChangeHook } from 'payload'
 import { generateExcerpt } from '@/utils/seo'
 
@@ -82,6 +82,10 @@ export const Events: CollectionConfig = {
               required: true,
             },
             {
+              name: 'subtitle',
+              type: 'text',
+            },
+            {
               name: 'content',
               type: 'richText',
               required: true,
@@ -140,6 +144,7 @@ export const Events: CollectionConfig = {
       name: 'finishDate',
       label: 'Finish date',
       type: 'date',
+      validate: validateDateRange,
       admin: {
         position: 'sidebar',
         date: {

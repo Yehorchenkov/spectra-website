@@ -925,6 +925,7 @@ export interface Page {
 export interface Event {
   id: number;
   title: string;
+  subtitle?: string | null;
   content: {
     root: {
       type: string;
@@ -1497,6 +1498,7 @@ export interface TeamMembersSelect<T extends boolean = true> {
  */
 export interface EventsSelect<T extends boolean = true> {
   title?: T;
+  subtitle?: T;
   content?: T;
   eventState?: T;
   excerpt?: T;

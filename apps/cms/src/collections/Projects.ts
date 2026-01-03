@@ -4,7 +4,7 @@ import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
 import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 import type { CollectionBeforeChangeHook, CollectionBeforeValidateHook } from 'payload'
 import { generateExcerpt } from '@/utils/seo'
-import { validateUrl } from '@/utils/utils';
+import { validateUrl, validateDateRange } from '@/utils/utils';
 import { requireMetaOnPublish } from '@/utils/utils'
 import { ValidationError } from 'payload'
 
@@ -92,7 +92,7 @@ export const Projects: CollectionConfig = {
     projectState: true,
     startDate: true,
   },
-  defaultSort: ['-publishDate', 'title'],
+  defaultSort: ['-startDate', 'title'],
   versions: {
     drafts: true,
   },
@@ -247,6 +247,7 @@ export const Projects: CollectionConfig = {
       name: 'finishDate',
       label: 'Planned or Actual Finish date',
       type: 'date',
+      validate: validateDateRange,
       admin: {
         position: 'sidebar',
         date: {

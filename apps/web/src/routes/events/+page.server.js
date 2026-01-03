@@ -5,7 +5,7 @@ import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 export async function load({ fetch, url }) {
     const page = url.searchParams.get('page') || '1';
 
-    const eventsSelectFields = ['title', 'slug', 'excerpt', 'tags', 'projects', 'eventState', 'startDate', 'finishDate'];
+    const eventsSelectFields = ['title', 'subtitle', 'slug', 'excerpt', 'tags', 'projects', 'eventState', 'startDate', 'finishDate'];
 
     const eventsParams = buildQuery({
         baseParams: url.searchParams,

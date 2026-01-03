@@ -7,4 +7,4 @@ export const PROJECTS_PAGINATION_LIMIT = 10;
 export const PROJECTS_DEFAULT_FIELDS = ['title', 'acronym', 'slug', 'excerpt', 'projectLogo', 'program', 'startDate', 'finishDate', 'publishDate', 'projectParticipants', 'projectState'];
 
 export const EVENTS_PAGINATION_LIMIT = 10;
-export const EVENTS_DEFAULT_FIELDS = ['title', 'slug', 'excerpt', 'tags', 'projects', 'eventState', 'startDate', 'finishDate'];
+export const EVENTS_DEFAULT_FIELDS = ['title', 'subtitle', 'slug', 'excerpt', 'tags', 'projects', 'eventState', 'startDate', 'finishDate'];

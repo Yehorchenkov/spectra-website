@@ -1,4 +1,4 @@
-import { fetchResource } from '$lib/utils/apiHandler.js';
+import { fetchResource, buildQuery } from '$lib/utils/apiHandler.js';
 import { EVENTS_PAGINATION_LIMIT, EVENTS_DEFAULT_FIELDS } from '$lib/config/constants.js';
 
 export async function GET({ fetch, url }) {
@@ -9,7 +9,7 @@ export async function GET({ fetch, url }) {
     const params = buildQuery({
         baseParams: url.searchParams,
         // Only apply defaults if the incoming request is missing these keys
-        sort: url.searchParams.has('sort') ? undefined : '-publishDate',
+        sort: url.searchParams.has('sort') ? undefined : '-startDate',
         limit: url.searchParams.has('limit') ? undefined : EVENTS_PAGINATION_LIMIT,
         select: hasFields ? [] : EVENTS_DEFAULT_FIELDS
     });

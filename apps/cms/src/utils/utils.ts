@@ -1,4 +1,4 @@
-import { CollectionBeforeValidateHook, ValidationError } from 'payload'
+import { CollectionBeforeValidateHook, ValidationError, Validate } from 'payload'
 
 export const requireMetaOnPublish: CollectionBeforeValidateHook = ({ data, operation }) => {
   if (!data) return data
@@ -49,4 +49,24 @@ export function validateUrl(value: unknown): true | string {
     return urlRegex.test(value as string)
         ? true
         : 'Please enter a valid URL starting with http:// or https://';
+}
+
+export const validateDateRange: Validate = (value, { siblingData, data }) => {
+  // Check if we are in a 'published' state
+  // Note: data._status is used when versions/drafts are enabled
+  if (data?._status === 'published') {
+    const startDateValue = siblingData?.startDate
+    const finishDateValue = value
+
+    if (startDateValue && finishDateValue) {
+      const start = new Date(startDateValue)
+      const finish = new Date(finishDateValue)
+
+      if (start > finish) {
+        return 'The finish date cannot be earlier than the start date.'
+      }
+    }
+  }
+
+  return true
 }

@@ -11,18 +11,16 @@
     import ProjectBadge from '$lib/ui/components/ProjectBadge.svelte';
     import FilterSortBar from '$lib/ui/components/FilterSortBar.svelte';
     import Pagination from '$lib/ui/components/Pagination.svelte';
-    import { NEWS_PLACEHOLDER } from '$lib/config/constants.js';
-    import { NEWS_PAGINATION_LIMIT } from '$lib/config/constants.js';
+    import { EVENTS_PAGINATION_LIMIT } from '$lib/config/constants.js';
     import { page } from '$app/state';
     import SEO from '$lib/SEO.svelte';
+    import DateBadge from '$lib/ui/components/DateBadge.svelte';
     import { resolveSeo, getFilterContext, getPageParam } from '$lib/utils/seoFactory';
 
     let { data } = $props();
 
-    console.log('Events page data:', data);
-
     const totalEvents = $derived(data.events?.totalDocs ?? 0);
-    const perPage = $derived(data.events?.limit ?? NEWS_PAGINATION_LIMIT);
+    const perPage = $derived(data.events?.limit ?? EVENTS_PAGINATION_LIMIT);
     const paginatedDocs = $derived(data.events?.docs ?? []);
 
     // console.log('paginatedDocs:', paginatedDocs);
@@ -50,27 +48,30 @@
     });
 </script>
 
-<!-- <SEO 
+<SEO 
     title={seo.title}
     description={seo.description}
     canonical={seo.canonical}
     noindex={seo.noindex}
     collection={data.seoSettings?.label || 'Events Archive'}
-/> -->
+/>
 
 <div class="flex w-full flex-col items-center overflow-x-hidden">
-    <h1 class="text-foreground mt-8 mb-2 text-3xl font-bold tracking-tight">Events</h1>
-    <p class="text-foreground mb-8 text-2xl">Events we are organizing and participating in</p>
+    <!-- centered title/subtitle wrapper -->
+    <div class="w-full max-w-screen-xl px-4 lg:px-2 text-center">
+        <h1 class="text-foreground mt-8 mb-2 text-3xl font-bold tracking-tight">Events</h1>
+        <p class="text-foreground mb-8 text-2xl">Events we are organizing and participating in</p>
+    </div>
 
     <!-- Filter and Sort Controls -->
-	<!-- <FilterSortBar
-		count={totalEvents}
-		countLabel="event"
-		resetParams={[
-			'where[projects][equals]',
-			'where[projects][exists]',
-			'sort',
-			]}
+    <FilterSortBar
+        count={totalEvents}
+        countLabel="event"
+        resetParams={[
+            'where[projects][equals]',
+            'where[projects][exists]',
+            'sort',
+            ]}
 	>
 
 		{#snippet filters()}
@@ -117,31 +118,24 @@
                 <div
                     class="text-foreground flex w-full flex-col items-stretch gap-4 md:flex-row md:items-center md:justify-items-start md:gap-0"
                 >
-                    <div
-                        class="flex shrink-0 items-center justify-center rounded-lg bg-transparent md:mr-8 md:h-48 md:w-48"
-                    >
-                        {#if item.image?.url}
-                            <img
-                                src={item.image.url}
-                                alt={item.title}
-                                class="size-32 rounded-lg object-cover md:size-40 shadow-sm"
-                            />
-                        {:else}
-                            <img
-                                src={NEWS_PLACEHOLDER}
-                                alt="Event placeholder"
-                                class="size-32 rounded-lg object-cover md:size-40 shadow-sm"
-                            />
-                        {/if}
+                    <div class="flex flex-col items-center justify-center pt-1 shrink-0 w-full md:w-32 text-center">
+                        <DateBadge startDate={item.startDate} />
                     </div>
                     <div class="flex w-full flex-col justify-between p-2 leading-normal md:p-4">
-                        <ButtonLink
-                            class="mb-2 text-left text-xl font-bold tracking-tight"
-                            href={`/news/${item.slug}${page.url.search}`}
-                        >
-                            {item.title}
-                        </ButtonLink>
+                        <div class="mb-2">
+                            <ButtonLink
+                                class="text-left text-xl font-bold tracking-tight"
+                                href={`/events/${item.slug}${page.url.search}`}
+                            >
+                                {item.title}
+                            </ButtonLink>
 
+                            {#if item.subtitle}
+                                <p class="text-muted-foreground mb-3 text-lg font-medium">
+                                    {item.subtitle}
+                                </p>
+                            {/if}
+                        </div>
                         <div class="mb-2 flex flex-wrap items-center gap-x-8 gap-y-2">
                             {#if item.startDate}
                                 <div class="flex items-center gap-2">
@@ -152,6 +146,14 @@
                                             month: 'long',
                                             year: 'numeric'
                                         })}
+                                        {#if item.finishDate && new Date(item.finishDate).toDateString() !== new Date(item.startDate).toDateString()}
+                                            {' - '}
+                                            {new Date(item.finishDate).toLocaleDateString('en-GB', {
+                                                day: 'numeric',
+                                                month: 'long',
+                                                year: 'numeric'
+                                            })}
+                                        {/if}
                                     </time>
                                 </div>
                             {/if}
@@ -201,5 +203,5 @@
                 />
             {/if}
         {/if}
-    </div> -->
+    </div>
 </div>
