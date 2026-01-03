@@ -8,8 +8,6 @@
 
 	let { data } = $props();
 
-	console.log("Home page data:", data.teamMembersData);
-
 </script>
 
 <SEO

@@ -10,7 +10,7 @@ import { API_BASE } from '$lib/config/backendApi.js';
  * @returns {Promise<Response>} JSON response
  */
 export async function fetchResource(resource, fetch, url, options = {}) {
-	const fullUrl = `${API_BASE}/${resource}${url.search}`;
+	const fullUrl = `${API_BASE}/${resource}${url.search}/`;
 	// console.log(`Fetching ${resource} from:`, url.search);
 
 	try {
@@ -70,4 +70,24 @@ export function buildQuery({ baseParams = null, page, limit, select = [], sort, 
  */
 export function buildSelectQuery(fields = [], limit = 100) {
 	return buildQuery({ select: fields, limit });
+}
+
+/**
+ * Safely fetches data from an endpoint. 
+ * Returns null instead of throwing an error if the request fails.
+ */
+export async function safeFetch(fetchRef, url, options = {}) {
+    try {
+        const res = await fetchRef(url, options);
+        
+        if (!res.ok) {
+            console.error(`[API Error] ${url} returned ${res.status}`);
+            return null;
+        }
+
+        return await res.json();
+    } catch (error) {
+        console.error(`[Fetch Exception] ${url}:`, error.message);
+        return null;
+    }
 }

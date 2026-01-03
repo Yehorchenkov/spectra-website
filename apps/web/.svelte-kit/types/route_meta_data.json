@@ -13,6 +13,9 @@
 	"/api/coordinators": [
 		"src/routes/api/coordinators/+server.js"
 	],
+	"/api/events": [
+		"src/routes/api/events/+server.js"
+	],
 	"/api/news": [
 		"src/routes/api/news/+server.js"
 	],

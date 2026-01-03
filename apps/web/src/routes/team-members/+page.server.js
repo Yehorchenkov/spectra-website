@@ -1,4 +1,4 @@
-import { buildSelectQuery } from '$lib/utils/apiHandler.js';
+import { safeFetch, buildSelectQuery } from '$lib/utils/apiHandler.js';
 import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 
 export async function load({ fetch, url }) {
@@ -8,12 +8,10 @@ export async function load({ fetch, url }) {
 	
 	const seoParams = buildSeoQuery('team-members');
 
-	const [teamMembersRes, seoRes] = await Promise.all([
-		fetch(`/api/team-members?${teamMembersParams.toString()}`),
-		fetch(`/api/seo-settings?${seoParams.toString()}`)
+	const [teamMembers, seoData] = await Promise.all([
+		safeFetch(fetch, `/api/team-members?${teamMembersParams.toString()}`),
+		safeFetch(fetch, `/api/seo-settings?${seoParams.toString()}`)
 	]);
-
-	const [teamMembers, seoData] = await Promise.all([teamMembersRes.json(), seoRes.json()]);
 
 	return {
 		teamMembers,

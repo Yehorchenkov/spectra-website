@@ -19,6 +19,8 @@
 
     let { data } = $props();
 
+    console.log('Events page data:', data);
+
     const totalEvents = $derived(data.events?.totalDocs ?? 0);
     const perPage = $derived(data.events?.limit ?? NEWS_PAGINATION_LIMIT);
     const paginatedDocs = $derived(data.events?.docs ?? []);
@@ -48,20 +50,20 @@
     });
 </script>
 
-<SEO 
+<!-- <SEO 
     title={seo.title}
     description={seo.description}
     canonical={seo.canonical}
     noindex={seo.noindex}
-    collection={data.seoSettings?.label || 'News Archive'}
-/>
+    collection={data.seoSettings?.label || 'Events Archive'}
+/> -->
 
 <div class="flex w-full flex-col items-center overflow-x-hidden">
     <h1 class="text-foreground mt-8 mb-2 text-3xl font-bold tracking-tight">Events</h1>
     <p class="text-foreground mb-8 text-2xl">Events we are organizing and participating in</p>
 
     <!-- Filter and Sort Controls -->
-	<FilterSortBar
+	<!-- <FilterSortBar
 		count={totalEvents}
 		countLabel="event"
 		resetParams={[
@@ -185,7 +187,6 @@
                     </div>
                 </div>
                 {#if index < totalEvents - 1}
-                    <!-- Beautiful divider -->
                     <div class="flex w-full justify-center">
                         <div class="bg-primary my-4 h-0.5 w-3/4 rounded-full md:w-2/3"></div>
                     </div>
@@ -199,10 +200,6 @@
                     itemLabelPlural="events"
                 />
             {/if}
-        <!-- {:else}
-            <div class="py-20 text-center">
-                <p class="text-muted-foreground">No news found.</p>
-            </div> -->
         {/if}
-    </div>
+    </div> -->
 </div>

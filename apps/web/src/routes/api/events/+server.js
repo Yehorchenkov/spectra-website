@@ -1,5 +1,5 @@
-import { fetchResource, buildQuery } from '$lib/utils/apiHandler.js';
-import { NEWS_PAGINATION_LIMIT, NEWS_DEFAULT_FIELDS } from '$lib/config/constants.js';
+import { fetchResource } from '$lib/utils/apiHandler.js';
+import { EVENTS_PAGINATION_LIMIT, EVENTS_DEFAULT_FIELDS } from '$lib/config/constants.js';
 
 export async function GET({ fetch, url }) {
     // Check if the incoming request already has field selections
@@ -10,13 +10,13 @@ export async function GET({ fetch, url }) {
         baseParams: url.searchParams,
         // Only apply defaults if the incoming request is missing these keys
         sort: url.searchParams.has('sort') ? undefined : '-publishDate',
-        limit: url.searchParams.has('limit') ? undefined : NEWS_PAGINATION_LIMIT,
-        select: hasFields ? [] : NEWS_DEFAULT_FIELDS
+        limit: url.searchParams.has('limit') ? undefined : EVENTS_PAGINATION_LIMIT,
+        select: hasFields ? [] : EVENTS_DEFAULT_FIELDS
     });
 
     // CLONE the URL to make it mutable
     const modifiedUrl = new URL(url);
     modifiedUrl.search = params.toString();
 
-    return fetchResource('news', fetch, modifiedUrl);
+    return fetchResource('events', fetch, modifiedUrl);
 }
