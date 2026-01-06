@@ -1,22 +1,10 @@
-import { API_BASE } from '$lib/config/backendApi.js';
+import { safeFetch } from '$lib/utils/apiHandler.js';
 
-export async function load({ fetch }) {
-    try {
-        const resFooter = await fetch(`${API_BASE}/globals/footer`);
+export async function load() {
+    // safeFetch automatically handles API_BASE and returns null on error
+    const footerData = await safeFetch('globals/footer');
 
-        if (!resFooter.ok) {
-            throw new Error(`HTTP error! status: ${resFooter.status}`);
-        }
-
-        const footerData = await resFooter.json();
-
-        return {
-            footerData
-        };
-    } catch (error) {
-        console.error('Failed to load footer data:', error);
-        return {
-            footerData: null
-        };
-    }
+    return {
+        footerData
+    };
 }

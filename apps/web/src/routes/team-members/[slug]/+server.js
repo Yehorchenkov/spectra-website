@@ -1,6 +1,7 @@
-import { fetchResource, buildQuery } from '$lib/utils/apiHandler.js';
+import { json } from '@sveltejs/kit';
+import { safeFetch, buildQuery } from '$lib/utils/apiHandler.js';
 
-export async function GET({ params, fetch, url }) {
+export async function GET({ params, url }) {
     const { slug } = params;
 
     const queryParams = buildQuery({
@@ -10,10 +11,11 @@ export async function GET({ params, fetch, url }) {
         }
     });
 
-    // We create a dummy base because fetchResource handles the API_BASE
-    const modifiedUrl = new URL(url); 
-    modifiedUrl.search = queryParams.toString();
+    const data = await safeFetch('team-members', queryParams);
 
-    // This handles errors, JSON parsing, and the trailing slash fix automatically
-    return fetchResource('team-members', fetch, modifiedUrl);
+    if (!data) {
+        return json({ error: 'Team member not found' }, { status: 404 });
+    }
+
+    return json(data);
 }

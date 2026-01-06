@@ -1,20 +1,23 @@
-import { safeFetch, buildSelectQuery } from '$lib/utils/apiHandler.js';
+import { safeFetch, buildQuery } from '$lib/utils/apiHandler.js';
 import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 
-export async function load({ fetch, url }) {
+export async function load() {
+    // We use buildQuery instead of buildSelectQuery so we can pass 'sort' directly
+    const teamMembersParams = buildQuery({
+        select: ['name', 'title', 'slug', 'photo', 'order'],
+        limit: 100,
+        sort: 'order'
+    });
 
-	const teamMembersParams = buildSelectQuery(['name', 'title', 'slug', 'photo', 'order'], 100);
-	teamMembersParams.set('sort', 'order');
-	
-	const seoParams = buildSeoQuery('team-members');
+    const seoParams = buildSeoQuery('team-members');
 
-	const [teamMembers, seoData] = await Promise.all([
-		safeFetch(fetch, `/api/team-members?${teamMembersParams.toString()}`),
-		safeFetch(fetch, `/api/seo-settings?${seoParams.toString()}`)
-	]);
+    const [teamMembers, seoData] = await Promise.all([
+        safeFetch('team-members', teamMembersParams),
+        safeFetch('seo-settings', seoParams)
+    ]);
 
-	return {
-		teamMembers,
-		seoSettings: seoData.docs?.[0] || null
-	};
+    return {
+        teamMembers,
+        seoSettings: seoData?.docs?.[0] || null
+    };
 }

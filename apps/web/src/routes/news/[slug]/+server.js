@@ -1,19 +1,21 @@
-import { fetchResource, buildQuery } from '$lib/utils/apiHandler.js';
+import { json } from '@sveltejs/kit';
+import { safeFetch, buildQuery } from '$lib/utils/apiHandler.js';
 
-export async function GET({ params, fetch, url }) {
+export async function GET({ params, url }) {
     const { slug } = params;
 
     const queryParams = buildQuery({
-        baseParams: url.searchParams, // Pass existing params if you want to allow ?limit=5 etc.
+        baseParams: url.searchParams, // Preserves external params like ?draft=true
         where: {
             slug: { equals: slug }
         }
     });
 
-    // We create a dummy base because fetchResource handles the API_BASE
-    const modifiedUrl = new URL(url); 
-    modifiedUrl.search = queryParams.toString();
+    const data = await safeFetch('news', queryParams);
 
-    // This handles errors, JSON parsing, and the trailing slash fix automatically
-    return fetchResource('news', fetch, modifiedUrl);
+    if (!data) {
+        return json({ error: 'News item not found' }, { status: 404 });
+    }
+
+    return json(data);
 }

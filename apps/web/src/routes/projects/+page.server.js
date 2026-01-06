@@ -2,9 +2,7 @@ import { PROJECTS_PAGINATION_LIMIT, PROJECTS_SEO_SLUG } from '$lib/config/consta
 import { safeFetch, buildQuery, buildSelectQuery } from '$lib/utils/apiHandler.js';
 import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 
-export async function load({ fetch, url }) {
-	const page = url.searchParams.get('page') || '1';
-
+export async function load({ url }) {
 	const projectSelectFields = [
 		'title',
 		'acronym',
@@ -21,8 +19,8 @@ export async function load({ fetch, url }) {
 
 	const projectParams = buildQuery({
 		baseParams: url.searchParams,
-		page,
-		select: projectSelectFields
+		select: projectSelectFields,
+		limit: PROJECTS_PAGINATION_LIMIT || 10
 	});
 
 	const programParams = buildSelectQuery(['title', 'id'], 100);
@@ -30,9 +28,9 @@ export async function load({ fetch, url }) {
 	const seoParams = buildSeoQuery(PROJECTS_SEO_SLUG);
 
 	const [projects, programs, seoData] = await Promise.all([
-		safeFetch(fetch, `/api/projects?${projectParams.toString()}`),
-		safeFetch(fetch, `/api/programs?${programParams.toString()}`),
-		safeFetch(fetch, `/api/seo-settings?${seoParams.toString()}`)
+		safeFetch('projects', projectParams),
+		safeFetch('programs', programParams),
+		safeFetch('seo-settings', seoParams)
 	]);
 
 	return {

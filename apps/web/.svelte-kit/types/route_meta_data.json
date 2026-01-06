@@ -10,33 +10,6 @@
 		"src/routes/+layout.js",
 		"src/routes/+layout.server.js"
 	],
-	"/api/coordinators": [
-		"src/routes/api/coordinators/+server.js"
-	],
-	"/api/events": [
-		"src/routes/api/events/+server.js"
-	],
-	"/api/news": [
-		"src/routes/api/news/+server.js"
-	],
-	"/api/og": [
-		"src/routes/api/og/+server.js"
-	],
-	"/api/partners": [
-		"src/routes/api/partners/+server.js"
-	],
-	"/api/programs": [
-		"src/routes/api/programs/+server.js"
-	],
-	"/api/projects": [
-		"src/routes/api/projects/+server.js"
-	],
-	"/api/seo-settings": [
-		"src/routes/api/seo-settings/+server.js"
-	],
-	"/api/team-members": [
-		"src/routes/api/team-members/+server.js"
-	],
 	"/blog": [
 		"src/routes/+layout.js",
 		"src/routes/+layout.server.js"

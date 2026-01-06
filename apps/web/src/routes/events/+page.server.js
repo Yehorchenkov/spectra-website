@@ -2,15 +2,14 @@ import { EVENTS_PAGINATION_LIMIT, EVENTS_SEO_SLUG } from '$lib/config/constants.
 import { safeFetch, buildQuery, buildSelectQuery } from '$lib/utils/apiHandler.js';
 import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 
-export async function load({ fetch, url }) {
-    const page = url.searchParams.get('page') || '1';
+export async function load({ url }) {
 
     const eventsSelectFields = ['title', 'subtitle', 'slug', 'excerpt', 'tags', 'projects', 'eventState', 'startDate', 'finishDate'];
 
     const eventsParams = buildQuery({
         baseParams: url.searchParams,
-        page,
-        select: eventsSelectFields
+        select: ['title', 'subtitle', 'slug', 'excerpt', 'tags', 'projects', 'eventState', 'startDate', 'finishDate'],
+        limit: EVENTS_PAGINATION_LIMIT || 10
     });
 
     const projectParams = buildSelectQuery(['acronym', 'id'], 100);
@@ -18,9 +17,9 @@ export async function load({ fetch, url }) {
     const seoParams = buildSeoQuery(EVENTS_SEO_SLUG);
 
     const [events, projects, seoData] = await Promise.all([
-        safeFetch(fetch, `/api/events?${eventsParams.toString()}`),
-        safeFetch(fetch, `/api/projects?${projectParams.toString()}`),
-        safeFetch(fetch, `/api/seo-settings?${seoParams.toString()}`)
+        safeFetch('/events', eventsParams),
+        safeFetch('projects', projectParams),
+        safeFetch('seo-settings', seoParams)
     ]);
 
     return {

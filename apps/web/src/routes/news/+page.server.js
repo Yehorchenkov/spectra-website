@@ -2,15 +2,12 @@ import { NEWS_PAGINATION_LIMIT, NEWS_SEO_SLUG } from '$lib/config/constants.js';
 import { safeFetch, buildQuery, buildSelectQuery } from '$lib/utils/apiHandler.js';
 import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 
-export async function load({ fetch, url }) {
-	const page = url.searchParams.get('page') || '1';
-
-	const newsSelectFields = ['title', 'slug', 'excerpt', 'publishDate', 'image', 'tags', 'projects'];
+export async function load({ url }) {
 
 	const newsParams = buildQuery({
 		baseParams: url.searchParams,
-		page,
-		select: newsSelectFields
+		limit: NEWS_PAGINATION_LIMIT || 10,
+		select: ['title', 'slug', 'excerpt', 'publishDate', 'image', 'tags', 'projects']
 	});
 
 	const projectParams = buildSelectQuery(['acronym', 'id'], 100);
@@ -18,9 +15,9 @@ export async function load({ fetch, url }) {
 	const seoParams = buildSeoQuery(NEWS_SEO_SLUG);
 
 	const [news, projects, seoData] = await Promise.all([
-		safeFetch(fetch, `/api/news?${newsParams.toString()}`),
-		safeFetch(fetch, `/api/projects?${projectParams.toString()}`),
-		safeFetch(fetch, `/api/seo-settings?${seoParams.toString()}`)
+		safeFetch('news', newsParams),
+		safeFetch('projects', projectParams),
+		safeFetch('seo-settings', seoParams)
 	]);
 
 	return {

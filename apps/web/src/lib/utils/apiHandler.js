@@ -1,94 +1,73 @@
-import { json } from '@sveltejs/kit';
+// import { json } from '@sveltejs/kit';
+import { ofetch } from 'ofetch';
+import qs from 'qs';
 import { API_BASE } from '$lib/config/backendApi.js';
 
 /**
- * Generic API fetch handler for GET requests
- * @param {string} resource - API resource path (e.g., 'projects', 'programs')
- * @param {Function} fetch - Fetch function from SvelteKit
- * @param {URL} url - URL object from the request
- * @param {Object} options - Additional options (headers, etc.)
- * @returns {Promise<Response>} JSON response
+ * Create a pre-configured fetch instance.
+ * - Base URL set automatically
+ * - Retries failed requests 1 time by default
+ * - Throws automatically on 4xx/5xx errors
  */
-export async function fetchResource(resource, fetch, url, options = {}) {
-	const fullUrl = `${API_BASE}/${resource}${url.search}`;
-	// console.log(`Fetching ${resource} from:`, url.search);
-
-	try {
-		const response = await fetch(fullUrl, {
-			headers: {
-				'Content-Type': 'application/json',
-				...options.headers
-			}
-		});
-
-		if (!response.ok) {
-			throw new Error(`Error fetching ${resource}: ${response.status}`);
-		}
-
-		const data = await response.json();
-		return json(data);
-	} catch (err) {
-		console.error(`Failed to fetch ${resource}:`, err);
-		return json({ error: `Failed to fetch ${resource}`, message: err.message }, { status: 500 });
+const api = ofetch.create({
+	baseURL: API_BASE,
+	retry: 1,
+	headers: {
+		'Content-Type': 'application/json'
+	},
+    // Optional: Global error logger
+	async onResponseError({ request, response, options }) {
+		console.error(`[API Error] ${request}`, response.status, response.statusText);
 	}
-}
+});
 
 /**
- * Generic helper to convert an object into URLSearchParams.
- * It can merge with existing params or start fresh.
+ * Helper to build complex query strings using 'qs'.
+ * Handles nested 'where' filters and 'select' arrays automatically.
  */
-
 export function buildQuery({ baseParams = null, page, limit, select = [], sort, where = {} } = {}) {
-	// Start with existing params (like filters) or a fresh object
-	const params = baseParams ? new URLSearchParams(baseParams) : new URLSearchParams();
+    // 1. Parse baseParams using qs to ensure nested keys (like filters) are objects, not flat strings.
+    // baseParams can be URLSearchParams or a string
+    let baseObj = {};
+    if (baseParams) {
+        const paramString = baseParams.toString();
+        // ignoreQueryPrefix handles the leading '?' if present
+        baseObj = qs.parse(paramString, { ignoreQueryPrefix: true });
+    }
 
-	// Set Pagination
-	if (page) params.set('page', String(page));
-	if (limit) params.set('limit', String(limit));
-    if (sort) params.set('sort', sort);
+    // 2. Prepare Select fields
+    const selectObj = {};
+    if (Array.isArray(select)) {
+        select.forEach(field => selectObj[field] = 'true');
+    }
 
-	// Set Field Selection (Handles the select[field]=true logic)
-	if (Array.isArray(select)) {
-		for (const field of select) {
-			params.set(`select[${field}]`, 'true');
-		}
-	}
+    // 3. Merge params. 
+    // Explicit arguments (page, limit, sort) override baseParams.
+    const queryObj = {
+        ...baseObj,
+        ...(page && { page }),
+        ...(limit && { limit }),
+        ...(sort && { sort }),
+        // Merge select: combine base URL selects with code-defined selects if needed, 
+        // or simply overwrite. Here we overwrite to ensure consistency.
+        ...(Object.keys(selectObj).length > 0 && { select: selectObj }),
+        // Merge where: Deep merge is safer, but usually we just want to add new filters
+        where: {
+            ...(baseObj.where || {}),
+            ...where
+        }
+    };
 
-    // Set Where Filters
-    // for (const [key, value] of Object.entries(where)) {
-    //     if (value !== undefined && value !== null) {
-    //         params.set(key, String(value));
-    //     }
-    // }
-	
-	// Handle Where Filters (Recursive)
-	Object.entries(where).forEach(([key, value]) => {
-		// If the user passes a simple key (like 'id'), we wrap it in where[key]
-		// If the value is an object (like { equals: 'foo' }), we recurse.
-		serializeNestedParam(params, `where[${key}]`, value);
-	});
-
-	return params;
+    return qs.stringify(queryObj, { 
+        encode: true, 
+        skipNulls: true,
+        arrayFormat: 'brackets' 
+    });
 }
 
-/**
- * Helper: Recursively flattens nested objects into URL params
- * Input: prefix="where[slug]", value={ equals: "abc" }
- * Output: params.set("where[slug][equals]", "abc")
- */
-function serializeNestedParam(params, prefix, value) {
-	if (value && typeof value === 'object' && !Array.isArray(value)) {
-		Object.entries(value).forEach(([subKey, subValue]) => {
-			serializeNestedParam(params, `${prefix}[${subKey}]`, subValue);
-		});
-	} else if (value !== undefined && value !== null) {
-		params.set(prefix, String(value));
-	}
-}
 
 /**
- * Specialized helper for fetching lists with specific field selections.
- * Useful for dropdowns, badges, and filters.
+ * Helper for selection only (dropdowns, etc)
  */
 export function buildSelectQuery(fields = [], limit = 100) {
 	return buildQuery({ select: fields, limit });
@@ -98,18 +77,12 @@ export function buildSelectQuery(fields = [], limit = 100) {
  * Safely fetches data from an endpoint. 
  * Returns null instead of throwing an error if the request fails.
  */
-export async function safeFetch(fetchRef, url, options = {}) {
-    try {
-        const res = await fetchRef(url, options);
-        
-        if (!res.ok) {
-            console.error(`[API Error] ${url} returned ${res.status}`);
-            return null;
-        }
-
-        return await res.json();
-    } catch (error) {
-        console.error(`[Fetch Exception] ${url}:`, error.message);
-        return null;
-    }
+export async function safeFetch(endpoint, queryParams = '') {
+	try {
+        // api() automatically handles the base URL
+		return await api(endpoint + (queryParams ? `?${queryParams}` : ''));
+	} catch (err) {
+        // Error is already logged by onResponseError above
+		return null;
+	}
 }
