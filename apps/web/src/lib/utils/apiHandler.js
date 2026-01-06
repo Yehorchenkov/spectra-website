@@ -10,7 +10,7 @@ import { API_BASE } from '$lib/config/backendApi.js';
  * @returns {Promise<Response>} JSON response
  */
 export async function fetchResource(resource, fetch, url, options = {}) {
-	const fullUrl = `${API_BASE}/${resource}${url.search}/`;
+	const fullUrl = `${API_BASE}/${resource}${url.search}`;
 	// console.log(`Fetching ${resource} from:`, url.search);
 
 	try {
@@ -55,13 +55,35 @@ export function buildQuery({ baseParams = null, page, limit, select = [], sort, 
 	}
 
     // Set Where Filters
-    for (const [key, value] of Object.entries(where)) {
-        if (value !== undefined && value !== null) {
-            params.set(key, String(value));
-        }
-    }
+    // for (const [key, value] of Object.entries(where)) {
+    //     if (value !== undefined && value !== null) {
+    //         params.set(key, String(value));
+    //     }
+    // }
+	
+	// Handle Where Filters (Recursive)
+	Object.entries(where).forEach(([key, value]) => {
+		// If the user passes a simple key (like 'id'), we wrap it in where[key]
+		// If the value is an object (like { equals: 'foo' }), we recurse.
+		serializeNestedParam(params, `where[${key}]`, value);
+	});
 
 	return params;
+}
+
+/**
+ * Helper: Recursively flattens nested objects into URL params
+ * Input: prefix="where[slug]", value={ equals: "abc" }
+ * Output: params.set("where[slug][equals]", "abc")
+ */
+function serializeNestedParam(params, prefix, value) {
+	if (value && typeof value === 'object' && !Array.isArray(value)) {
+		Object.entries(value).forEach(([subKey, subValue]) => {
+			serializeNestedParam(params, `${prefix}[${subKey}]`, subValue);
+		});
+	} else if (value !== undefined && value !== null) {
+		params.set(prefix, String(value));
+	}
 }
 
 /**

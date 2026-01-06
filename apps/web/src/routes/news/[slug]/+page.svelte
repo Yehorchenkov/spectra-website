@@ -7,6 +7,7 @@
 	import ProjectBadge from '$lib/ui/components/ProjectBadge.svelte';
 	import RichTextRenderer from '$lib/RichTextRenderer.svelte';
     import { NEWS_PLACEHOLDER } from '$lib/config/constants.js';
+	import { formatDateLong } from '$lib/utils/dateHelpers.js';
 	import SEO from '$lib/seo.svelte';
 
 	let { data } = $props();
@@ -19,7 +20,7 @@
 	const headerImageAlt = $derived(newsItem?.image?.alt ?? newsItem?.title ?? 'News');
 
 	const publishDateLabel = $derived(
-		newsItem?.publishDate ? new Date(newsItem.publishDate).toLocaleDateString() : null
+		newsItem?.publishDate ? formatDateLong(newsItem.publishDate) : null
 	);
 </script>
 

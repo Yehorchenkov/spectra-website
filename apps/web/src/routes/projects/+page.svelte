@@ -16,8 +16,11 @@
 	import { PROJECTS_PAGINATION_LIMIT } from '$lib/config/constants.js';
 	import SEO from '$lib/SEO.svelte';
     import { resolveSeo, getFilterContext, getPageParam } from '$lib/utils/seoFactory';
+	import { formatDateRange } from '$lib/utils/dateHelpers.js';
 
 	let { data } = $props();
+
+	console.log("Projects seo settings:", data.seoSettings);
 
 	const totalProjects = $derived(data.projects?.totalDocs ?? 0);
     const perPage = $derived(data.projects?.limit ?? PROJECTS_PAGINATION_LIMIT);
@@ -145,13 +148,23 @@
                         </ButtonLink>
                         <div class="mb-2 flex flex-wrap items-center gap-2 text-left text-2xl font-bold text-primary">
                             {project.acronym}
+                        </div>
+                        <div class="mb-2 flex flex-wrap items-center gap-x-8 gap-y-2">
                             {#if project.projectState}
                                 <ProjectStateBadge state={project.projectState} />
                             {/if}
-                        </div>
-                        <div class="mb-2 flex flex-wrap items-center gap-x-8 gap-y-2">
-                            <div class="flex items-center gap-2">
-                                <Coins class="text-muted-foreground size-5 flex-shrink-0" />
+
+							{#if project.startDate}
+                                <div class="flex items-center gap-2">
+                                    <CalendarDots class="text-muted-foreground size-5 shrink-0" />
+                                    <time datetime={project.startDate} class="text-muted-foreground text-left text-base">
+										{formatDateRange(project.startDate, project.finishDate)}
+                                    </time>
+                                </div>
+                            {/if}
+
+							<div class="flex items-center gap-2">
+                                <Coins class="text-muted-foreground size-5 shrink-0" />
                                 <p class="text-muted-foreground text-left text-base">
                                     {project.program.title}
                                 </p>
@@ -174,19 +187,6 @@
                                             {responsiblePerson.participantName?.name || 'Unknown'}
                                         </p>
                                     {/if}
-                                </div>
-                            {/if}
-
-                            {#if project.startDate || project.finishDate}
-                                <div class="flex items-center gap-2">
-                                    <CalendarDots class="text-muted-foreground size-5 flex-shrink-0" />
-                                    <p class="text-muted-foreground text-left text-base">
-                                        {project.startDate ? new Date(project.startDate).toLocaleDateString() : '?'}
-                                        -
-                                        {project.finishDate
-                                            ? new Date(project.finishDate).toLocaleDateString()
-                                            : 'Present'}
-                                    </p>
                                 </div>
                             {/if}
                         </div>

@@ -93,6 +93,7 @@ export interface Config {
   collectionsJoins: {
     projects: {
       news: 'news';
+      events: 'events';
     };
     'team-members': {
       projects: 'projects';
@@ -681,6 +682,11 @@ export interface Project {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
+  events?: {
+    docs?: (number | Event)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   slug?: string | null;
   slugLock?: boolean | null;
   meta?: {
@@ -850,73 +856,6 @@ export interface ProjectRole {
   createdAt: string;
 }
 /**
- * Programs for the projects
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "programs".
- */
-export interface Program {
-  id: number;
-  title: string;
-  logo?: (number | null) | Media;
-  description?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Tags for the news
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "newsTags".
- */
-export interface NewsTag {
-  id: number;
-  name: string;
-  description?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Different separate pages
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
- */
-export interface Page {
-  id: number;
-  title: string;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  slug?: string | null;
-  slugLock?: boolean | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
  * Events.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -983,6 +922,73 @@ export interface EventTag {
   description?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * Programs for the projects
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programs".
+ */
+export interface Program {
+  id: number;
+  title: string;
+  logo?: (number | null) | Media;
+  description?: string | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Tags for the news
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsTags".
+ */
+export interface NewsTag {
+  id: number;
+  name: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Different separate pages
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1413,6 +1419,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   content?: T;
   excerpt?: T;
   news?: T;
+  events?: T;
   slug?: T;
   slugLock?: T;
   meta?:

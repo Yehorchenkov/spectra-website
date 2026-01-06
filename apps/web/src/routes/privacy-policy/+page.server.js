@@ -1,22 +1,11 @@
 import { API_BASE } from '$lib/config/backendApi.js';
+import { safeFetch } from '$lib/utils/apiHandler.js';
 
 export async function load({ fetch }) {
-    try {
-        const res = await fetch(`${API_BASE}/globals/privacy-policy`);
+    // safeFetch handles the try/catch, 404/500 checks, and JSON parsing automatically.
+    const privacyData = await safeFetch(fetch, `${API_BASE}/globals/privacy-policy`);
 
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-
-        const privacyData = await res.json();
-
-        return {
-            privacyData
-        };
-    } catch (error) {
-        console.error('Failed to load privacy policy:', error);
-        return {
-            privacyData: null
-        };
-    }
+    return {
+        privacyData
+    };
 }

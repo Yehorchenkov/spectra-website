@@ -90,35 +90,6 @@ export function resolveSeo(seoDoc, opts = {}) {
 		noindex: (context.page || 1) > 1 || !!searchParams.get('sort')
 	};
 }
-// export function resolveSeo(
-// 	seoDoc,
-// 	{ context = {}, pathname, searchParams = new URLSearchParams(), allowParams = [] } = {}
-// ) {
-//     // Fallback if seoDoc is null/undefined
-//     const doc = seoDoc || {};
-// 	const isDynamic = !!context.filters || (context.page && context.page > 1);
-
-// 	// 1. Determine base title/description from CMS or labels
-// 	let title = isDynamic
-// 		? doc?.filteredTemplates?.titleTemplate || doc?.label || ''
-// 		: doc?.meta?.title || doc?.label || '';
-
-// 	let description = isDynamic
-// 		? doc?.filteredTemplates?.descriptionTemplate || doc?.meta?.description
-// 		: doc?.meta?.description;
-
-// 	title = formatTemplate(title, context);
-// 	description = formatTemplate(description, context);
-
-// 	return {
-// 		title: buildTitle(title),
-// 		description: description || siteConfig.description,
-// 		image: doc?.meta?.image?.url,
-// 		canonical: buildCanonical(pathname, searchParams, allowParams),
-// 		// SEO logic: noindex if we are on a filtered/sorted page beyond the basics
-// 		noindex: (context.page || 1) > 1 || !!searchParams.get('sort')
-// 	};
-// }
 
 /** Generate canonical URL with specific allowed query params */
 export function buildCanonical(pathname, searchParams, allow = []) {
@@ -135,35 +106,90 @@ export function buildCanonical(pathname, searchParams, allow = []) {
 	return q ? `${base}${path}?${q}` : `${base}${path}`;
 }
 
-/** Helper to extract readable filter names */
+
+/** 
+ * Helper to extract readable filter names from Query String + Data 
+ */
 export function getFilterContext(qs, data) {
-	const list = [];
-	const projectId = qs.get('where[projects][equals]');
-	if (projectId && data.projects?.docs) {
-		const project = data.projects.docs.find((p) => String(p.id) === projectId);
-		if (project) list.push(project.acronym);
-	}
+    const filters = [];
 
-	const programId = qs.get('where[program.id][equals]');
-	if (programId && data.programs?.docs) {
-		const program = data.programs.docs.find((p) => String(p.id) === programId);
-		if (program) list.push(program.title);
-	}
+    // 1. Entity Lookups: Match an ID in the URL to a document title in 'data'
+    const entities = [
+        { param: 'projects',    source: 'projects',     label: 'acronym' },
+        { param: 'program.id',  source: 'programs',     label: 'title' },
+        { param: 'coordinator', source: 'coordinators', label: 'name' }
+    ];
 
-	const coordId = qs.get('where[coordinator][equals]');
-	if (coordId && data.coordinators?.docs) {
-		const coord = data.coordinators.docs.find((c) => String(c.id) === coordId);
-		if (coord) list.push(coord.name);
-	}
+    for (const { param, source, label } of entities) {
+        // Construct the query key: e.g. "where[projects][equals]"
+        const id = qs.get(`where[${param}][equals]`);
+        
+        // If we have an ID and the dataset exists
+        if (id && data?.[source]?.docs) {
+            const item = data[source].docs.find(d => String(d.id) === id);
+            if (item?.[label]) {
+                filters.push(item[label]);
+            }
+        }
+    }
 
-    const state = qs.get('where[projectState][equals]');
-	if (state) {
-		const map = { active: 'Active', completed: 'Completed' };
-		list.push(map[state] || state);
-	}
+    // 2. Static Mappings: Convert enum codes (lowercase) to labels (Capitalized)
+    const mappings = [
+        { 
+            param: 'projectState', 
+            map: { active: 'Active', completed: 'Completed' } 
+        },
+        { 
+            param: 'eventState',   
+            map: { upcoming: 'Upcoming', ongoing: 'Ongoing', past: 'Past' } 
+        }
+    ];
 
-	return joinFilters(list);
+    for (const { param, map } of mappings) {
+        const val = qs.get(`where[${param}][equals]`);
+        if (val) {
+            filters.push(map[val] || val); // Fallback to raw value if map missing
+        }
+    }
+
+    return joinFilters(filters);
 }
+
+/** Helper to extract readable filter names */
+// export function getFilterContext(qs, data) {
+// 	const list = [];
+// 	const projectId = qs.get('where[projects][equals]');
+// 	if (projectId && data.projects?.docs) {
+// 		const project = data.projects.docs.find((p) => String(p.id) === projectId);
+// 		if (project) list.push(project.acronym);
+// 	}
+
+// 	const programId = qs.get('where[program.id][equals]');
+// 	if (programId && data.programs?.docs) {
+// 		const program = data.programs.docs.find((p) => String(p.id) === programId);
+// 		if (program) list.push(program.title);
+// 	}
+
+// 	const coordId = qs.get('where[coordinator][equals]');
+// 	if (coordId && data.coordinators?.docs) {
+// 		const coord = data.coordinators.docs.find((c) => String(c.id) === coordId);
+// 		if (coord) list.push(coord.name);
+// 	}
+
+//     const projectState = qs.get('where[projectState][equals]');
+// 	if (projectState) {
+// 		const map = { active: 'Active', completed: 'Completed' };
+// 		list.push(map[projectState] || projectState);
+// 	}
+
+// 	const eventState = qs.get('where[eventState][equals]');
+// 	if (eventState) {
+// 		const map = { upcoming: 'Upcoming', ongoing: 'Ongoing', past: 'Past' };
+// 		list.push(map[eventState] || eventState);
+// 	}
+
+// 	return joinFilters(list);
+// }
 
 export function getPageParam(qs, key = 'page') {
 	const n = parseInt(qs.get(key) || '1', 10);
@@ -172,7 +198,7 @@ export function getPageParam(qs, key = 'page') {
 
 export function buildSeoQuery(key) {
     return buildQuery({
-        where: { 'where[key][equals]': key },
+		where: { key: { equals: key } },
         limit: 1
     });
 }

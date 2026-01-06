@@ -1,4 +1,4 @@
-import { PROJECTS_PAGINATION_LIMIT } from '$lib/config/constants.js';
+import { PROJECTS_PAGINATION_LIMIT, PROJECTS_SEO_SLUG } from '$lib/config/constants.js';
 import { safeFetch, buildQuery, buildSelectQuery } from '$lib/utils/apiHandler.js';
 import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 
@@ -27,7 +27,7 @@ export async function load({ fetch, url }) {
 
 	const programParams = buildSelectQuery(['title', 'id'], 100);
 
-	const seoParams = buildSeoQuery('projects-archive');
+	const seoParams = buildSeoQuery(PROJECTS_SEO_SLUG);
 
 	const [projects, programs, seoData] = await Promise.all([
 		safeFetch(fetch, `/api/projects?${projectParams.toString()}`),

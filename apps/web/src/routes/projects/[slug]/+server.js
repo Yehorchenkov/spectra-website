@@ -1,23 +1,19 @@
-import { json } from '@sveltejs/kit';
-import { API_BASE, QUERY_SLUG_EQUALS_PREFIX } from '$lib/config/backendApi.js';
+import { fetchResource, buildQuery } from '$lib/utils/apiHandler.js';
 
-export async function GET({ params, fetch }) {
+export async function GET({ params, fetch, url }) {
 	const { slug } = params;
-	const encodedSlug = encodeURIComponent(slug);
-	const projectUrl = `${API_BASE}/projects${QUERY_SLUG_EQUALS_PREFIX}${encodedSlug}`;
 
-	try {
-		const response = await fetch(projectUrl);
-
-		if (!response.ok) {
-			return json({ error: response.statusText }, { status: response.status });
+	const queryParams = buildQuery({
+		baseParams: url.searchParams, // Pass existing params if you want to allow ?limit=5 etc.
+		where: {
+			slug: { equals: slug } // Assuming Payload CMS syntax
 		}
+	});
 
-		const data = await response.json();
+	// We create a dummy base because fetchResource handles the API_BASE
+	const modifiedUrl = new URL(url); 
+	modifiedUrl.search = queryParams.toString();
 
-		return json(data);
-	} catch (err) {
-		console.error('Error fetching project:', err);
-		return json({ error: 'Failed to fetch data' }, { status: 500 });
-	}
+	// This handles errors, JSON parsing, and the trailing slash fix automatically
+	return fetchResource('projects', fetch, modifiedUrl);
 }

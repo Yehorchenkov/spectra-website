@@ -8,6 +8,7 @@
     import ProjectLogo from '$lib/ui/components/ProjectLogo.svelte';
     import ProjectStateBadge from '$lib/ui/components/ProjectStateBadge.svelte';
     import SEO from '$lib/seo.svelte';
+    import { formatDateRange, formatDateLong } from '$lib/utils/dateHelpers.js';
     import { Tabs } from "bits-ui";
 
     import { convertContentToHTML } from '$lib/convertHtml';
@@ -17,6 +18,8 @@
 
     let project = $derived(data.project);
 
+    console.log('Project Data:', project.events);
+
     const coordinator = $derived(
         project.projectParticipants?.find((p) => p.isResponsible)
     );
@@ -25,7 +28,7 @@
         project.projectParticipants?.filter((p) => !p.isResponsible)
     );
 
-    console.log('Project Data:', data);
+    // console.log('Project Data:', data);
 
 </script>
 
@@ -129,14 +132,9 @@
                                     class="flex gap-3 group"
                                 >
                                     <CalendarDots class="text-xl" />
-                                    <span>
-                                        {new Date(project.startDate).toLocaleDateString()} - 
-                                        {#if project.finishDate}
-                                            {new Date(project.finishDate).toLocaleDateString()}
-                                        {:else}
-                                            unknown
-                                        {/if}
-                                    </span>
+                                    <time datetime={project.startDate}>
+                                        {formatDateRange(project.startDate, project.finishDate)}
+                                    </time>
                                 </p>
                             </li>
                         {/if}
@@ -212,9 +210,7 @@
                                         <article class="border-l-2 border-primary pl-4 py-2">
                                             <div class="flex items-center gap-2 text-sm text-muted-foreground mb-1">
                                                 <CalendarDots class="size-4" />
-                                                <time datetime={newsItem.publishDate}>
-                                                    {new Date(newsItem.publishDate).toLocaleDateString()}
-                                                </time>
+                                                {formatDateLong(newsItem.publishDate)}
                                             </div>
                                             <ButtonLink 
                                                 href={"/news/" + newsItem.slug}
@@ -240,29 +236,33 @@
                             <h2 class="text-2xl font-bold text-foreground border-b-2 border-primary pb-2 mb-4">
                                 Project Events
                             </h2>
-                            {#if project.events && project.events.length > 0}
-                                {@const sortedEvents = [...project.events].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())}
+                            {#if project.events.docs && project.events.docs.length > 0}
+                                {@const sortedEvents = [...project.events.docs].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())}
                                 <div class="space-y-4">
                                     {#each sortedEvents as event}
                                         <article class="border-l-2 border-primary pl-4 py-2">
                                             <div class="flex items-center gap-2 text-sm text-muted-foreground mb-1">
                                                 <CalendarDots class="size-4" />
                                                 <time datetime={event.date}>
-                                                    {new Date(event.date).toLocaleDateString()}
+                                                    {formatDateRange(event.startDate, event.finishDate)}
                                                 </time>
                                             </div>
                                             <ButtonLink 
-                                                href={event.url}
-                                                external={true}
+                                                href={"/events/" + event.slug}
                                                 class="text-lg font-semibold hover:text-primary transition-colors"
                                             >
                                                 {event.title}
                                             </ButtonLink>
-                                            {#if event.description}
+                                            {#if event.subtitle}
+                                                <p class="mb-2 text-md font-medium line-clamp-2">
+                                                     {event.subtitle}
+                                                </p>
+                                            {/if}
+                                            <!-- {#if event.description}
                                                 <p class="text-muted-foreground mt-1 line-clamp-2">
                                                     {event.description}
                                                 </p>
-                                            {/if}
+                                            {/if} -->
                                         </article>
                                     {/each}
                                 </div>

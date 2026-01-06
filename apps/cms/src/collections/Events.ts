@@ -3,20 +3,22 @@ import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
 import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 import { requireMetaOnPublish, validateDateRange } from '@/utils/utils'
-import type { CollectionBeforeChangeHook } from 'payload'
+import type { CollectionBeforeChangeHook, CollectionBeforeOperationHook } from 'payload'
 import { generateExcerpt } from '@/utils/seo'
+import { subscribe } from 'diagnostics_channel'
 
 // Hook to automatically calculate event state based on dates
 const calculateEventStateHook: CollectionAfterReadHook = ({ doc }) => {
   if (!doc.startDate) return doc
 
-  const now = new Date()
-  const startDate = new Date(doc.startDate)
-  const finishDate = doc.finishDate ? new Date(doc.finishDate) : startDate
+  const now = new Date().getTime()
+  const start = new Date(doc.startDate).getTime()
+  // Use finishDate, fallback to startDate
+  const finish = new Date(doc.finishDate || doc.startDate).getTime()
 
-  if (now < startDate) {
+  if (now < start) {
     doc.eventState = 'upcoming'
-  } else if (now > finishDate) {
+  } else if (now > finish) {
     doc.eventState = 'past'
   } else {
     doc.eventState = 'ongoing'
@@ -39,9 +41,46 @@ const setFinishDateHook: CollectionBeforeChangeHook = ({ data, operation }) => {
   return data
 }
 
+const transformStateFilterHook: CollectionBeforeOperationHook = ({ args, operation }) => {
+  // We only care about 'read' operations where a 'where' query is present
+  if (operation === 'read' && 'where' in args && args.where) {
+    const where = (args as any).where
+    
+    // Check if the query contains eventState
+    // Payload query objects can be nested, but for simple equals it looks like this:
+    if (where.eventState && typeof where.eventState === 'object' && 'equals' in where.eventState) {
+      const state = where.eventState.equals
+      const now = new Date().toISOString()
+
+      // 1. Remove the virtual field from the query so Payload doesn't 
+      // try to find a column that doesn't exist or is stale
+      delete where.eventState
+
+      // 2. Translate the state into date logic
+      if (state === 'upcoming') {
+        where.startDate = { greater_than: now }
+      } 
+      else if (state === 'past') {
+        // Since your setFinishDateHook ensures finishDate exists:
+        where.finishDate = { less_than: now }
+      } 
+      else if (state === 'ongoing') {
+        // Ongoing means: started in the past AND finishes in the future
+        where.and = [
+          ...(where.and || []),
+          { startDate: { less_than_equal: now } },
+          { finishDate: { greater_than_equal: now } }
+        ]
+      }
+    }
+  }
+  return args
+}
+
 export const Events: CollectionConfig = {
   slug: 'events',
   hooks: {
+    beforeOperation: [transformStateFilterHook],
     afterRead: [calculateEventStateHook],
     beforeValidate: [requireMetaOnPublish],
     beforeChange: [setFinishDateHook, generateEventsExcerptHook],
@@ -59,10 +98,11 @@ export const Events: CollectionConfig = {
   },
   defaultPopulate: {
     title: true,
+    subtitle: true,
     slug: true,
-    image: true,
     projects: true,
     startDate: true,
+    finishDate: true,
   },
   defaultSort: ['-publishDate', 'title'],
   versions: {

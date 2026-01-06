@@ -12,6 +12,7 @@
 	import CalendarDots from 'phosphor-svelte/lib/CalendarDots';
 	import Tag from 'phosphor-svelte/lib/Tag';
 	import Badge from '$lib/ui/components/Badge.svelte';
+	import { formatDateLong } from '$lib/utils/dateHelpers';
 
 	let { newsData } = $props();
 
@@ -98,11 +99,7 @@
 									<div class="flex items-center gap-2 mb-2">
 										<CalendarDots class="text-muted-foreground size-5 shrink-0" />
 										<time datetime={item.publishDate} class="text-muted-foreground text-left text-sm">
-											{new Date(item.publishDate).toLocaleDateString('en-GB', {
-												day: 'numeric',
-												month: 'long',
-												year: 'numeric'
-											})}
+											{formatDateLong(item.publishDate)}
 										</time>
 									</div>
                             	{/if}

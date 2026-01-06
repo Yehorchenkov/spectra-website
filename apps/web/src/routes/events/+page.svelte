@@ -15,7 +15,9 @@
     import { page } from '$app/state';
     import SEO from '$lib/SEO.svelte';
     import DateBadge from '$lib/ui/components/DateBadge.svelte';
+    import EventStateBadge from '$lib/ui/components/EventStateBadge.svelte';
     import { resolveSeo, getFilterContext, getPageParam } from '$lib/utils/seoFactory';
+    import { formatDateRange } from '$lib/utils/dateHelpers.js';
 
     let { data } = $props();
 
@@ -28,6 +30,12 @@
 		value: project.id,
 		label: project.acronym
 	})));
+
+    const stateFilterItems = [
+		{ value: 'upcoming', label: 'Upcoming' },
+		{ value: 'ongoing', label: 'Ongoing' },
+        { value: 'past', label: 'Past' }
+	];
 
     // 1. URL State
     const qs = $derived(page.url.searchParams);
@@ -43,12 +51,12 @@
                 filters: filterText, // Used in "{{filter}}" template
                 page: currentPageNum,
             },
-            allowParams: ['where[projects][equals]'] // Keep project filter in canonical
+            allowParams: ['where[projects][equals]', 'where[eventState][equals]'] // Keep project filter in canonical
         })
     });
 </script>
 
-<SEO 
+<SEO
     title={seo.title}
     description={seo.description}
     canonical={seo.canonical}
@@ -70,6 +78,7 @@
         resetParams={[
             'where[projects][equals]',
             'where[projects][exists]',
+            'where[eventState][equals]',
             'sort',
             ]}
 	>
@@ -88,6 +97,13 @@
                 filterField="projects"
                 includeNone={true}
                 noneLabel="Unassigned"
+			/>
+            <Filter
+				items={stateFilterItems}
+				classTrigger="w-full sm:w-[140px]"
+				classContent="w-[140px]"
+				placeholder="All States"
+				filterField="eventState"
 			/>
 		{/snippet}
 
@@ -137,23 +153,15 @@
                             {/if}
                         </div>
                         <div class="mb-2 flex flex-wrap items-center gap-x-8 gap-y-2">
+                            {#if item.eventState}
+                                <EventStateBadge state={item.eventState} />
+                            {/if}
+
                             {#if item.startDate}
                                 <div class="flex items-center gap-2">
                                     <CalendarDots class="text-muted-foreground size-5 shrink-0" />
                                     <time datetime={item.startDate} class="text-muted-foreground text-left text-base">
-                                        {new Date(item.startDate).toLocaleDateString('en-GB', {
-                                            day: 'numeric',
-                                            month: 'long',
-                                            year: 'numeric'
-                                        })}
-                                        {#if item.finishDate && new Date(item.finishDate).toDateString() !== new Date(item.startDate).toDateString()}
-                                            {' - '}
-                                            {new Date(item.finishDate).toLocaleDateString('en-GB', {
-                                                day: 'numeric',
-                                                month: 'long',
-                                                year: 'numeric'
-                                            })}
-                                        {/if}
+                                        {formatDateRange(item.startDate, item.finishDate)}
                                     </time>
                                 </div>
                             {/if}
@@ -195,9 +203,9 @@
                 {/if}
             {/each}
             {#if totalEvents > perPage}
-                <Pagination 
-                    count={totalEvents} 
-                    perPage={perPage} 
+                <Pagination
+                    count={totalEvents}
+                    perPage={perPage}
                     itemLabel="event"
                     itemLabelPlural="events"
                 />

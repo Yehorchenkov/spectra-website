@@ -16,6 +16,7 @@
     import { page } from '$app/state';
     import SEO from '$lib/SEO.svelte';
     import { resolveSeo, getFilterContext, getPageParam } from '$lib/utils/seoFactory';
+    import { formatDateLong } from '$lib/utils/dateHelpers';
 
     let { data } = $props();
 
@@ -146,11 +147,7 @@
                                 <div class="flex items-center gap-2">
                                     <CalendarDots class="text-muted-foreground size-5 shrink-0" />
                                     <time datetime={item.publishDate} class="text-muted-foreground text-left text-base">
-                                        {new Date(item.publishDate).toLocaleDateString('en-GB', {
-                                            day: 'numeric',
-                                            month: 'long',
-                                            year: 'numeric'
-                                        })}
+                                        {formatDateLong(item.publishDate)}
                                     </time>
                                 </div>
                             {/if}

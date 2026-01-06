@@ -1,4 +1,4 @@
-import { EVENTS_PAGINATION_LIMIT } from '$lib/config/constants.js';
+import { EVENTS_PAGINATION_LIMIT, EVENTS_SEO_SLUG } from '$lib/config/constants.js';
 import { safeFetch, buildQuery, buildSelectQuery } from '$lib/utils/apiHandler.js';
 import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 
@@ -15,7 +15,7 @@ export async function load({ fetch, url }) {
 
     const projectParams = buildSelectQuery(['acronym', 'id'], 100);
 
-    const seoParams = buildSeoQuery('events-archive');
+    const seoParams = buildSeoQuery(EVENTS_SEO_SLUG);
 
     const [events, projects, seoData] = await Promise.all([
         safeFetch(fetch, `/api/events?${eventsParams.toString()}`),

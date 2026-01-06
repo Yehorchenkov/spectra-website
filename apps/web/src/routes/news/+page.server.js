@@ -1,4 +1,4 @@
-import { NEWS_PAGINATION_LIMIT } from '$lib/config/constants.js';
+import { NEWS_PAGINATION_LIMIT, NEWS_SEO_SLUG } from '$lib/config/constants.js';
 import { safeFetch, buildQuery, buildSelectQuery } from '$lib/utils/apiHandler.js';
 import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 
@@ -15,7 +15,7 @@ export async function load({ fetch, url }) {
 
 	const projectParams = buildSelectQuery(['acronym', 'id'], 100);
 
-	const seoParams = buildSeoQuery('news-archive');
+	const seoParams = buildSeoQuery(NEWS_SEO_SLUG);
 
 	const [news, projects, seoData] = await Promise.all([
 		safeFetch(fetch, `/api/news?${newsParams.toString()}`),

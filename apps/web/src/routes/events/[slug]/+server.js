@@ -15,5 +15,5 @@ export async function GET({ params, fetch, url }) {
     modifiedUrl.search = queryParams.toString();
 
     // This handles errors, JSON parsing, and the trailing slash fix automatically
-    return fetchResource('team-members', fetch, modifiedUrl);
+    return fetchResource('events', fetch, modifiedUrl);
 }

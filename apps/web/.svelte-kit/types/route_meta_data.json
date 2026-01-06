@@ -48,6 +48,12 @@
 		"src/routes/+layout.js",
 		"src/routes/+layout.server.js"
 	],
+	"/events/[slug]": [
+		"src/routes/events/[slug]/+page.js",
+		"src/routes/+layout.js",
+		"src/routes/+layout.server.js",
+		"src/routes/events/[slug]/+server.js"
+	],
 	"/network": [
 		"src/routes/+layout.js",
 		"src/routes/+layout.server.js"
