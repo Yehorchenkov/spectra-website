@@ -31,17 +31,17 @@ export const dictionary = {
 		"/about": [7],
 		"/blog": [8],
 		"/events": [~9,[2]],
-		"/events/[slug]": [10,[2]],
+		"/events/[slug]": [~10,[2]],
 		"/network": [11],
 		"/news": [~12,[3]],
-		"/news/[slug]": [13,[3]],
+		"/news/[slug]": [~13,[3]],
 		"/privacy-policy": [~14],
 		"/projects": [~15,[4]],
-		"/projects/[slug]": [16,[4]],
+		"/projects/[slug]": [~16,[4]],
 		"/repository": [17],
 		"/services": [18],
 		"/team-members": [~19,[5]],
-		"/team-members/[slug]": [20,[5]]
+		"/team-members/[slug]": [~20,[5]]
 	};
 
 export const hooks = {

@@ -22,10 +22,9 @@
 		"src/routes/+layout.server.js"
 	],
 	"/events/[slug]": [
-		"src/routes/events/[slug]/+page.js",
+		"src/routes/events/[slug]/+page.server.js",
 		"src/routes/+layout.js",
-		"src/routes/+layout.server.js",
-		"src/routes/events/[slug]/+server.js"
+		"src/routes/+layout.server.js"
 	],
 	"/network": [
 		"src/routes/+layout.js",
@@ -39,10 +38,9 @@
 		"src/routes/+layout.server.js"
 	],
 	"/news/[slug]": [
-		"src/routes/news/[slug]/+page.js",
+		"src/routes/news/[slug]/+page.server.js",
 		"src/routes/+layout.js",
-		"src/routes/+layout.server.js",
-		"src/routes/news/[slug]/+server.js"
+		"src/routes/+layout.server.js"
 	],
 	"/privacy-policy": [
 		"src/routes/privacy-policy/+page.server.js",
@@ -57,10 +55,9 @@
 		"src/routes/+layout.server.js"
 	],
 	"/projects/[slug]": [
-		"src/routes/projects/[slug]/+page.js",
+		"src/routes/projects/[slug]/+page.server.js",
 		"src/routes/+layout.js",
-		"src/routes/+layout.server.js",
-		"src/routes/projects/[slug]/+server.js"
+		"src/routes/+layout.server.js"
 	],
 	"/repository": [
 		"src/routes/+layout.js",
@@ -78,9 +75,8 @@
 		"src/routes/+layout.server.js"
 	],
 	"/team-members/[slug]": [
-		"src/routes/team-members/[slug]/+page.js",
+		"src/routes/team-members/[slug]/+page.server.js",
 		"src/routes/+layout.js",
-		"src/routes/+layout.server.js",
-		"src/routes/team-members/[slug]/+server.js"
+		"src/routes/+layout.server.js"
 	]
 }
