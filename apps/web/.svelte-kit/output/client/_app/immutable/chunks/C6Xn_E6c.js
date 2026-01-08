@@ -1,0 +1,1 @@
+import{K as t,L as S,f as b,M as h,S as k}from"./8KyAVGcc.js";function u(r,f){return r===f||r?.[k]===f}function T(r={},f,a,L){return t(()=>{var i,s;return S(()=>{i=s,s=[],b(()=>{r!==a(...s)&&(f(r,...s),i&&u(a(...i),r)&&f(null,...i))})}),()=>{h(()=>{s&&u(a(...s),r)&&f(null,...s)})}}),r}export{T as b};

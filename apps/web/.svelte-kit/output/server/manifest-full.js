@@ -1,0 +1,155 @@
+export const manifest = (() => {
+function __memo(fn) {
+	let value;
+	return () => value ??= (value = fn());
+}
+
+return {
+	appDir: "_app",
+	appPath: "_app",
+	assets: new Set([".well-known/appspecific/com.chrome.devtools.json","favicon.png","images/night-city-2-placeholder.png"]),
+	mimeTypes: {".json":"application/json",".png":"image/png"},
+	_: {
+		client: {start:"_app/immutable/entry/start.D76WAhHm.js",app:"_app/immutable/entry/app.DhnAHSoo.js",imports:["_app/immutable/entry/start.D76WAhHm.js","_app/immutable/chunks/CqMGIWnz.js","_app/immutable/chunks/8KyAVGcc.js","_app/immutable/chunks/DIeogL5L.js","_app/immutable/entry/app.DhnAHSoo.js","_app/immutable/chunks/PPVm8Dsz.js","_app/immutable/chunks/8KyAVGcc.js","_app/immutable/chunks/DIeogL5L.js","_app/immutable/chunks/CnwNqbP9.js","_app/immutable/chunks/DsnmJJEf.js","_app/immutable/chunks/BCw_ERVW.js","_app/immutable/chunks/C6Xn_E6c.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
+		nodes: [
+			__memo(() => import('./nodes/0.js')),
+			__memo(() => import('./nodes/1.js')),
+			__memo(() => import('./nodes/2.js')),
+			__memo(() => import('./nodes/3.js')),
+			__memo(() => import('./nodes/4.js')),
+			__memo(() => import('./nodes/5.js')),
+			__memo(() => import('./nodes/6.js')),
+			__memo(() => import('./nodes/7.js')),
+			__memo(() => import('./nodes/8.js')),
+			__memo(() => import('./nodes/9.js')),
+			__memo(() => import('./nodes/10.js')),
+			__memo(() => import('./nodes/11.js')),
+			__memo(() => import('./nodes/12.js')),
+			__memo(() => import('./nodes/13.js')),
+			__memo(() => import('./nodes/14.js')),
+			__memo(() => import('./nodes/15.js')),
+			__memo(() => import('./nodes/16.js')),
+			__memo(() => import('./nodes/17.js')),
+			__memo(() => import('./nodes/18.js')),
+			__memo(() => import('./nodes/19.js')),
+			__memo(() => import('./nodes/20.js'))
+		],
+		remotes: {
+			
+		},
+		routes: [
+			{
+				id: "/",
+				pattern: /^\/$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 6 },
+				endpoint: null
+			},
+			{
+				id: "/about",
+				pattern: /^\/about\/?$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 7 },
+				endpoint: null
+			},
+			{
+				id: "/blog",
+				pattern: /^\/blog\/?$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 8 },
+				endpoint: null
+			},
+			{
+				id: "/events",
+				pattern: /^\/events\/?$/,
+				params: [],
+				page: { layouts: [0,2,], errors: [1,,], leaf: 9 },
+				endpoint: null
+			},
+			{
+				id: "/events/[slug]",
+				pattern: /^\/events\/([^/]+?)\/?$/,
+				params: [{"name":"slug","optional":false,"rest":false,"chained":false}],
+				page: { layouts: [0,2,], errors: [1,,], leaf: 10 },
+				endpoint: null
+			},
+			{
+				id: "/network",
+				pattern: /^\/network\/?$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 11 },
+				endpoint: null
+			},
+			{
+				id: "/news",
+				pattern: /^\/news\/?$/,
+				params: [],
+				page: { layouts: [0,3,], errors: [1,,], leaf: 12 },
+				endpoint: null
+			},
+			{
+				id: "/news/[slug]",
+				pattern: /^\/news\/([^/]+?)\/?$/,
+				params: [{"name":"slug","optional":false,"rest":false,"chained":false}],
+				page: { layouts: [0,3,], errors: [1,,], leaf: 13 },
+				endpoint: null
+			},
+			{
+				id: "/privacy-policy",
+				pattern: /^\/privacy-policy\/?$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 14 },
+				endpoint: null
+			},
+			{
+				id: "/projects",
+				pattern: /^\/projects\/?$/,
+				params: [],
+				page: { layouts: [0,4,], errors: [1,,], leaf: 15 },
+				endpoint: null
+			},
+			{
+				id: "/projects/[slug]",
+				pattern: /^\/projects\/([^/]+?)\/?$/,
+				params: [{"name":"slug","optional":false,"rest":false,"chained":false}],
+				page: { layouts: [0,4,], errors: [1,,], leaf: 16 },
+				endpoint: null
+			},
+			{
+				id: "/repository",
+				pattern: /^\/repository\/?$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 17 },
+				endpoint: null
+			},
+			{
+				id: "/services",
+				pattern: /^\/services\/?$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 18 },
+				endpoint: null
+			},
+			{
+				id: "/team-members",
+				pattern: /^\/team-members\/?$/,
+				params: [],
+				page: { layouts: [0,5,], errors: [1,,], leaf: 19 },
+				endpoint: null
+			},
+			{
+				id: "/team-members/[slug]",
+				pattern: /^\/team-members\/([^/]+?)\/?$/,
+				params: [{"name":"slug","optional":false,"rest":false,"chained":false}],
+				page: { layouts: [0,5,], errors: [1,,], leaf: 20 },
+				endpoint: null
+			}
+		],
+		prerendered_routes: new Set([]),
+		matchers: async () => {
+			
+			return {  };
+		},
+		server_assets: {}
+	}
+}
+})();

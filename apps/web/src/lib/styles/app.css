@@ -312,3 +312,7 @@
 .prose a:hover {
     @apply text-primary/80;
 }
+
+.payload-richtext > :first-child {
+    margin-top: 0.5rem;
+}
