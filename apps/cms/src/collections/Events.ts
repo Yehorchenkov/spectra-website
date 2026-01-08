@@ -5,7 +5,6 @@ import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 import { requireMetaOnPublish, validateDateRange } from '@/utils/utils'
 import type { CollectionBeforeChangeHook, CollectionBeforeOperationHook } from 'payload'
 import { generateExcerpt } from '@/utils/seo'
-import { subscribe } from 'diagnostics_channel'
 
 // Hook to automatically calculate event state based on dates
 const calculateEventStateHook: CollectionAfterReadHook = ({ doc }) => {

@@ -34,7 +34,7 @@ import { ImageGallery } from './blocks/ImageGallery'
 
 // Globals
 import { Hero } from './globals/Hero'
-import coordinatorsEndpoint from './endpoints/coordinators'
+// import coordinatorsEndpoint from './endpoints/coordinators'
 import { Partners } from './collections/Partners'
 import { SocialPlatforms } from './collections/SocialPlatforms'
 import { ScientificPlatforms } from './collections/ScientificPlatforms'
@@ -92,7 +92,7 @@ export default buildConfig({
     SeoSettings,
   ],
   globals: [Hero, Footer, PrivacyPolicy],
-  endpoints: [coordinatorsEndpoint],
+  // endpoints: [coordinatorsEndpoint],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       // Add features array

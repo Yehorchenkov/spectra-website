@@ -3,14 +3,14 @@ import React from 'react'
 const AltTextInstructions: React.FC = () => {
   return (
     <div>
-      <p>Crucial for accessibility (screen readers) & SEO.</p>
+      <p>Crucial for accessibility (screen readers) &amp; SEO.</p>
       <p>Key points:</p>
       <ul>
         <li>Describe the image content/purpose accurately.</li>
         <li>If the image is purely decorative (adds no information), leave this blank.</li>
         <li>
-          For other files (e.g., PDFs), describe the file content/purpose (e.g., "PDF of the Annual
-          Report 2023").
+          For other files (e.g., PDFs), describe the file content/purpose (e.g., &quot;PDF of the Annual
+          Report 2023&quot;).
         </li>
       </ul>
       <p>More examples of the alt text:</p>
