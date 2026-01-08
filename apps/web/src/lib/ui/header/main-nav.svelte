@@ -6,14 +6,15 @@
 	import { navMenu } from '$lib/config/navMenu';
 
 	let currentPath = $derived(page.url.pathname);
-	$effect(() => {
-		console.log('Current path:', currentPath);
-		for (const item of navMenu) {
-			if (currentPath.startsWith(item.slug)) {
-				console.log('Current item:', item.title);
-			}
-		}
-	});
+	
+	// $effect(() => {
+	// 	console.log('Current path:', currentPath);
+	// 	for (const item of navMenu) {
+	// 		if (currentPath.startsWith(item.slug)) {
+	// 			console.log('Current item:', item.title);
+	// 		}
+	// 	}
+	// });
 
 	// const txtMenuClass = `relative py-2 text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-all duration-200 animation-hover`;
 	const txtMenuClass = `relative py-2 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary`;

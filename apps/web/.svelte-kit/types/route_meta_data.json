@@ -10,6 +10,12 @@
 		"src/routes/+layout.js",
 		"src/routes/+layout.server.js"
 	],
+	"/api/news": [
+		"src/routes/api/news/+server.js"
+	],
+	"/api/og": [
+		"src/routes/api/og/+server.js"
+	],
 	"/blog": [
 		"src/routes/+layout.js",
 		"src/routes/+layout.server.js"

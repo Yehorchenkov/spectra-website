@@ -14,8 +14,6 @@
 	let teamMembers = $derived(
 		data?.docs ?? []
 	);
-
-	console.log('teamMembers', data);
 </script>
 
 <div class="mx-auto w-full text-center">

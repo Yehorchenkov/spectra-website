@@ -1,7 +1,5 @@
 <script>
     let { children } = $props();
-
-    console.log("Markers in WorldMapDots:", children);
 </script>
 
 <svg 

@@ -79,8 +79,9 @@ export function buildSelectQuery(fields = [], limit = 100) {
  */
 export async function safeFetch(endpoint, queryParams = '') {
 	try {
+        const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
         // api() automatically handles the base URL
-		return await api(endpoint + (queryParams ? `?${queryParams}` : ''));
+		return await api(cleanEndpoint + (queryParams ? `?${queryParams}` : ''));
 	} catch (err) {
         // Error is already logged by onResponseError above
 		return null;

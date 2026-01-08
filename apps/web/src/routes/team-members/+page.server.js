@@ -1,3 +1,5 @@
+export const prerender = false;
+
 import { safeFetch, buildQuery } from '$lib/utils/apiHandler.js';
 import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 

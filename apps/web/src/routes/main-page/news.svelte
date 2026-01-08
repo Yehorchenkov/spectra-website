@@ -2,6 +2,7 @@
 	import emblaCarouselSvelte from 'embla-carousel-svelte';
 	import { Button } from 'bits-ui';
 	import { tick } from 'svelte';
+	import qs from 'qs';
 	import CaretCircleLeft from 'phosphor-svelte/lib/CaretCircleLeft';
 	import CaretCircleRight from 'phosphor-svelte/lib/CaretCircleRight';
 	import CircleNotch from 'phosphor-svelte/lib/CircleNotch';
@@ -34,19 +35,42 @@
 		if (isLoading || !hasNextPage) return;
 		isLoading = true;
 
-		const nextPage = Math.ceil(newsItems.length / NEWS_LIMIT) + 1;
-		const res = await fetch(`/api/news?page=${nextPage}&limit=${NEWS_LIMIT}`);
-		const data = await res.json();
+		const nextPage = Math.ceil(newsItems.length / NEWS_CAROUSEL_LIMIT) + 1;
 
-		if (data.docs) {
-			newsItems.push(...data.docs);
-			hasNextPage = data.hasNextPage;
+		// Use qs to ensure the query string is identical to how 'apiHandler' creates it
+		const queryString = qs.stringify({
+			page: nextPage,
+			limit: NEWS_CAROUSEL_LIMIT,
+			// Match the fields used in your +page.server.js
+			select: ['title', 'slug', 'image', 'excerpt', 'publishDate'] 
+		}, { 
+			encode: true,
+			arrayFormat: 'brackets' // Important: matches the format your backend expects
+		});
 
-			await tick();
-			emblaApi?.reInit();
-			emblaApi?.scrollNext();
+		try {
+			// Use native fetch for internal routes
+			const res = await fetch(`/api/news?${queryString}`);
+			
+			if (!res.ok) throw new Error('Failed to load news');
+			
+			const data = await res.json();
+
+			if (data.docs?.length) {
+				newsItems.push(...data.docs);
+				hasNextPage = data.hasNextPage;
+
+				await tick();
+				emblaApi?.reInit();
+				emblaApi?.scrollNext();
+			} else {
+				hasNextPage = false;
+			}
+		} catch (error) {
+			console.error("Error loading more news:", error);
+		} finally {
+			isLoading = false;
 		}
-		isLoading = false;
 	}
 
 	const onMove = () => {

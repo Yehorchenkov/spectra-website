@@ -27,7 +27,7 @@ export {};
 
 declare module "$app/types" {
 	export interface AppTypes {
-		RouteId(): "/" | "/about" | "/blog" | "/events" | "/events/[slug]" | "/main-page" | "/network" | "/news" | "/news/[slug]" | "/privacy-policy" | "/projects" | "/projects/[slug]" | "/repository" | "/services" | "/team-members" | "/team-members/[slug]";
+		RouteId(): "/" | "/about" | "/api" | "/api/news" | "/api/og" | "/blog" | "/events" | "/events/[slug]" | "/main-page" | "/network" | "/news" | "/news/[slug]" | "/privacy-policy" | "/projects" | "/projects/[slug]" | "/repository" | "/services" | "/team-members" | "/team-members/[slug]";
 		RouteParams(): {
 			"/events/[slug]": { slug: string };
 			"/news/[slug]": { slug: string };
@@ -37,6 +37,9 @@ declare module "$app/types" {
 		LayoutParams(): {
 			"/": { slug?: string };
 			"/about": Record<string, never>;
+			"/api": Record<string, never>;
+			"/api/news": Record<string, never>;
+			"/api/og": Record<string, never>;
 			"/blog": Record<string, never>;
 			"/events": { slug?: string };
 			"/events/[slug]": { slug: string };
@@ -52,7 +55,7 @@ declare module "$app/types" {
 			"/team-members": { slug?: string };
 			"/team-members/[slug]": { slug: string }
 		};
-		Pathname(): "/" | "/about" | "/about/" | "/blog" | "/blog/" | "/events" | "/events/" | `/events/${string}` & {} | `/events/${string}/` & {} | "/main-page" | "/main-page/" | "/network" | "/network/" | "/news" | "/news/" | `/news/${string}` & {} | `/news/${string}/` & {} | "/privacy-policy" | "/privacy-policy/" | "/projects" | "/projects/" | `/projects/${string}` & {} | `/projects/${string}/` & {} | "/repository" | "/repository/" | "/services" | "/services/" | "/team-members" | "/team-members/" | `/team-members/${string}` & {} | `/team-members/${string}/` & {};
+		Pathname(): "/" | "/about" | "/about/" | "/api" | "/api/" | "/api/news" | "/api/news/" | "/api/og" | "/api/og/" | "/blog" | "/blog/" | "/events" | "/events/" | `/events/${string}` & {} | `/events/${string}/` & {} | "/main-page" | "/main-page/" | "/network" | "/network/" | "/news" | "/news/" | `/news/${string}` & {} | `/news/${string}/` & {} | "/privacy-policy" | "/privacy-policy/" | "/projects" | "/projects/" | `/projects/${string}` & {} | `/projects/${string}/` & {} | "/repository" | "/repository/" | "/services" | "/services/" | "/team-members" | "/team-members/" | `/team-members/${string}` & {} | `/team-members/${string}/` & {};
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
 		Asset(): "/.well-known/appspecific/com.chrome.devtools.json" | "/favicon.png" | "/images/night-city-2-placeholder.png" | string & {};
 	}

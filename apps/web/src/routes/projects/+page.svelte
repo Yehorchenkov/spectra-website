@@ -20,8 +20,6 @@
 
 	let { data } = $props();
 
-	console.log("Projects seo settings:", data.seoSettings);
-
 	const totalProjects = $derived(data.projects?.totalDocs ?? 0);
     const perPage = $derived(data.projects?.limit ?? PROJECTS_PAGINATION_LIMIT);
     const paginatedDocs = $derived(data.projects?.docs ?? []);
@@ -56,8 +54,6 @@
 			allowParams: ['where[program.id][equals]', 'where[projectState][equals]'] // Keep filters in canonical
 		})
 	});
-
-	console.log("SEO projects:", seo);
 </script>
 
 <SEO 

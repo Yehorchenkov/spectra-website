@@ -17,7 +17,7 @@ export async function load() {
     });
 
     const [heroData, newsData, partnersData, teamMembersData] = await Promise.all([
-        safeFetch('/globals/hero'),
+        safeFetch('globals/hero'),
         safeFetch('news', newsParams),
         safeFetch('partners'),
         safeFetch('team-members', teamMembersParams),

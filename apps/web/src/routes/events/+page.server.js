@@ -1,3 +1,5 @@
+export const prerender = false;
+
 import { EVENTS_PAGINATION_LIMIT, EVENTS_SEO_SLUG } from '$lib/config/constants.js';
 import { safeFetch, buildQuery, buildSelectQuery } from '$lib/utils/apiHandler.js';
 import { buildSeoQuery } from '$lib/utils/seoFactory.js';

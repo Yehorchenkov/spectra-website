@@ -18,8 +18,6 @@
 
     let project = $derived(data.project);
 
-    console.log('Project Data:', project.events);
-
     const coordinator = $derived(
         project.projectParticipants?.find((p) => p.isResponsible)
     );
@@ -27,9 +25,6 @@
     const projectParticipants = $derived(
         project.projectParticipants?.filter((p) => !p.isResponsible)
     );
-
-    // console.log('Project Data:', data);
-
 </script>
 
 <SEO

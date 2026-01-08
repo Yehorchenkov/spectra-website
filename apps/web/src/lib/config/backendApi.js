@@ -1,3 +1,4 @@
-export const API_BASE = 'http://localhost:3000/api';
+import { PUBLIC_API_URL } from '$env/static/public';
 
-export const QUERY_SLUG_EQUALS_PREFIX = '?where[slug][equals]=';
+const baseUrl = PUBLIC_API_URL.replace(/\/$/, '');
+export const API_BASE = `${baseUrl}/api`;
