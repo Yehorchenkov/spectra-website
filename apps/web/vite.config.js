@@ -9,7 +9,9 @@ export default defineConfig({
 		enhancedImages(),
 		sveltekit(),
 		tailwindcss(),
-		sveltekitOG(),
+		sveltekitOG({
+			esmImport: false
+		}),
 	],
 	server: {
 		proxy: {

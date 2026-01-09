@@ -50,6 +50,12 @@ const dirname = path.dirname(filename)
 const dbClient =
   process.env.DB_CLIENT ?? (process.env.NODE_ENV === 'production' ? 'postgres' : 'sqlite')
 
+const clientUrl = (process.env.PUBLIC_SITE_URL || 'http://localhost:5173').replace(/\/$/, '')
+const serverUrl = (process.env.SERVER_URL || 'http://localhost:3000').replace(/\/$/, '')
+const corsOrigins = process.env.CORS_ORIGINS 
+  ? process.env.CORS_ORIGINS.split(',').map(url => url.trim()) 
+  : [clientUrl]
+
 const db =
   dbClient === 'postgres'
     ? postgresAdapter({
@@ -60,12 +66,16 @@ const db =
       })
     : sqliteAdapter({
         client: {
-          // e.g. file:./payload.sqlite (set via env)
-          url: process.env.DATABASE_URI || '',
+          url: process.env.DATABASE_URI || 'file:./backend-payload.db',
         },
       })
 
 export default buildConfig({
+  // --- Server & Security Settings ---
+  serverURL: serverUrl, // REQUIRED: The public URL of the CMS
+  cors: corsOrigins,    // REQUIRED: Allow SvelteKit to fetch data
+  csrf: corsOrigins,    // REQUIRED: Allow authenticated requests from SvelteKit
+
   admin: {
     user: Users.slug,
 
@@ -148,11 +158,13 @@ export default buildConfig({
       },
 
       generateURL: ({ doc, collectionSlug }) => {
+        const baseUrl = clientUrl
+
         // 1. Use a robust fallback for the base URL
-        const baseUrl = (process.env.PUBLIC_SITE_URL || 'http://localhost:3000').replace(
-          /\/$/,
-          '',
-        )
+        // const baseUrl = (process.env.PUBLIC_SITE_URL || 'http://localhost:3000').replace(
+        //   /\/$/,
+        //   '',
+        // )
 
         // 2. Handle the Homepage special case
         if (collectionSlug === 'pages' && doc.slug === 'home') {

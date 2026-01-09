@@ -3,6 +3,7 @@ node_modules
 .pnp
 .pnp.js
 .yarn/install-state.gz
+.svelte-kit/
 
 # IDE
 .idea
@@ -42,3 +43,4 @@ next-env.d.ts
 
 # cms media uploads
 apps/cms/media
+apps/cms/user-media

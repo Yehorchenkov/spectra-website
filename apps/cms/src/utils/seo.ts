@@ -1,12 +1,13 @@
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
+import { SITE_NAME, SITE_TITLE_SEP, SITE_TITLE_MAX, SITE_DESCRIPTION_MAX } from './constants'
 
 /**
  * CONSTANTS
  */
-const BRAND = process.env.SITE_NAME || 'SPECTRA CE EU'
-const TITLE_SEP = process.env.SITE_TITLE_SEP || ' - '
-const TITLE_MAX = Number(process.env.SITE_TITLE_MAX || 60)
-const DESCRIPTION_MAX = Number(process.env.SITE_DESCRIPTION_MAX || 158)
+// const SITE_NAME = process.env.SITE_NAME || 'SPECTRA CE EU'
+// const TITLE_SEP = process.env.SITE_TITLE_SEP || ' - '
+// const TITLE_MAX = Number(process.env.SITE_TITLE_MAX || 60)
+// const DESCRIPTION_MAX = Number(process.env.SITE_DESCRIPTION_MAX || 158)
 
 function extractTextFromLexical(node: any): string {
   if (!node) return ''
@@ -56,7 +57,7 @@ export function smartTruncate(str: string, maxLength: number, ellipsis: string =
 /**
  * 2. EXCERPT UTILITY: Converts Lexical JSON and generates description.
  */
-export function generateExcerpt(content: any, maxLength: number = 158): string {
+export function generateExcerpt(content: any, maxLength: number = SITE_DESCRIPTION_MAX): string {
   if (!content) return ''
 
   let textContent = extractTextFromLexical(content.root)
@@ -75,17 +76,17 @@ export function generateExcerpt(content: any, maxLength: number = 158): string {
  */
 export function buildTitle(pageTitle: string): string {
   const core = (pageTitle || '').trim().replace(/\s+/g, ' ')
-  if (!core || core.toLowerCase() === 'home') return BRAND
+  if (!core || core.toLowerCase() === 'home') return SITE_NAME
 
   // Prevent double branding
-  if (core.includes(BRAND)) return smartTruncate(core, TITLE_MAX)
+  if (core.includes(SITE_NAME)) return smartTruncate(core, SITE_TITLE_MAX)
 
-  const suffix = `${TITLE_SEP}${BRAND}`
+  const suffix = `${SITE_TITLE_SEP}${SITE_NAME}`
   const full = `${core}${suffix}`
 
-  if (full.length <= TITLE_MAX) return full
+  if (full.length <= SITE_TITLE_MAX) return full
 
-  const allowedForTitle = TITLE_MAX - suffix.length
+  const allowedForTitle = SITE_TITLE_MAX - suffix.length
   const trimmed = smartTruncate(core, Math.max(allowedForTitle, 20))
 
   return `${trimmed}${suffix}`
