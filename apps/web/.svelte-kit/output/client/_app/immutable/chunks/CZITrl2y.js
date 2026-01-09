@@ -1,1 +1,0 @@
-function e(n){return n?new Date(n).toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}):""}function o(n,t){return!n||!t?!1:new Date(n).toDateString()===new Date(t).toDateString()}function i(n,t,a="Unknown"){if(!n)return"";const r=e(n);return t?o(n,t)?r:`${r} - ${e(t)}`:`${r} - ${a}`}export{e as a,i as f};
