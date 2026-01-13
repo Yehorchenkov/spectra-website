@@ -15,7 +15,7 @@
 			<img
 				src={image ? image.url : "$lib/images/hero.jpg"}
 				alt={image?.alt ?? 'Hero'}
-				class="h-full w-full rounded-lg object-cover shadow-md"
+				class="h-full w-full lg:rounded-lg object-cover shadow-md"
 				fetchpriority="high"
 			/>
 		</div>

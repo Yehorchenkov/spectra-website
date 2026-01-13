@@ -5,6 +5,8 @@
     import MobileNav from "$lib/ui/header/mobile-nav.svelte";
     import Search from "$lib/ui/header/search.svelte";
 
+	let { data } = $props();
+
     let y = $state(0);
 </script>
 
@@ -40,11 +42,11 @@
 	<section class="mx-auto flex w-full max-w-screen-xl items-center justify-between px-3 sm:px-4 lg:px-6">
 		<div class="flex items-center gap-2 shrink-0">
 			<IconNav />
-			<MobileNav />
+			<MobileNav data={data} />
 		</div>
 
 		<div class="hidden items-center space-x-1 md:flex">
-			<MainNav />
+			<MainNav data={data} />
 		</div>
 
 		<div class="flex items-center gap-0 sm:gap-2 shrink-0">

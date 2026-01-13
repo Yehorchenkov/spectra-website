@@ -11,7 +11,7 @@
 
 <ModeWatcher />
 
-<SiteHeader />
+<SiteHeader data={data.headerData}/>
 
 <div class="pt-16 md:pt-32">
 	{@render children()}

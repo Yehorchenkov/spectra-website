@@ -132,11 +132,13 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     hero: Hero;
+    header: Header;
     footer: Footer;
     'privacy-policy': PrivacyPolicy;
   };
   globalsSelect: {
     hero: HeroSelect<false> | HeroSelect<true>;
+    header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'privacy-policy': PrivacyPolicySelect<false> | PrivacyPolicySelect<true>;
   };
@@ -1659,6 +1661,64 @@ export interface Hero {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header".
+ */
+export interface Header {
+  id: number;
+  navItems?:
+    | {
+        type?: ('link' | 'subData') | null;
+        link?: {
+          type?: ('reference' | 'route' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: number | Page;
+          } | null;
+          /**
+           * Internal route like /projects, /news, etc
+           */
+          route?: string | null;
+          /**
+           * Full reference to external source
+           */
+          url?: string | null;
+          label: string;
+        };
+        /**
+         * The clickable label for the dropdown
+         */
+        groupLabel?: string | null;
+        subItems?:
+          | {
+              link: {
+                type?: ('reference' | 'route' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?: {
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null;
+                /**
+                 * Internal route like /projects, /news, etc
+                 */
+                route?: string | null;
+                /**
+                 * Full reference to external source
+                 */
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer".
  */
 export interface Footer {
@@ -1758,6 +1818,47 @@ export interface HeroSelect<T extends boolean = true> {
         title?: T;
         description?: T;
         image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
+export interface HeaderSelect<T extends boolean = true> {
+  navItems?:
+    | T
+    | {
+        type?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              route?: T;
+              url?: T;
+              label?: T;
+            };
+        groupLabel?: T;
+        subItems?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    route?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;

@@ -34,6 +34,7 @@ import { ImageGallery } from './blocks/ImageGallery'
 
 // Globals
 import { Hero } from './globals/Hero'
+import { Header } from './globals/Header'
 // import coordinatorsEndpoint from './endpoints/coordinators'
 import { Partners } from './collections/Partners'
 import { SocialPlatforms } from './collections/SocialPlatforms'
@@ -101,7 +102,7 @@ export default buildConfig({
     EventTags,
     SeoSettings,
   ],
-  globals: [Hero, Footer, PrivacyPolicy],
+  globals: [Hero, Header, Footer, PrivacyPolicy],
   // endpoints: [coordinatorsEndpoint],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [

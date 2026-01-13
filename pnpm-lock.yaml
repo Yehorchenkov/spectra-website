@@ -52,15 +52,9 @@ importers:
       next:
         specifier: 15.4.7
         version: 15.4.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4)
-      ofetch:
-        specifier: ^1.5.1
-        version: 1.5.1
       payload:
         specifier: 3.69.0
         version: 3.69.0(graphql@16.12.0)(typescript@5.7.3)
-      qs:
-        specifier: ^6.14.1
-        version: 6.14.1
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -134,6 +128,9 @@ importers:
       tailwind-merge:
         specifier: ^3.3.1
         version: 3.4.0
+      vaul-svelte:
+        specifier: 1.0.0-next.7
+        version: 1.0.0-next.7(svelte@5.45.8)
     devDependencies:
       '@eslint/compat':
         specifier: ^1.4.0
@@ -5273,6 +5270,12 @@ packages:
   uuid@9.0.0:
     resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
     hasBin: true
+
+  vaul-svelte@1.0.0-next.7:
+    resolution: {integrity: sha512-7zN7Bi3dFQixvvbUJY9uGDe7Ws/dGZeBQR2pXdXmzQiakjrxBvWo0QrmsX3HK+VH+SZOltz378cmgmCS9f9rSg==}
+    engines: {node: '>=18', pnpm: '>=8.7.0'}
+    peerDependencies:
+      svelte: ^5.0.0
 
   vfile-message@4.0.3:
     resolution: {integrity: sha512-QTHzsGd1EhbZs4AsQ20JX1rC3cOlt/IWJruk893DfLRr57lcnOeMaWG4K0JrRta4mIJZKth2Au3mM3u03/JWKw==}
@@ -11491,6 +11494,12 @@ snapshots:
   uuid@10.0.0: {}
 
   uuid@9.0.0: {}
+
+  vaul-svelte@1.0.0-next.7(svelte@5.45.8):
+    dependencies:
+      runed: 0.23.4(svelte@5.45.8)
+      svelte: 5.45.8
+      svelte-toolbelt: 0.7.1(svelte@5.45.8)
 
   vfile-message@4.0.3:
     dependencies:
