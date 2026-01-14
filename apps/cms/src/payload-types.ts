@@ -1671,10 +1671,27 @@ export interface Header {
         link?: {
           type?: ('reference' | 'route' | 'custom') | null;
           newTab?: boolean | null;
-          reference?: {
-            relationTo: 'pages';
-            value: number | Page;
-          } | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'news';
+                value: number | News;
+              } | null)
+            | ({
+                relationTo: 'projects';
+                value: number | Project;
+              } | null)
+            | ({
+                relationTo: 'events';
+                value: number | Event;
+              } | null)
+            | ({
+                relationTo: 'team-members';
+                value: number | TeamMember;
+              } | null);
           /**
            * Internal route like /projects, /news, etc
            */
@@ -1694,10 +1711,27 @@ export interface Header {
               link: {
                 type?: ('reference' | 'route' | 'custom') | null;
                 newTab?: boolean | null;
-                reference?: {
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: number | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'news';
+                      value: number | News;
+                    } | null)
+                  | ({
+                      relationTo: 'projects';
+                      value: number | Project;
+                    } | null)
+                  | ({
+                      relationTo: 'events';
+                      value: number | Event;
+                    } | null)
+                  | ({
+                      relationTo: 'team-members';
+                      value: number | TeamMember;
+                    } | null);
                 /**
                  * Internal route like /projects, /news, etc
                  */
@@ -1729,8 +1763,40 @@ export interface Footer {
   brandDescription: string;
   quickLinks?:
     | {
-        label: string;
-        href: string;
+        link: {
+          type?: ('reference' | 'route' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'news';
+                value: number | News;
+              } | null)
+            | ({
+                relationTo: 'projects';
+                value: number | Project;
+              } | null)
+            | ({
+                relationTo: 'events';
+                value: number | Event;
+              } | null)
+            | ({
+                relationTo: 'team-members';
+                value: number | TeamMember;
+              } | null);
+          /**
+           * Internal route like /projects, /news, etc
+           */
+          route?: string | null;
+          /**
+           * Full reference to external source
+           */
+          url?: string | null;
+          label: string;
+        };
         id?: string | null;
       }[]
     | null;
@@ -1754,12 +1820,40 @@ export interface Footer {
   copyrightText?: string | null;
   bottomLinks?:
     | {
-        label: string;
-        href: string;
-        /**
-         * Opens in new tab
-         */
-        external?: boolean | null;
+        link: {
+          type?: ('reference' | 'route' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'news';
+                value: number | News;
+              } | null)
+            | ({
+                relationTo: 'projects';
+                value: number | Project;
+              } | null)
+            | ({
+                relationTo: 'events';
+                value: number | Event;
+              } | null)
+            | ({
+                relationTo: 'team-members';
+                value: number | TeamMember;
+              } | null);
+          /**
+           * Internal route like /projects, /news, etc
+           */
+          route?: string | null;
+          /**
+           * Full reference to external source
+           */
+          url?: string | null;
+          label: string;
+        };
         id?: string | null;
       }[]
     | null;
@@ -1873,8 +1967,16 @@ export interface FooterSelect<T extends boolean = true> {
   quickLinks?:
     | T
     | {
-        label?: T;
-        href?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              route?: T;
+              url?: T;
+              label?: T;
+            };
         id?: T;
       };
   contact?:
@@ -1894,9 +1996,16 @@ export interface FooterSelect<T extends boolean = true> {
   bottomLinks?:
     | T
     | {
-        label?: T;
-        href?: T;
-        external?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              route?: T;
+              url?: T;
+              label?: T;
+            };
         id?: T;
       };
   updatedAt?: T;

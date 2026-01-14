@@ -4,10 +4,16 @@
     import IconNav from "$lib/ui/header/icon-nav.svelte";
     import ButtonLink from "$lib/ui/components/ButtonLink.svelte";
     import SocialIcon from "$lib/ui/components/SocialIcon.svelte";
+    import { getLinkUrl } from '$lib/utils/helpers';
 
     let { footer } = $props();
 
-    // console.log('Footer data:', footer);
+    // Safely derive arrays to avoid undefined errors
+    const quickLinks = $derived(footer?.quickLinks || []);
+    const bottomLinks = $derived(footer?.bottomLinks || []);
+    const socialLinks = $derived(footer?.socialLinks || []);
+
+    console.log('Footer data:', footer);
 </script>
 
 <footer class="bg-muted border-t border-border mt-auto w-full">
@@ -15,7 +21,7 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <!-- Brand & Logo -->
             <div class="space-y-4 md:col-span-2">
-                <IconNav class="!flex" />
+                <IconNav class="flex!" />
                 {#if footer?.brandDescription}
                     <p class="text-sm text-muted-foreground leading-relaxed max-w-sm">
                         {footer.brandDescription}
@@ -24,12 +30,21 @@
             </div>
 
             <!-- Quick Links -->
-            {#if footer?.quickLinks?.length}
+            {#if quickLinks.length > 0}
                 <div class="space-y-4">
                     <h4 class="text-sm font-semibold text-foreground uppercase tracking-wider">Quick Links</h4>
                     <nav class="flex flex-col space-y-2">
-                        {#each footer.quickLinks as link}
-                            <ButtonLink href={link.href} variant="muted" size="sm">{link.label}</ButtonLink>
+                        {#each quickLinks as item (item.id)}
+                            {#if item.link}
+                                <ButtonLink 
+                                    href={getLinkUrl(item.link)} 
+                                    external={item.link.newTab}
+                                    variant="muted" 
+                                    size="sm"
+                                >
+                                    {item.link.label}
+                                </ButtonLink>
+                            {/if}
                         {/each}
                     </nav>
                 </div>
@@ -56,17 +71,19 @@
                 </div>
 
                 <!-- Social Links -->
-                {#if footer?.socialLinks?.length}
+                {#if socialLinks.length > 0}
                     <div class="flex items-center gap-3 pt-2">
-                        {#each footer.socialLinks as social}
+                        {#each socialLinks as social (social.id)}
                             <a 
                                 href={social.url} 
                                 target="_blank" 
                                 rel="noreferrer"
                                 class="p-2 rounded-full bg-background hover:bg-primary hover:text-primary-foreground transition-colors"
-                                aria-label={social.platform.platformName}
+                                aria-label={social.platform?.platformName || 'Social Media'}
                             >
-                                <SocialIcon platform={social.platform.platformName} class="text-lg" />
+                                {#if social.platform?.platformName}
+                                    <SocialIcon platform={social.platform.platformName} class="text-lg" />
+                                {/if}
                             </a>
                         {/each}
                     </div>
@@ -81,20 +98,23 @@
                     &copy; {new Date().getFullYear()} {footer.copyrightText}
                 </p>
             {/if}
-            {#if footer?.bottomLinks?.length}
+            
+            {#if bottomLinks.length > 0}
                 <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-                    {#each footer.bottomLinks as link, i}
+                    {#each bottomLinks as item, i (item.id)}
                         {#if i > 0}
                             <span class="text-muted-foreground">•</span>
                         {/if}
-                        <ButtonLink 
-                            href={link.href} 
-                            external={link.external} 
-                            variant="muted" 
-                            size="sm"
-                        >
-                            {link.label}
-                        </ButtonLink>
+                        {#if item.link}
+                            <ButtonLink 
+                                href={getLinkUrl(item.link)} 
+                                external={item.link.newTab}
+                                variant="muted" 
+                                size="sm"
+                            >
+                                {item.link.label}
+                            </ButtonLink>
+                        {/if}
                     {/each}
                 </div>
             {/if}

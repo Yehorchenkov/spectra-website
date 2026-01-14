@@ -4,8 +4,7 @@
 	import List from 'phosphor-svelte/lib/List';
 	import X from 'phosphor-svelte/lib/X';
 	import ButtonLink from '$lib/ui/components/ButtonLink.svelte';
-	import logoLight from "$lib/images/SPECTRA_logo_light.png?enhanced";
-	import logoDark from "$lib/images/SPECTRA_logo_dark.png?enhanced";
+	import IconNav from '$lib/ui/header/icon-nav.svelte';
 	import { getLinkUrl } from '$lib/utils/helpers';
 
 	// Svelte 5 Props
@@ -31,8 +30,7 @@
 				
 				<Drawer.Title>
 					<Button.Root href="/" class="flex items-center justify-center z-10 mb-6">
-						<enhanced:img src={logoLight} alt="Spectra CE EU logo" class="block dark:hidden h-8 w-full hover:opacity-80" />
-						<enhanced:img src={logoDark} alt="Spectra CE EU logo" class="hidden dark:block h-8 w-full hover:opacity-80" />
+						<IconNav class="flex! h-10" />
 					</Button.Root>
 				</Drawer.Title>
 

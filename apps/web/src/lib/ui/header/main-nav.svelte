@@ -26,6 +26,8 @@
 						data-hover={item.link.label}
 						class={twMerge(txtMenuClass, currentPath.startsWith(getLinkUrl(item.link)) && 'current')}
 						href={getLinkUrl(item.link)}
+						target={item.link.newTab ? '_blank' : undefined}
+						rel={item.link.newTab ? 'noopener noreferrer' : undefined}
 					>
 						{item.link.label}
 					</NavigationMenu.Link>

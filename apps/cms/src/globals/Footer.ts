@@ -2,6 +2,7 @@ import { GlobalConfig } from 'payload'
 import { anyone } from '@/access/anyone'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { validateUrl } from '@/utils/utils'
+import { link } from '@/fields/link'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
@@ -25,16 +26,7 @@ export const Footer: GlobalConfig = {
       type: 'array',
       label: 'Quick Links',
       fields: [
-        {
-          name: 'label',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'href',
-          type: 'text',
-          required: true,
-        },
+        link(),
       ],
     },
     // Contact Info
@@ -90,24 +82,7 @@ export const Footer: GlobalConfig = {
       type: 'array',
       label: 'Bottom Links',
       fields: [
-        {
-          name: 'label',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'href',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'external',
-          type: 'checkbox',
-          defaultValue: false,
-          admin: {
-            description: 'Opens in new tab',
-          },
-        },
+        link(),
       ],
     },
   ],

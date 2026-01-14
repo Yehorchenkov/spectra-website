@@ -56,7 +56,7 @@ export const link = ({ name = 'link', overrides = {} } = {}): Field => {
             name: 'reference',
             label: 'Document to link to',
             type: 'relationship',
-            relationTo: ['pages'], // Only keep 'pages' here usually
+            relationTo: ['pages', 'news', 'projects', 'events', 'team-members'],
             required: true,
             maxDepth: 1,
             admin: {
