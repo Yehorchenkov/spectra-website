@@ -10,7 +10,7 @@
 	import DateBadge from '$lib/ui/components/DateBadge.svelte';
 	import EventStateBadge from '$lib/ui/components/EventStateBadge.svelte';
 	import { formatDateRange } from '$lib/utils/dateHelpers.js';
-	import SEO from '$lib/seo.svelte';
+	import SEO from '$lib/SEO.svelte';
 
 	let { data } = $props();
 

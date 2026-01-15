@@ -7,7 +7,7 @@
     import Avatar from '$lib/ui/components/Avatar.svelte';
     import ProjectLogo from '$lib/ui/components/ProjectLogo.svelte';
     import ProjectStateBadge from '$lib/ui/components/ProjectStateBadge.svelte';
-    import SEO from '$lib/seo.svelte';
+    import SEO from '$lib/SEO.svelte';
     import { formatDateRange, formatDateLong } from '$lib/utils/dateHelpers.js';
     import { Tabs } from "bits-ui";
 

@@ -12,8 +12,6 @@
     const quickLinks = $derived(footer?.quickLinks || []);
     const bottomLinks = $derived(footer?.bottomLinks || []);
     const socialLinks = $derived(footer?.socialLinks || []);
-
-    console.log('Footer data:', footer);
 </script>
 
 <footer class="bg-muted border-t border-border mt-auto w-full">
