@@ -8,7 +8,7 @@
 	import RichTextRenderer from '$lib/RichTextRenderer.svelte';
     import { NEWS_PLACEHOLDER } from '$lib/config/constants.js';
 	import { formatDateLong } from '$lib/utils/dateHelpers.js';
-	import SEO from '$lib/seo.svelte';
+	import SEO from '$lib/SEO.svelte';
 
 	let { data } = $props();
 
