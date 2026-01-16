@@ -15,7 +15,6 @@
 	let newsItem = $derived(data.news);
 
 	// Always show a header image: use the article image when available, otherwise a placeholder.
-	// NOTE: Update this path if your placeholder lives elsewhere.
 	const headerImageUrl = $derived(newsItem?.image?.url ?? NEWS_PLACEHOLDER);
 	const headerImageAlt = $derived(newsItem?.image?.alt ?? newsItem?.title ?? 'News');
 
