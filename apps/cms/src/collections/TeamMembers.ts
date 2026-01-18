@@ -1,7 +1,8 @@
 import { CollectionConfig } from 'payload'
+import { slugField } from 'payload'
 import { anyone } from '@/access/anyone'
 import { isLoggedIn } from '@/access/isLoggedIn'
-import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
+// import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 import { validateUrl } from '@/utils/utils'
 
 export const TeamMembers: CollectionConfig = {
@@ -170,6 +171,10 @@ export const TeamMembers: CollectionConfig = {
           'Order in which team member appears on landing page (lower numbers appear first)',
       },
     },
-    ...SlugField('name'),
+    // ...SlugField('name'),
+    slugField({
+      useAsSlug: 'name',
+      position: 'sidebar',
+    }),
   ],
 }

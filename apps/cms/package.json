@@ -47,5 +47,9 @@
   "engines": {
     "node": ">=20",
     "pnpm": ">=9"
+  },
+  "overrides": {
+    "esbuild": "^0.24.0",
+    "cookie": "^0.7.0"
   }
 }

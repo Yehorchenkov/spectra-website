@@ -177,8 +177,11 @@ export interface User {
   id: number;
   name: string;
   role: 'admin' | 'editor';
-  slug?: string | null;
-  slugLock?: boolean | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -598,8 +601,11 @@ export interface News {
    * A short summary of the news article. Automatically generated from content.
    */
   excerpt?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -689,8 +695,11 @@ export interface Project {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
-  slug?: string | null;
-  slugLock?: boolean | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -816,8 +825,11 @@ export interface TeamMember {
    * Order in which team member appears on landing page (lower numbers appear first)
    */
   order?: number | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -890,8 +902,11 @@ export interface Event {
    * A short summary of the event article. Automatically generated from content.
    */
   excerpt?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -936,8 +951,11 @@ export interface Program {
   title: string;
   logo?: (number | null) | Media;
   description?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -978,8 +996,11 @@ export interface Page {
     };
     [k: string]: unknown;
   };
-  slug?: string | null;
-  slugLock?: boolean | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1199,8 +1220,8 @@ export interface PayloadMigration {
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
   role?: T;
+  generateSlug?: T;
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1328,8 +1349,8 @@ export interface NewsSelect<T extends boolean = true> {
   title?: T;
   content?: T;
   excerpt?: T;
+  generateSlug?: T;
   slug?: T;
-  slugLock?: T;
   meta?:
     | T
     | {
@@ -1389,8 +1410,8 @@ export interface ProgramsSelect<T extends boolean = true> {
   title?: T;
   logo?: T;
   description?: T;
+  generateSlug?: T;
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1422,8 +1443,8 @@ export interface ProjectsSelect<T extends boolean = true> {
   excerpt?: T;
   news?: T;
   events?: T;
+  generateSlug?: T;
   slug?: T;
-  slugLock?: T;
   meta?:
     | T
     | {
@@ -1447,8 +1468,8 @@ export interface ProjectsSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   content?: T;
+  generateSlug?: T;
   slug?: T;
-  slugLock?: T;
   meta?:
     | T
     | {
@@ -1496,8 +1517,8 @@ export interface TeamMembersSelect<T extends boolean = true> {
   projects?: T;
   showOnLandingPage?: T;
   order?: T;
+  generateSlug?: T;
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1511,8 +1532,8 @@ export interface EventsSelect<T extends boolean = true> {
   content?: T;
   eventState?: T;
   excerpt?: T;
+  generateSlug?: T;
   slug?: T;
-  slugLock?: T;
   meta?:
     | T
     | {

@@ -1,7 +1,8 @@
 import type { CollectionConfig } from 'payload'
+import { slugField } from 'payload'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
-import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
+// import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 import type { CollectionBeforeChangeHook, CollectionBeforeValidateHook } from 'payload'
 import { generateExcerpt } from '@/utils/seo'
 import { validateUrl, validateDateRange } from '@/utils/utils';
@@ -224,7 +225,10 @@ export const Projects: CollectionConfig = {
                 hidden: true,
               },
             },
-            ...SlugField('title'),
+            // ...SlugField('title'),
+            slugField({
+              useAsSlug: 'title',
+            }),
           ],
         },
       ],

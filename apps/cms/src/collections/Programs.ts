@@ -1,7 +1,8 @@
 import type { CollectionConfig } from 'payload'
+import { slugField } from 'payload'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { anyone } from '@/access/anyone'
-import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
+// import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 
 export const Programs: CollectionConfig = {
   slug: 'programs',
@@ -36,6 +37,9 @@ export const Programs: CollectionConfig = {
       name: 'description',
       type: 'textarea',
     },
-    ...SlugField('title'),
+    // ...SlugField('title'),
+    slugField({
+      useAsSlug: 'title',
+    }),
   ],
 }

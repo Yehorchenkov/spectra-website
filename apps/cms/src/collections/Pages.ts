@@ -1,7 +1,8 @@
 import type { CollectionConfig } from 'payload'
+import { slugField } from 'payload'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
-import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
+// import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -30,6 +31,9 @@ export const Pages: CollectionConfig = {
       type: 'richText',
       required: true,
     },
-    ...SlugField('title'),
+    // ...SlugField('title'),
+    slugField({
+      useAsSlug: 'title',
+    }),
   ],
 }

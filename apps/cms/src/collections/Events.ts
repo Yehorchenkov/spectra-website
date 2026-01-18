@@ -1,7 +1,8 @@
 import type { CollectionConfig, CollectionAfterReadHook } from 'payload'
+import { slugField } from 'payload'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
-import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
+// import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 import { requireMetaOnPublish, validateDateRange } from '@/utils/utils'
 import type { CollectionBeforeChangeHook, CollectionBeforeOperationHook } from 'payload'
 import { generateExcerpt } from '@/utils/seo'
@@ -160,7 +161,10 @@ export const Events: CollectionConfig = {
                 readOnly: true,
               },
             },
-            ...SlugField('title'),
+            // ...SlugField('title'),
+            slugField({
+              useAsSlug: 'title',
+            }),
           ],
         },
       ],
