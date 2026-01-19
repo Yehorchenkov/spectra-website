@@ -16,10 +16,18 @@ export async function load() {
         }
     });
 
+    const partnersParams = buildQuery({
+        select: ['name', 'description', 'lat', 'lon'],
+        limit: 100,
+        where: {
+            showOnMap: { equals: 'true' }
+        }
+    });
+
     const [heroData, newsData, partnersData, teamMembersData] = await Promise.all([
         safeFetch('globals/hero'),
         safeFetch('news', newsParams),
-        safeFetch('partners'),
+        safeFetch('partners', partnersParams),
         safeFetch('team-members', teamMembersParams),
     ]);
 

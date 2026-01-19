@@ -83,6 +83,8 @@ export interface Config {
     events: Event;
     eventTags: EventTag;
     'seo-settings': SeoSetting;
+    subcentres: Subcentre;
+    outputs: Output;
     search: Search;
     'payload-kv': PayloadKv;
     'payload-folders': FolderInterface;
@@ -94,6 +96,7 @@ export interface Config {
     projects: {
       news: 'news';
       events: 'events';
+      outputs: 'outputs';
     };
     'team-members': {
       projects: 'projects';
@@ -119,6 +122,8 @@ export interface Config {
     events: EventsSelect<false> | EventsSelect<true>;
     eventTags: EventTagsSelect<false> | EventTagsSelect<true>;
     'seo-settings': SeoSettingsSelect<false> | SeoSettingsSelect<true>;
+    subcentres: SubcentresSelect<false> | SubcentresSelect<true>;
+    outputs: OutputsSelect<false> | OutputsSelect<true>;
     search: SearchSelect<false> | SearchSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
@@ -134,13 +139,11 @@ export interface Config {
     hero: Hero;
     header: Header;
     footer: Footer;
-    'privacy-policy': PrivacyPolicy;
   };
   globalsSelect: {
     hero: HeroSelect<false> | HeroSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
-    'privacy-policy': PrivacyPolicySelect<false> | PrivacyPolicySelect<true>;
   };
   locale: null;
   user: User & {
@@ -317,6 +320,7 @@ export interface Partner {
   website?: string | null;
   description?: string | null;
   logo?: (number | null) | Media;
+  showOnMap?: boolean | null;
   country?:
     | (
         | 'AF'
@@ -567,8 +571,8 @@ export interface Partner {
       )
     | null;
   city: string;
-  lat: number;
-  lon: number;
+  lat?: number | null;
+  lon?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -692,6 +696,11 @@ export interface Project {
   };
   events?: {
     docs?: (number | Event)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  outputs?: {
+    docs?: (number | Output)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -941,34 +950,65 @@ export interface EventTag {
   createdAt: string;
 }
 /**
- * Programs for the projects
+ * Outputs from SPECTRA team
  *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "programs".
+ * via the `definition` "outputs".
  */
-export interface Program {
+export interface Output {
   id: number;
   title: string;
-  logo?: (number | null) | Media;
-  description?: string | null;
+  type?: ('report' | 'dataset' | 'presentation' | 'paper' | 'other') | null;
+  publishDate: string;
+  version?: string | null;
+  summary?: string | null;
+  deliverableSource: 'file' | 'link';
+  file?: (number | null) | Media;
+  /**
+   * Use Internal Page / System Route / External URL
+   */
+  link?: {
+    type?: ('reference' | 'route' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'news';
+          value: number | News;
+        } | null)
+      | ({
+          relationTo: 'projects';
+          value: number | Project;
+        } | null)
+      | ({
+          relationTo: 'events';
+          value: number | Event;
+        } | null)
+      | ({
+          relationTo: 'team-members';
+          value: number | TeamMember;
+        } | null);
+    /**
+     * Internal route like /projects, /news, etc
+     */
+    route?: string | null;
+    /**
+     * Full reference to external source
+     */
+    url?: string | null;
+    label: string;
+  };
+  projects?: (number | Project)[] | null;
+  authors?: (number | TeamMember)[] | null;
+  doi?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
   generateSlug?: boolean | null;
   slug: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Tags for the news
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "newsTags".
- */
-export interface NewsTag {
-  id: number;
-  name: string;
-  description?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -981,6 +1021,7 @@ export interface NewsTag {
 export interface Page {
   id: number;
   title: string;
+  publishedOrUpdatedAt: string;
   content: {
     root: {
       type: string;
@@ -1014,6 +1055,38 @@ export interface Page {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Programs for the projects
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "programs".
+ */
+export interface Program {
+  id: number;
+  title: string;
+  logo?: (number | null) | Media;
+  description?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Tags for the news
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsTags".
+ */
+export interface NewsTag {
+  id: number;
+  name: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "seo-settings".
  */
@@ -1042,6 +1115,43 @@ export interface SeoSetting {
      */
     image?: (number | null) | Media;
   };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * SPECTRA CE EU Subcentres
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subcentres".
+ */
+export interface Subcentre {
+  id: number;
+  title: string;
+  logo?: (number | null) | Media;
+  /**
+   * Select the team member who is the head of this subcentre.
+   */
+  head: number | TeamMember;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -1162,6 +1272,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'seo-settings';
         value: number | SeoSetting;
+      } | null)
+    | ({
+        relationTo: 'subcentres';
+        value: number | Subcentre;
+      } | null)
+    | ({
+        relationTo: 'outputs';
+        value: number | Output;
       } | null)
     | ({
         relationTo: 'search';
@@ -1333,6 +1451,7 @@ export interface PartnersSelect<T extends boolean = true> {
   website?: T;
   description?: T;
   logo?: T;
+  showOnMap?: T;
   country?: T;
   city?: T;
   lat?: T;
@@ -1443,6 +1562,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   excerpt?: T;
   news?: T;
   events?: T;
+  outputs?: T;
   generateSlug?: T;
   slug?: T;
   meta?:
@@ -1467,6 +1587,7 @@ export interface ProjectsSelect<T extends boolean = true> {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
+  publishedOrUpdatedAt?: T;
   content?: T;
   generateSlug?: T;
   slug?: T;
@@ -1580,6 +1701,50 @@ export interface SeoSettingsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subcentres_select".
+ */
+export interface SubcentresSelect<T extends boolean = true> {
+  title?: T;
+  logo?: T;
+  head?: T;
+  content?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "outputs_select".
+ */
+export interface OutputsSelect<T extends boolean = true> {
+  title?: T;
+  type?: T;
+  publishDate?: T;
+  version?: T;
+  summary?: T;
+  deliverableSource?: T;
+  file?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        route?: T;
+        url?: T;
+        label?: T;
+      };
+  projects?: T;
+  authors?: T;
+  doi?: T;
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1883,44 +2048,6 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "privacy-policy".
- */
-export interface PrivacyPolicy {
-  id: number;
-  title: string;
-  /**
-   * When was this policy last updated?
-   */
-  lastUpdated?: string | null;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero_select".
  */
 export interface HeroSelect<T extends boolean = true> {
@@ -2029,26 +2156,6 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "privacy-policy_select".
- */
-export interface PrivacyPolicySelect<T extends boolean = true> {
-  title?: T;
-  lastUpdated?: T;
-  content?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

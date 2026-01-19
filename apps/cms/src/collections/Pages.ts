@@ -27,6 +27,18 @@ export const Pages: CollectionConfig = {
       required: true,
     },
     {
+      name: 'publishedOrUpdatedAt',
+      type: 'date',
+      required: true,
+      admin: {
+          date: {
+              pickerAppearance: 'dayOnly',
+              displayFormat: 'dd.MM.yyyy',
+          },
+      },
+      defaultValue: () => new Date().toISOString(),
+    },
+    {
       name: 'content',
       type: 'richText',
       required: true,

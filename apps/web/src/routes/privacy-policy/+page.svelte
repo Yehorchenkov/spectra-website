@@ -3,6 +3,7 @@
     import TableOfContents from '$lib/ui/components/TableOfContents.svelte';
     import CalendarDots from 'phosphor-svelte/lib/CalendarDots';
     import SEO from '$lib/SEO.svelte';
+    import { formatDateLong } from '$lib/utils/dateHelpers';
     
     let { data } = $props();
 
@@ -28,10 +29,10 @@
         <header class="space-y-4 mb-4 border-b-2 border-primary pb-2">
             <h1 class="text-2xl font-bold text-primary">{data.privacyData.title}</h1>
             
-            {#if data.privacyData.lastUpdated}
+            {#if data.privacyData.publishedOrUpdatedAt}
                 <p class="flex items-center gap-2 text-sm text-muted-foreground">
                     <CalendarDots class="text-lg" />
-                    <span>Last updated: {formatDate(data.privacyData.lastUpdated)}</span>
+                    <span>Last updated: {formatDateLong(data.privacyData.publishedOrUpdatedAt)}</span>
                 </p>
             {/if}
         </header>

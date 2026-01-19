@@ -1,10 +1,13 @@
-import { safeFetch } from '$lib/utils/apiHandler.js';
+import { safeFetch, buildQuery } from '$lib/utils/apiHandler.js';
 
-export async function load({ fetch }) {
-    // safeFetch handles the try/catch, 404/500 checks, and JSON parsing automatically.
-    const privacyData = await safeFetch('globals/privacy-policy');
+export async function load() {
+    // fetch first page with slug = privacy-policy
+    const query = buildQuery({
+        where: { slug: { equals: 'privacy-policy' } },
+        limit: 1
+    });
+    const res = await safeFetch('pages', query);
+    const privacyData = res?.docs?.[0] ?? null;
 
-    return {
-        privacyData
-    };
+    return { privacyData };
 }

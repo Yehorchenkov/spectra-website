@@ -225,6 +225,15 @@ export const Projects: CollectionConfig = {
                 hidden: true,
               },
             },
+            {
+              name: 'outputs',
+              type: 'join',
+              collection: 'outputs',
+              on: 'projects',
+              admin: {
+                hidden: true,
+              },
+            },
             // ...SlugField('title'),
             slugField({
               useAsSlug: 'title',

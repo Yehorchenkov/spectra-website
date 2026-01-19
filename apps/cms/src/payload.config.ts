@@ -26,6 +26,7 @@ import { Pages } from './collections/Pages'
 import { TeamMembers } from './collections/TeamMembers'
 import { Events } from './collections/Events'
 import { EventTags } from './collections/EventTags'
+import { Subcentres } from './collections/Subcentres'
 
 // Blocks
 import { ContentWithMedia } from './blocks/ContentWithMedia'
@@ -42,8 +43,8 @@ import { ScientificPlatforms } from './collections/ScientificPlatforms'
 import { ProjectRoles } from './collections/ProjectRoles'
 import { UserMedia } from './collections/UserMedia'
 import { Footer } from './globals/Footer'
-import { PrivacyPolicy } from './globals/PrivacyPolicy'
 import { SeoSettings } from './collections/SeoSettings'
+import { Outputs } from './collections/Outputs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -101,8 +102,10 @@ export default buildConfig({
     Events,
     EventTags,
     SeoSettings,
+    Subcentres,
+    Outputs,
   ],
-  globals: [Hero, Header, Footer, PrivacyPolicy],
+  globals: [Hero, Header, Footer],
   // endpoints: [coordinatorsEndpoint],
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
