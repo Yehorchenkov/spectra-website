@@ -45,6 +45,8 @@ import { UserMedia } from './collections/UserMedia'
 import { Footer } from './globals/Footer'
 import { SeoSettings } from './collections/SeoSettings'
 import { Outputs } from './collections/Outputs'
+import { ExpertOpinions } from './collections/ExpertOpinions'
+import { ExpertOpinionsTags } from './collections/ExpertOpinionsTags'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -104,6 +106,8 @@ export default buildConfig({
     SeoSettings,
     Subcentres,
     Outputs,
+    ExpertOpinions,
+    ExpertOpinionsTags,
   ],
   globals: [Hero, Header, Footer],
   // endpoints: [coordinatorsEndpoint],

@@ -85,6 +85,8 @@ export interface Config {
     'seo-settings': SeoSetting;
     subcentres: Subcentre;
     outputs: Output;
+    'expert-opinions': ExpertOpinion;
+    expertOpinionsTags: ExpertOpinionsTag;
     search: Search;
     'payload-kv': PayloadKv;
     'payload-folders': FolderInterface;
@@ -124,6 +126,8 @@ export interface Config {
     'seo-settings': SeoSettingsSelect<false> | SeoSettingsSelect<true>;
     subcentres: SubcentresSelect<false> | SubcentresSelect<true>;
     outputs: OutputsSelect<false> | OutputsSelect<true>;
+    'expert-opinions': ExpertOpinionsSelect<false> | ExpertOpinionsSelect<true>;
+    expertOpinionsTags: ExpertOpinionsTagsSelect<false> | ExpertOpinionsTagsSelect<true>;
     search: SearchSelect<false> | SearchSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
@@ -1156,6 +1160,62 @@ export interface Subcentre {
   createdAt: string;
 }
 /**
+ * Expert opinions and insights.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "expert-opinions".
+ */
+export interface ExpertOpinion {
+  id: number;
+  image?: (number | null) | Media;
+  title: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * A short summary of the article. Automatically generated from content.
+   */
+  excerpt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  tags?: (number | ExpertOpinionsTag)[] | null;
+  /**
+   * The date this article was/will be published.
+   */
+  publishDate: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Tags for the Expert Opinions
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "expertOpinionsTags".
+ */
+export interface ExpertOpinionsTag {
+  id: number;
+  name: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1280,6 +1340,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'outputs';
         value: number | Output;
+      } | null)
+    | ({
+        relationTo: 'expert-opinions';
+        value: number | ExpertOpinion;
+      } | null)
+    | ({
+        relationTo: 'expertOpinionsTags';
+        value: number | ExpertOpinionsTag;
       } | null)
     | ({
         relationTo: 'search';
@@ -1745,6 +1813,33 @@ export interface OutputsSelect<T extends boolean = true> {
   doi?: T;
   generateSlug?: T;
   slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "expert-opinions_select".
+ */
+export interface ExpertOpinionsSelect<T extends boolean = true> {
+  image?: T;
+  title?: T;
+  content?: T;
+  excerpt?: T;
+  generateSlug?: T;
+  slug?: T;
+  tags?: T;
+  publishDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "expertOpinionsTags_select".
+ */
+export interface ExpertOpinionsTagsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
 }
