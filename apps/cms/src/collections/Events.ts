@@ -36,7 +36,8 @@ const setFinishDateHook: CollectionBeforeChangeHook = ({ data, operation }) => {
 const transformStateFilterHook: CollectionBeforeOperationHook = ({ args, operation }) => {
   // We only care about 'read' operations where a 'where' query is present
   if (operation === 'read' && 'where' in args && args.where) {
-    const where = (args as any).where
+    const queryArgs = args as { where: Record<string, unknown> }
+    const where = queryArgs.where
     
     // Check if the query contains eventState
     // Payload query objects can be nested, but for simple equals it looks like this:
@@ -58,8 +59,10 @@ const transformStateFilterHook: CollectionBeforeOperationHook = ({ args, operati
       } 
       else if (state === 'ongoing') {
         // Ongoing means: started in the past AND finishes in the future
+        const existingAnd = Array.isArray(where.and) ? where.and : []
+
         where.and = [
-          ...(where.and || []),
+          ...existingAnd,
           { startDate: { less_than_equal: now } },
           { finishDate: { greater_than_equal: now } }
         ]
@@ -156,7 +159,6 @@ export const Events: CollectionConfig = {
                 },
               },
             },
-            // ...SlugField('title'),
             slugField({
               useAsSlug: 'title',
             }),
