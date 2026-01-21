@@ -7,6 +7,7 @@
 	import SiteFooter from '$lib/ui/site-footer.svelte';
 
 	let { children, data } = $props();
+
 </script>
 
 <ModeWatcher />

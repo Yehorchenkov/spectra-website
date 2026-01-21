@@ -201,6 +201,7 @@ export const Projects: CollectionConfig = {
               // Add the excerpt field
               name: 'excerpt',
               type: 'textarea',
+              required: true,
               admin: {
                 description:
                   'A short summary of the project article. Automatically generated from content.',

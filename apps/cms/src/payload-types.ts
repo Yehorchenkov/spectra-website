@@ -570,7 +570,7 @@ export interface Partner {
         | 'ZW'
       )
     | null;
-  city: string;
+  city?: string | null;
   lat?: number | null;
   lon?: number | null;
   updatedAt: string;
@@ -604,7 +604,7 @@ export interface News {
   /**
    * A short summary of the news article. Automatically generated from content.
    */
-  excerpt?: string | null;
+  excerpt: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -688,7 +688,7 @@ export interface Project {
   /**
    * A short summary of the project article. Automatically generated from content.
    */
-  excerpt?: string | null;
+  excerpt: string;
   news?: {
     docs?: (number | News)[];
     hasNextPage?: boolean;

@@ -14,8 +14,8 @@ const generateNewsExcerptHook: CollectionBeforeChangeHook = ({ data, req, operat
   return data
 }
 
-export const News: CollectionConfig = {
-  slug: 'news',
+export const ExpertOpinions: CollectionConfig = {
+  slug: 'expert-opinions',
   hooks: {
     // Add hooks configuration
     beforeChange: [generateNewsExcerptHook],
@@ -29,7 +29,7 @@ export const News: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
-    description: 'News articles and updates.',
+    description: 'Expert opinions and insights.',
     group: 'Content',
     defaultColumns: ['title', 'image', 'tags', 'publishDate'],
   },
@@ -37,7 +37,6 @@ export const News: CollectionConfig = {
     title: true,
     slug: true,
     image: true,
-    projects: true,
     excerpt: true,
     publishDate: true,
   },
@@ -78,14 +77,12 @@ export const News: CollectionConfig = {
               // Add the excerpt field
               name: 'excerpt',
               type: 'textarea',
-              required: true,
               admin: {
                 description:
-                  'A short summary of the news article. Automatically generated from content.',
+                  'A short summary of the article. Automatically generated from content.',
                 readOnly: true,
               },
             },
-            // ...SlugField('title'),
             slugField({
               useAsSlug: 'title',
             }),
@@ -95,18 +92,9 @@ export const News: CollectionConfig = {
     },
     // Sidebar fields
     {
-      name: 'projects',
-      type: 'relationship',
-      relationTo: 'projects',
-      hasMany: true,
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
       name: 'tags',
       type: 'relationship',
-      relationTo: 'newsTags',
+      relationTo: 'expertOpinionsTags',
       hasMany: true,
       admin: {
         position: 'sidebar',

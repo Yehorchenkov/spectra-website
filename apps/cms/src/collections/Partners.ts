@@ -72,7 +72,6 @@ export const Partners: CollectionConfig = {
     {
       name: 'city',
       type: 'text',
-      required: true,
       admin: {
         position: 'sidebar',
       },
