@@ -36,7 +36,6 @@ import { ImageGallery } from './blocks/ImageGallery'
 // Globals
 import { Hero } from './globals/Hero'
 import { Header } from './globals/Header'
-// import coordinatorsEndpoint from './endpoints/coordinators'
 import { Partners } from './collections/Partners'
 import { SocialPlatforms } from './collections/SocialPlatforms'
 import { ScientificPlatforms } from './collections/ScientificPlatforms'
@@ -47,6 +46,7 @@ import { SeoSettings } from './collections/SeoSettings'
 import { Outputs } from './collections/Outputs'
 import { ExpertOpinions } from './collections/ExpertOpinions'
 import { ExpertOpinionsTags } from './collections/ExpertOpinionsTags'
+import { KeyFacts } from './collections/KeyFacts'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -108,6 +108,7 @@ export default buildConfig({
     Outputs,
     ExpertOpinions,
     ExpertOpinionsTags,
+    KeyFacts,
   ],
   globals: [Hero, Header, Footer],
   // endpoints: [coordinatorsEndpoint],
