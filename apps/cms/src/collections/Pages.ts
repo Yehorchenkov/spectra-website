@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
-// import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',

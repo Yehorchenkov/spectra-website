@@ -2,7 +2,6 @@ import { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 import { anyone } from '@/access/anyone'
 import { isLoggedIn } from '@/access/isLoggedIn'
-// import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 import { validateUrl } from '@/utils/utils'
 
 export const TeamMembers: CollectionConfig = {

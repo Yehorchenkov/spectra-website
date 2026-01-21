@@ -3,7 +3,6 @@ import { slugField } from 'payload';
 import { isAdmin, isAdminFieldLevel } from '@/access/isAdmin';
 import { isAdminOrSelf } from '@/access/isAdminOrSelf';
 import { anyone } from '@/access/anyone';
-// import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
 
 export const Users: CollectionConfig = {
   slug: 'users',

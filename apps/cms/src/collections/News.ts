@@ -2,23 +2,13 @@ import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
-import type { CollectionBeforeChangeHook } from 'payload'
-import { generateExcerpt } from '@/utils/seo'
 import { requireMetaOnPublish } from '@/utils/utils'
-
-// Hook to generate excerpt before saving
-const generateNewsExcerptHook: CollectionBeforeChangeHook = ({ data, req, operation }) => {
-  if (data.content && (operation === 'create' || operation === 'update')) {
-    data.excerpt = generateExcerpt(data.content, 500)
-  }
-  return data
-}
+import { ExcerptComponent } from '@/components/ExceptComponent'
 
 export const News: CollectionConfig = {
   slug: 'news',
   hooks: {
     // Add hooks configuration
-    beforeChange: [generateNewsExcerptHook],
     beforeValidate: [requireMetaOnPublish],
   },
   access: {
@@ -82,7 +72,10 @@ export const News: CollectionConfig = {
               admin: {
                 description:
                   'A short summary of the news article. Automatically generated from content.',
-                readOnly: true,
+                // readOnly: true,
+                components: {
+                  Field: ExcerptComponent as any,
+                },
               },
             },
             // ...SlugField('title'),

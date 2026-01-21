@@ -2,20 +2,11 @@ import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
-// import { SlugField } from '@nouance/payload-better-fields-plugin/Slug'
-import type { CollectionBeforeChangeHook, CollectionBeforeValidateHook } from 'payload'
-import { generateExcerpt } from '@/utils/seo'
+import type { CollectionBeforeValidateHook } from 'payload'
 import { validateUrl, validateDateRange } from '@/utils/utils';
 import { requireMetaOnPublish } from '@/utils/utils'
 import { ValidationError } from 'payload'
-
-// Hook to generate excerpt before saving
-const generateProjectExcerptHook: CollectionBeforeChangeHook = ({ data, /* req, */ operation }) => {
-  if (data.content && (operation === 'create' || operation === 'update')) {
-    data.excerpt = generateExcerpt(data.content, 500)
-  }
-  return data
-}
+import { ExcerptComponent } from '@/components/ExceptComponent'
 
 const enforceResponsible: CollectionBeforeValidateHook = ({ data }) => {
   const participants = Array.isArray(data?.projectParticipants) ? data.projectParticipants : []
@@ -67,8 +58,6 @@ const enforceResponsible: CollectionBeforeValidateHook = ({ data }) => {
 export const Projects: CollectionConfig = {
   slug: 'projects',
   hooks: {
-    // Add hooks configuration
-    beforeChange: [generateProjectExcerptHook],
     beforeValidate: [enforceResponsible, requireMetaOnPublish],
   },
   access: {
@@ -205,7 +194,9 @@ export const Projects: CollectionConfig = {
               admin: {
                 description:
                   'A short summary of the project article. Automatically generated from content.',
-                readOnly: true, // Or true if you ONLY want it auto-generated
+                components: {
+                  Field: ExcerptComponent as any,
+                },
               },
             },
             {

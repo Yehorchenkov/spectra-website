@@ -3,22 +3,12 @@ import { slugField } from 'payload'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
 import type { CollectionBeforeChangeHook } from 'payload'
-import { generateExcerpt } from '@/utils/seo'
 import { requireMetaOnPublish } from '@/utils/utils'
-
-// Hook to generate excerpt before saving
-const generateNewsExcerptHook: CollectionBeforeChangeHook = ({ data, req, operation }) => {
-  if (data.content && (operation === 'create' || operation === 'update')) {
-    data.excerpt = generateExcerpt(data.content, 500)
-  }
-  return data
-}
+import { ExcerptComponent } from '@/components/ExceptComponent'
 
 export const ExpertOpinions: CollectionConfig = {
   slug: 'expert-opinions',
   hooks: {
-    // Add hooks configuration
-    beforeChange: [generateNewsExcerptHook],
     beforeValidate: [requireMetaOnPublish],
   },
   access: {
@@ -77,10 +67,13 @@ export const ExpertOpinions: CollectionConfig = {
               // Add the excerpt field
               name: 'excerpt',
               type: 'textarea',
+              required: true,
               admin: {
                 description:
                   'A short summary of the article. Automatically generated from content.',
-                readOnly: true,
+                components: {
+                  Field: ExcerptComponent as any,
+                },
               },
             },
             slugField({

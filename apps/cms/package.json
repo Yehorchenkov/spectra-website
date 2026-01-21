@@ -24,6 +24,7 @@
     "@payloadcms/plugin-search": "3.72.0",
     "@payloadcms/plugin-seo": "3.72.0",
     "@payloadcms/richtext-lexical": "3.72.0",
+    "@payloadcms/ui": "^3.72.0",
     "@shefing/authors-info": "^1.0.23",
     "@shefing/custom-version-view": "^1.0.9",
     "cross-env": "^7.0.3",

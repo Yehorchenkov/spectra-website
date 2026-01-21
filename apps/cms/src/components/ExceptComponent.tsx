@@ -1,114 +1,96 @@
 'use client'
 
 import React, { useCallback } from 'react'
-import { useField, useFormFields, Label } from '@payloadcms/ui'
-import './styles.css' // Optional: if you want to extract styles
+import type { TextareaFieldClientProps } from 'payload'
+import { useField, useFormFields, FieldLabel } from '@payloadcms/ui'
+import { generateExcerpt } from '@/utils/generateExcerpt' // Adjust path if needed
 
-// Helper to extract plain text from RichText (Lexical or Slate)
-const extractTextFromRichText = (node: any): string => {
-  if (!node) return ''
-  if (typeof node === 'string') return node
-  if (node.text) return node.text
+export const ExcerptComponent = (props: TextareaFieldClientProps) => {
+  const { field, path, readOnly } = props
+  const { label, localized, required } = field
   
-  // Handle Lexical (root.children) or Slate (children)
-  const children = node.root?.children || node.children
-  
-  if (Array.isArray(children)) {
-    return children.map(extractTextFromRichText).join(' ')
-  }
-  
-  return ''
-}
+  // You can adjust these or pass them via field admin.custom props
+  const maxLength = 500 
+  const minLength = 400
 
-export const ExcerptComponent: React.FC = () => {
-  const path = 'excerpt'
-  const label = 'Excerpt'
-  const minLength = 50
-  const maxLength = 300 // Recommended length for SEO excerpts
+  const { value, setValue, showError, errorMessage } = useField<string>({ path })
 
-  // 1. Get the Excerpt field
-  const { value, setValue, showError } = useField<string>({ path })
-
-  // 2. Get the Content field to generate from
-  // We useFormFields to get the current value of the 'content' field from the form state
+  // Watch the 'content' field for changes
   const content = useFormFields(([fields]) => fields.content?.value)
 
-  // 3. Logic to generate the excerpt
-  const regenerateExcerpt = useCallback(() => {
+  const handleGenerate = useCallback(() => {
     if (!content) {
-      alert('Please add content before generating an excerpt.')
+      alert('Please add content to the main Content field first.')
       return
     }
 
-    const plainText = extractTextFromRichText(content)
+    // Use your custom function
+    const generated = generateExcerpt(content, maxLength)
     
-    // Trim to maxLength and add ellipsis if needed
-    let generatedExcerpt = plainText.substring(0, maxLength)
-    if (plainText.length > maxLength) {
-      generatedExcerpt = generatedExcerpt.substring(0, generatedExcerpt.lastIndexOf(' ')) + '...'
-    }
-
-    setValue(generatedExcerpt)
+    setValue(generated)
   }, [content, setValue, maxLength])
 
   return (
-    <div style={{ marginBottom: '20px' }}>
-      {/* Top Label Row */}
-      <div style={{ marginBottom: '5px', position: 'relative', display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <Label htmlFor={path} />
+    <div className="field-type textarea" style={{ marginBottom: '20px' }}>
+      <div style={{ marginBottom: '5px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <FieldLabel
+          label={label}
+          localized={localized}
+          path={path}
+          required={required}
+        />
         
-        {/* The Auto-generate Button (Styled like MetaTitle.tsx) */}
         <button
-          onClick={regenerateExcerpt}
+          onClick={handleGenerate}
           type="button"
+          disabled={readOnly}
           style={{
-            padding: 0,
             background: 'none',
             border: 'none',
-            backgroundColor: 'transparent',
-            cursor: 'pointer',
+            cursor: readOnly ? 'not-allowed' : 'pointer',
             textDecoration: 'underline',
-            color: 'var(--theme-elevation-400)', // Adapts to theme
+            color: 'var(--theme-elevation-400)',
             fontSize: '13px',
+            padding: 0,
           }}
         >
           Auto-generate
         </button>
       </div>
 
-      {/* Description / Help Text */}
       <div style={{ color: '#9A9A9A', fontSize: '13px', marginBottom: '10px' }}>
         {`This should be between ${minLength} and ${maxLength} characters.`}
       </div>
 
-      {/* The Textarea Input */}
-      <div style={{ position: 'relative', marginBottom: '5px' }}>
+      <div style={{ position: 'relative' }}>
         <textarea
           id={path}
           value={value || ''}
           onChange={(e) => setValue(e.target.value)}
+          disabled={readOnly}
           rows={4}
           style={{
             width: '100%',
             padding: '12px',
             background: 'var(--theme-bg)',
             color: 'var(--theme-text)',
-            border: showError ? '1px solid var(--theme-error-500)' : '1px solid var(--theme-elevation-200)',
+            border: showError 
+              ? '1px solid var(--theme-error-500)' 
+              : '1px solid var(--theme-elevation-200)',
             borderRadius: '4px',
             fontFamily: 'inherit',
-            fontSize: '16px',
+            fontSize: '14px',
             resize: 'vertical',
           }}
         />
         {showError && (
-            <div style={{ color: 'var(--theme-error-500)', fontSize: '12px', marginTop: '5px' }}>
-                This field is required
-            </div>
+          <div style={{ color: 'var(--theme-error-500)', fontSize: '12px', marginTop: '5px' }}>
+            {errorMessage || 'This field is required'}
+          </div>
         )}
       </div>
 
-      {/* Length Indicator */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '12px', color: '#9A9A9A' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '12px', color: '#9A9A9A', marginTop: '5px' }}>
         {value?.length || 0} / {maxLength} chars
       </div>
     </div>
