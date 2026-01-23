@@ -4,6 +4,7 @@
     import IconNav from "$lib/ui/header/icon-nav.svelte";
     import MobileNav from "$lib/ui/header/mobile-nav.svelte";
     import Search from "$lib/ui/header/search.svelte";
+	import CULogo from "$lib/ui/header/CU-logo.svelte";
 
 	let { data } = $props();
 
@@ -36,7 +37,7 @@
 	min-h-16 py-2 md:py-0
 	{y > 20
 		? 'md:h-16 shadow-md dark:shadow-slate-500/20'
-		: 'md:h-32'
+		: 'md:h-24'
 	}"
 >
 	<section class="mx-auto flex w-full max-w-screen-xl items-center justify-between px-3 sm:px-4 lg:px-6">
@@ -52,6 +53,7 @@
 		<div class="flex items-center gap-0 sm:gap-2 shrink-0">
 			<Search />
 			<ModeToggler />
+			<!-- <CULogo /> -->
 		</div>
 	</section>
 </header>

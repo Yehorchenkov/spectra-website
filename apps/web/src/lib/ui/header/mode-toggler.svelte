@@ -14,7 +14,7 @@
     aria-label="Mode toggler"
     aria-checked={mode.current === "light"}
 	title="Toggle {mode.current === 'dark' ? 'Dark' : 'Light'} Mode"
-    class="relative inline-flex h-10 w-10 justify-center items-center rounded-lg px-2 transition-colors hover:bg-muted focus:outline-none"
+    class="relative inline-flex h-8 w-8 justify-center items-center rounded-lg px-2 transition-colors hover:bg-muted focus:outline-none"
 >
     {#if mode.current === "dark"}
         <div
@@ -26,7 +26,7 @@
                 easing: cubicOut,
             }}
         >
-            <Sun class="size-6 text-foreground hover:text-primary" aria-label="Sun" />
+            <Sun class="size-5 text-foreground hover:text-primary" aria-label="Sun" />
         </div>
     {:else}
         <div
@@ -38,7 +38,7 @@
                 easing: cubicOut,
             }}
         >
-            <Moon class="size-6 text-foreground hover:text-primary" aria-label="Moon" />
+            <Moon class="size-5 text-foreground hover:text-primary" aria-label="Moon" />
         </div>
     {/if}
 </Button.Root>

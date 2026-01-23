@@ -2,6 +2,7 @@
     import Envelope from 'phosphor-svelte/lib/Envelope';
     import MapPin from 'phosphor-svelte/lib/MapPin';
     import IconNav from "$lib/ui/header/icon-nav.svelte";
+    import CULogo from '$lib/ui/header/CU-logo.svelte';
     import ButtonLink from "$lib/ui/components/ButtonLink.svelte";
     import SocialIcon from "$lib/ui/components/SocialIcon.svelte";
     import { getLinkUrl } from '$lib/utils/helpers';
@@ -20,6 +21,7 @@
             <!-- Brand & Logo -->
             <div class="space-y-4 md:col-span-2">
                 <IconNav class="flex!" />
+                <CULogo class="flex! h-14" />
                 {#if footer?.brandDescription}
                     <p class="text-sm text-muted-foreground leading-relaxed max-w-sm">
                         {footer.brandDescription}

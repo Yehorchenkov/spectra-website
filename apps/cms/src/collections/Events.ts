@@ -156,6 +156,7 @@ export const Events: CollectionConfig = {
                   'A short summary of the event article. Automatically generated from content.',
                 components: {
                   Field: ExcerptComponent as any,
+                  // Field: '/components/ExcerptComponent#ExcerptComponent'
                 },
               },
             },

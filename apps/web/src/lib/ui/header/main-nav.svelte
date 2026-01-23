@@ -5,6 +5,7 @@
 	import { page } from '$app/state';
 	// import { navMenu } from '$lib/config/navMenu';
 	import { getLinkUrl } from '$lib/utils/helpers';
+	import ModeToggler from './mode-toggler.svelte';
 
 	let { data } = $props();
 	const navItems = $derived(data?.navItems || []);
@@ -17,7 +18,7 @@
 
 <NavigationMenu.Root class="hidden md:flex">
 	<NavigationMenu.List
-		class="snip1226 group flex flex-1 list-none items-center justify-center space-x-6 text-xl font-medium lg:space-x-12"
+		class="snip1226 group flex flex-1 list-none items-center justify-center space-x-6 text-md font-medium lg:space-x-12"
 	>
 		{#each navItems as item (item.id)}
 			<NavigationMenu.Item>
@@ -35,5 +36,10 @@
 			</NavigationMenu.Item>
 		{/each}
 	</NavigationMenu.List>
+	<!-- <NavigationMenu.List class="ml-6 lg:ml-12">
+		<NavigationMenu.Item>
+			<ModeToggler />
+		</NavigationMenu.Item>
+	</NavigationMenu.List> -->
 	<NavigationMenu.Viewport />
 </NavigationMenu.Root>
