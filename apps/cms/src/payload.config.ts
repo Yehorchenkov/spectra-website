@@ -9,7 +9,11 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
 // Utils
-import { buildTitle, generateExcerpt } from './utils/seo'
+import { buildTitle } from './utils/seo'
+import { generateExcerpt } from './utils/generateExcerpt'
+
+// Constants
+import { SITE_DESCRIPTION_MAX } from './utils/constants'
 
 // Plugins
 import { seoPlugin } from '@payloadcms/plugin-seo'
@@ -163,7 +167,7 @@ export default buildConfig({
 
       generateDescription: ({ doc, collectionSlug }) => {
         const content = collectionSlug === 'team-members' ? doc.profile : doc.content
-        return generateExcerpt(content) // Uses DESCRIPTION_MAX
+        return generateExcerpt(content, SITE_DESCRIPTION_MAX)
       },
 
       generateURL: ({ doc, collectionSlug }) => {

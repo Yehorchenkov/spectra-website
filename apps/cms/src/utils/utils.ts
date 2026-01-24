@@ -1,16 +1,36 @@
-import { CollectionBeforeValidateHook, ValidationError, Validate } from 'payload'
+import type { CollectionBeforeValidateHook, Validate } from 'payload'
+import { ValidationError } from 'payload'
 
-export const requireMetaOnPublish: CollectionBeforeValidateHook = ({ data, operation }) => {
+type PublishMetaShape = {
+  _status?: 'draft' | 'published' | string
+  meta?: {
+    title?: string
+    description?: string
+  }
+}
+
+function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function asPublishMetaShape(data: unknown): PublishMetaShape | null {
+  if (!isObject(data)) return null
+  // We only *read* these fields, so a shallow cast is fine after object check.
+  return data as PublishMetaShape
+}
+
+export const requireMetaOnPublish: CollectionBeforeValidateHook = ({ data, operation: _operation }) => {
   if (!data) return data
 
   // Only check this during create or update operations
-  const status = (data as any)?._status
+  const shaped = asPublishMetaShape(data)
+  const status = shaped?._status
   const isPublishing = status === 'published'
 
   if (!isPublishing) return data
 
-  const title = (data as any)?.meta?.title?.trim?.()
-  const description = (data as any)?.meta?.description?.trim?.()
+  const title = shaped?.meta?.title?.trim?.()
+  const description = shaped?.meta?.description?.trim?.()
 
   const errors: { message: string; path: string }[] = []
 
@@ -30,9 +50,7 @@ export const requireMetaOnPublish: CollectionBeforeValidateHook = ({ data, opera
 
   if (errors.length > 0) {
     // Throwing ValidationError makes the UI display the specific messages
-    throw new ValidationError({
-      errors,
-    })
+    throw new ValidationError({ errors })
   }
 
   return data
@@ -45,6 +63,7 @@ export const requireMetaOnPublish: CollectionBeforeValidateHook = ({ data, opera
  */
 export function validateUrl(value: unknown): true | string {
     if (!value) return true;
+    if (typeof value !== 'string') return 'Please enter a valid URL starting with http:// or https://'
     const urlRegex = /^https?:\/\/.+/i;
     return urlRegex.test(value as string)
         ? true

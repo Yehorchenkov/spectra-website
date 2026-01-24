@@ -910,13 +910,13 @@ export interface Event {
     [k: string]: unknown;
   };
   /**
-   * Automatically calculated from dates
-   */
-  eventState?: ('upcoming' | 'ongoing' | 'past') | null;
-  /**
    * A short summary of the event article. Automatically generated from content.
    */
   excerpt: string;
+  /**
+   * Automatically calculated from dates
+   */
+  eventState?: ('upcoming' | 'ongoing' | 'past') | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -1741,8 +1741,8 @@ export interface EventsSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
   content?: T;
-  eventState?: T;
   excerpt?: T;
+  eventState?: T;
   generateSlug?: T;
   slug?: T;
   meta?:

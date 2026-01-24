@@ -124,21 +124,6 @@ export const Events: CollectionConfig = {
               type: 'richText',
               required: true,
             },
-            {
-              name: 'eventState',
-              label: 'Event state',
-              type: 'select',
-              options: [
-                { label: 'Upcoming', value: 'upcoming' },
-                { label: 'Ongoing', value: 'ongoing' },
-                { label: 'Past', value: 'past' },
-              ],
-              defaultValue: 'upcoming',
-              admin: {
-                readOnly: true,
-                description: 'Automatically calculated from dates',
-              },
-            },
           ],
         },
         {
@@ -156,6 +141,21 @@ export const Events: CollectionConfig = {
                 components: {
                   Field: '/components/ExcerptComponent#ExcerptComponent'
                 },
+              },
+            },
+            {
+              name: 'eventState',
+              label: 'Event state',
+              type: 'select',
+              options: [
+                { label: 'Upcoming', value: 'upcoming' },
+                { label: 'Ongoing', value: 'ongoing' },
+                { label: 'Past', value: 'past' },
+              ],
+              defaultValue: 'upcoming',
+              admin: {
+                readOnly: true,
+                description: 'Automatically calculated from dates',
               },
             },
             slugField({

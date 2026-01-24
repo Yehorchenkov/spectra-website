@@ -1,43 +1,53 @@
+import type { DefaultNodeTypes } from '@payloadcms/richtext-lexical'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
+import {
+  convertLexicalToPlaintext,
+  type PlaintextConverters,
+} from '@payloadcms/richtext-lexical/plaintext'
+
+import { smartTruncate, normalizeWhitespace } from '@/utils/text'
 
 export type ExcerptInput = SerializedEditorState | string | null | undefined
+
+export type GenerateExcerptOptions = {
+  skipHeadings?: boolean
+  ellipsis?: string
+}
 
 function isSerializedEditorState(value: unknown): value is SerializedEditorState {
   return typeof value === 'object' && value !== null && 'root' in value
 }
 
-/**
- * Generates an excerpt from Lexical RichText content using the built-in converter.
- * @param content The Lexical RichText content object (SerializedEditorState).
- * @param maxLength The maximum length of the excerpt (including ellipsis if truncated).
- * @returns The generated excerpt string.
- */
-export function generateExcerpt(content: ExcerptInput, maxLength: number = 150, skipHeadings: boolean = true): string {
+const skipHeadingConverters: PlaintextConverters<DefaultNodeTypes> = {
+  heading: () => '',
+}
+
+export function generateExcerpt(
+  content: ExcerptInput,
+  maxLength: number = 150,
+  options: GenerateExcerptOptions = {},
+): string {
   if (!content) return ''
 
-  const textContent =
-    typeof content === 'string'
-      ? content
-      : isSerializedEditorState(content)
-        ? convertLexicalToPlaintext({ data: content })
-        : ''
+  const { skipHeadings = true, ellipsis = '...' } = options
 
-  const trimmedText = textContent.trim().replace(/\s+/g, ' ') // Remove double spaces/newlines
-
-  if (trimmedText.length <= maxLength) return trimmedText
-
-  const ellipsis = '...'
-  const maxContentLength = maxLength - ellipsis.length
-
-  if (maxContentLength <= 0) return trimmedText.substring(0, maxLength)
-
-  const truncated = trimmedText.substring(0, maxContentLength).trimEnd()
-  const lastSpaceIndex = truncated.lastIndexOf(' ')
-
-  if (lastSpaceIndex > 0) {
-    return truncated.substring(0, lastSpaceIndex) + ellipsis
-  } else {
-    return truncated + ellipsis
+  if (typeof content === 'string') {
+    return smartTruncate(content, maxLength, { ellipsis })
   }
+
+  if (isSerializedEditorState(content)) {
+    const plaintextSkippingHeadings = convertLexicalToPlaintext({
+      data: content,
+      ...(skipHeadings ? { converters: skipHeadingConverters } : {}),
+    })
+
+    const plaintext =
+      skipHeadings && !normalizeWhitespace(plaintextSkippingHeadings)
+        ? convertLexicalToPlaintext({ data: content })
+        : plaintextSkippingHeadings
+
+    return smartTruncate(plaintext, maxLength, { ellipsis })
+  }
+
+  return ''
 }
