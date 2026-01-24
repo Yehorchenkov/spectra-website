@@ -1,7 +1,7 @@
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
 
-type ExcerptInput = SerializedEditorState | string | null | undefined
+export type ExcerptInput = SerializedEditorState | string | null | undefined
 
 function isSerializedEditorState(value: unknown): value is SerializedEditorState {
   return typeof value === 'object' && value !== null && 'root' in value
@@ -13,7 +13,7 @@ function isSerializedEditorState(value: unknown): value is SerializedEditorState
  * @param maxLength The maximum length of the excerpt (including ellipsis if truncated).
  * @returns The generated excerpt string.
  */
-export function generateExcerpt(content: ExcerptInput, maxLength: number = 150,): string {
+export function generateExcerpt(content: ExcerptInput, maxLength: number = 150, skipHeadings: boolean = true): string {
   if (!content) return ''
 
   const textContent =

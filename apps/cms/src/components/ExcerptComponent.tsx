@@ -3,7 +3,7 @@
 import React, { useCallback } from 'react'
 import type { TextareaFieldClientProps } from 'payload'
 import { useField, useFormFields, FieldLabel } from '@payloadcms/ui'
-import { generateExcerpt } from '@/utils/generateExcerpt' // Adjust path if needed
+import { generateExcerpt, type ExcerptInput} from '@/utils/generateExcerpt' // Adjust path if needed
 
 export const ExcerptComponent = (props: TextareaFieldClientProps) => {
   const { field, path, readOnly } = props
@@ -24,8 +24,13 @@ export const ExcerptComponent = (props: TextareaFieldClientProps) => {
       return
     }
 
+    if (typeof content !== 'string' && typeof content !== 'object') {
+      alert('Unsupported content format.')
+      return
+    }
+
     // Use your custom function
-    const generated = generateExcerpt(content, maxLength)
+    const generated = generateExcerpt(content as ExcerptInput, maxLength)
     
     setValue(generated)
   }, [content, setValue, maxLength])

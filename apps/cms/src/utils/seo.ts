@@ -9,24 +9,36 @@ import { SITE_NAME, SITE_TITLE_SEP, SITE_TITLE_MAX, SITE_DESCRIPTION_MAX } from 
 // const TITLE_MAX = Number(process.env.SITE_TITLE_MAX || 60)
 // const DESCRIPTION_MAX = Number(process.env.SITE_DESCRIPTION_MAX || 158)
 
-function extractTextFromLexical(node: any): string {
-  if (!node) return ''
+type LexicalLikeNode = {
+  type?: unknown
+  text?: unknown
+  children?: unknown
+}
+
+function isLexicalLikeNode(value: unknown): value is LexicalLikeNode {
+  return typeof value === 'object' && value !== null
+}
+
+function extractTextFromLexical(node: unknown): string {
+  if (!isLexicalLikeNode(node)) return ''
+
+  const type = typeof node.type === 'string' ? node.type : undefined
 
   // 1. Skip all heading nodes (h1, h2, h3, etc.)
-  if (node.type === 'heading') {
+  if (type === 'heading') {
     return ''
   }
 
   // 2. If it's a text node, return its content
-  if (node.type === 'text') {
-    return node.text || ''
+  if (type === 'text') {
+    return typeof node.text === 'string' ? node.text : ''
   }
 
   // 3. If it has children (like paragraphs, lists, or formatting blocks),
   // recurse through them, but skip the headings inside.
-  if (node.children && Array.isArray(node.children)) {
+  if (Array.isArray(node.children)) {
     return node.children
-      .map((child: any) => extractTextFromLexical(child))
+      .map((child) => extractTextFromLexical(child))
       .filter(Boolean) // Remove empty strings from skipped headings
       .join(' ') // Join with space to prevent words from sticking together
   }
