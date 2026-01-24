@@ -2,9 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
-import type { CollectionBeforeChangeHook } from 'payload'
 import { requireMetaOnPublish } from '@/utils/utils'
-import { ExcerptComponent } from '@/components/ExceptComponent'
 
 export const ExpertOpinions: CollectionConfig = {
   slug: 'expert-opinions',
@@ -72,7 +70,7 @@ export const ExpertOpinions: CollectionConfig = {
                 description:
                   'A short summary of the article. Automatically generated from content.',
                 components: {
-                  Field: ExcerptComponent as any,
+                  Field: '/components/ExcerptComponent#ExcerptComponent'
                 },
               },
             },

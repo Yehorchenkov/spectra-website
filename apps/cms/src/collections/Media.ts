@@ -19,7 +19,7 @@ export const Media: CollectionConfig = {
       type: 'text',
       required: false,
       admin: {
-        // @ts-ignore
+        // @ts-expect-error Custom admin property
         description: AltTextInstructions,
         placeholder: 'e.g., "Attendees networking at the Annual Conference" or "Speaker presenting on stage"',
       },
