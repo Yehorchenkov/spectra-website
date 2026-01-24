@@ -4,7 +4,6 @@ import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
 import { requireMetaOnPublish, validateDateRange } from '@/utils/utils'
 import type { CollectionBeforeChangeHook, CollectionBeforeOperationHook } from 'payload'
-import { ExcerptComponent } from '@/components/ExceptComponent'
 
 // Hook to automatically calculate event state based on dates
 const calculateEventStateHook: CollectionAfterReadHook = ({ doc }) => {
@@ -155,8 +154,7 @@ export const Events: CollectionConfig = {
                 description:
                   'A short summary of the event article. Automatically generated from content.',
                 components: {
-                  Field: ExcerptComponent as any,
-                  // Field: '/components/ExcerptComponent#ExcerptComponent'
+                  Field: '/components/ExcerptComponent#ExcerptComponent'
                 },
               },
             },

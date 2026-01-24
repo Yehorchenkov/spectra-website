@@ -1,6 +1,16 @@
 import { Field } from 'payload'
 import { validateUrl } from '@/utils/utils'
 
+type LinkType = 'reference' | 'route' | 'custom'
+type LinkSiblingData = { type?: LinkType }
+
+const isType =
+  (t: LinkType) =>
+  (_: unknown, siblingData?: LinkSiblingData) =>
+    siblingData?.type === t
+
+type ValidateArgs = { siblingData?: LinkSiblingData }
+
 export const link = ({ name = 'link', overrides = {} } = {}): Field => {
   const linkResult: Field = {
     name,
@@ -40,37 +50,14 @@ export const link = ({ name = 'link', overrides = {} } = {}): Field => {
             label: 'Document to link to',
             type: 'relationship',
             relationTo: ['pages', 'news', 'projects', 'events', 'team-members'],
-            required: true,
             maxDepth: 1,
             admin: {
-              condition: (_, siblingData) => siblingData?.type === 'reference',
+              condition: isType('reference'),
+              description: 'Reference to the existing document'
             },
-            hooks: {
-              afterRead: [
-                ({ value }) => {
-                  // Check if this is a polymorphic object (has relationTo + value)
-                  if (value && typeof value === 'object' && 'relationTo' in value) {
-                    const selectedDoc = value.value
-
-                    // Only modify if the inner 'value' is actually populated (an object)
-                    // If it's just an ID string, leave it alone so Admin can fetch it
-                    if (selectedDoc && typeof selectedDoc === 'object') {
-                      return {
-                        relationTo: value.relationTo, // 👈 CRITICAL: Keep this for Admin UI
-                        value: {
-                          id: selectedDoc.id,
-                          title: selectedDoc.title,
-                          slug: selectedDoc.slug,
-                          _status: selectedDoc._status,
-                          // Add breadcrumbs if you use them
-                          breadcrumbs: selectedDoc.breadcrumbs || undefined,
-                        },
-                      }
-                    }
-                  }
-                  return value
-                },
-              ],
+            validate: (value: unknown, args: ValidateArgs) => {
+              if (args.siblingData?.type !== 'reference') return true
+              return value ? true : 'Please select a document'
             },
           },
           // 2. System Routes
@@ -78,10 +65,13 @@ export const link = ({ name = 'link', overrides = {} } = {}): Field => {
             name: 'route',
             label: 'Choose an internal route',
             type: 'text',
-            required: true,
             admin: {
-              condition: (_, siblingData) => siblingData?.type === 'route',
+              condition: isType('route'),
               description: 'Internal route like /projects, /news, etc',
+            },
+            validate: (value: unknown, args: ValidateArgs) => {
+              if (args.siblingData?.type !== 'route') return true
+              return typeof value === 'string' && value.trim() ? true : 'Please enter a route'
             },
           },
           // 3. External URL
@@ -89,11 +79,14 @@ export const link = ({ name = 'link', overrides = {} } = {}): Field => {
             name: 'url',
             label: 'Custom URL',
             type: 'text',
-            required: true,
-            validate: validateUrl,
             admin: {
-              condition: (_, siblingData) => siblingData?.type === 'custom',
+              condition: isType('custom'),
               description: 'Full reference to external source',
+            },
+            validate: (value: unknown, args: ValidateArgs) => {
+              if (args.siblingData?.type !== 'custom') return true
+              if (typeof value !== 'string' || !value.trim()) return 'Please enter a URL'
+              return validateUrl(value)
             },
           },
         ],

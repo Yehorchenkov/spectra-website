@@ -6,7 +6,6 @@ import type { CollectionBeforeValidateHook } from 'payload'
 import { validateUrl, validateDateRange } from '@/utils/utils';
 import { requireMetaOnPublish } from '@/utils/utils'
 import { ValidationError } from 'payload'
-import { ExcerptComponent } from '@/components/ExceptComponent'
 
 const enforceResponsible: CollectionBeforeValidateHook = ({ data }) => {
   const participants = Array.isArray(data?.projectParticipants) ? data.projectParticipants : []
@@ -195,7 +194,7 @@ export const Projects: CollectionConfig = {
                 description:
                   'A short summary of the project article. Automatically generated from content.',
                 components: {
-                  Field: ExcerptComponent as any,
+                  Field: '/components/ExcerptComponent#ExcerptComponent'
                 },
               },
             },

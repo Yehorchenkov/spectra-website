@@ -1,7 +1,15 @@
 import { GlobalConfig } from 'payload'
 import { anyone } from '@/access/anyone'
 import { isLoggedIn } from '@/access/isLoggedIn'
-import { link } from '@/fields/link' 
+import { link } from '@/fields/link'
+
+type NavItemType = 'link' | 'subData'
+type NavItemSiblingData = { type?: NavItemType }
+
+const whenNavType =
+  (t: NavItemType) =>
+  (_: unknown, siblingData?: NavItemSiblingData) =>
+    siblingData?.type === t
 
 export const Header: GlobalConfig = {
   slug: 'header',
@@ -34,7 +42,7 @@ export const Header: GlobalConfig = {
         link({
           overrides: {
             admin: {
-              condition: (_: any, siblingData: any) => siblingData?.type === 'link',
+              condition: whenNavType('link'),
             },
           },
         }),
@@ -45,7 +53,7 @@ export const Header: GlobalConfig = {
           type: 'text',
           required: true,
           admin: {
-            condition: (_: any, siblingData: any) => siblingData?.type === 'subData',
+            condition: whenNavType('subData'),
             description: 'The clickable label for the dropdown',
           },
         },
@@ -57,7 +65,7 @@ export const Header: GlobalConfig = {
             plural: 'Sub Items',
           },
           admin: {
-            condition: (_: any, siblingData: any) => siblingData?.type === 'subData',
+            condition: whenNavType('subData'),
           },
           fields: [
             // This allows sub-items to link to Pages, External URLs, or System Routes (Collections)

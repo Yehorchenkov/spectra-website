@@ -87,6 +87,7 @@ export interface Config {
     outputs: Output;
     'expert-opinions': ExpertOpinion;
     expertOpinionsTags: ExpertOpinionsTag;
+    keyFacts: KeyFact;
     search: Search;
     'payload-kv': PayloadKv;
     'payload-folders': FolderInterface;
@@ -128,6 +129,7 @@ export interface Config {
     outputs: OutputsSelect<false> | OutputsSelect<true>;
     'expert-opinions': ExpertOpinionsSelect<false> | ExpertOpinionsSelect<true>;
     expertOpinionsTags: ExpertOpinionsTagsSelect<false> | ExpertOpinionsTagsSelect<true>;
+    keyFacts: KeyFactsSelect<false> | KeyFactsSelect<true>;
     search: SearchSelect<false> | SearchSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
@@ -914,7 +916,7 @@ export interface Event {
   /**
    * A short summary of the event article. Automatically generated from content.
    */
-  excerpt?: string | null;
+  excerpt: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -974,6 +976,9 @@ export interface Output {
   link?: {
     type?: ('reference' | 'route' | 'custom') | null;
     newTab?: boolean | null;
+    /**
+     * Reference to the existing document
+     */
     reference?:
       | ({
           relationTo: 'pages';
@@ -1187,7 +1192,7 @@ export interface ExpertOpinion {
   /**
    * A short summary of the article. Automatically generated from content.
    */
-  excerpt?: string | null;
+  excerpt: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -1212,6 +1217,19 @@ export interface ExpertOpinionsTag {
   id: number;
   name: string;
   description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Key fact about SPECTRA for main page
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "keyFacts".
+ */
+export interface KeyFact {
+  id: number;
+  name: string;
+  description: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -1348,6 +1366,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'expertOpinionsTags';
         value: number | ExpertOpinionsTag;
+      } | null)
+    | ({
+        relationTo: 'keyFacts';
+        value: number | KeyFact;
       } | null)
     | ({
         relationTo: 'search';
@@ -1845,6 +1867,16 @@ export interface ExpertOpinionsTagsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "keyFacts_select".
+ */
+export interface KeyFactsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "search_select".
  */
 export interface SearchSelect<T extends boolean = true> {
@@ -1952,6 +1984,9 @@ export interface Header {
         link?: {
           type?: ('reference' | 'route' | 'custom') | null;
           newTab?: boolean | null;
+          /**
+           * Reference to the existing document
+           */
           reference?:
             | ({
                 relationTo: 'pages';
@@ -1992,6 +2027,9 @@ export interface Header {
               link: {
                 type?: ('reference' | 'route' | 'custom') | null;
                 newTab?: boolean | null;
+                /**
+                 * Reference to the existing document
+                 */
                 reference?:
                   | ({
                       relationTo: 'pages';
@@ -2047,6 +2085,9 @@ export interface Footer {
         link: {
           type?: ('reference' | 'route' | 'custom') | null;
           newTab?: boolean | null;
+          /**
+           * Reference to the existing document
+           */
           reference?:
             | ({
                 relationTo: 'pages';
@@ -2104,6 +2145,9 @@ export interface Footer {
         link: {
           type?: ('reference' | 'route' | 'custom') | null;
           newTab?: boolean | null;
+          /**
+           * Reference to the existing document
+           */
           reference?:
             | ({
                 relationTo: 'pages';

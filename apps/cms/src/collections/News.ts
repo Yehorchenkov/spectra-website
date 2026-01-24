@@ -3,7 +3,6 @@ import { slugField } from 'payload'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
 import { requireMetaOnPublish } from '@/utils/utils'
-import { ExcerptComponent } from '@/components/ExceptComponent'
 
 export const News: CollectionConfig = {
   slug: 'news',
@@ -72,9 +71,8 @@ export const News: CollectionConfig = {
               admin: {
                 description:
                   'A short summary of the news article. Automatically generated from content.',
-                // readOnly: true,
                 components: {
-                  Field: ExcerptComponent as any,
+                  Field: '/components/ExcerptComponent#ExcerptComponent'
                 },
               },
             },
