@@ -1,7 +1,7 @@
 // storage-adapter-import-placeholder
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
+// import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { lexicalEditor, FixedToolbarFeature, BlocksFeature } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig, SharpDependency } from 'payload'
@@ -193,6 +193,6 @@ export default buildConfig({
         return `${baseUrl}/${collectionSlug}/${doc.slug}/`
       },
     }),
-    payloadCloudPlugin(),
+    // payloadCloudPlugin(),
   ],
 })
