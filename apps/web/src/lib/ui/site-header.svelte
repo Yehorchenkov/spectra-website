@@ -51,7 +51,7 @@
 		</div>
 
 		<div class="flex items-center gap-0 sm:gap-2 shrink-0">
-			<Search />
+			<!-- <Search /> -->
 			<ModeToggler />
 			<!-- <CULogo /> -->
 		</div>
