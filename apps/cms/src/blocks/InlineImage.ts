@@ -45,7 +45,6 @@ export const InlineImage: Block = {
                     value: 'full',
                 },
             ],
-            defaultValue: '33%',
         }
     ],
 }
