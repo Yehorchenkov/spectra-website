@@ -113,8 +113,9 @@
 							<div class="overflow-hidden">
 								<img 
 									class="aspect-3/2 w-full object-cover transition-all duration-500 group-hover:scale-105" 
-									src={item.image?.url || NEWS_PLACEHOLDER} 
-									alt={item.title} 
+									src={item.image?.sizes?.card?.url || item.image?.url || NEWS_PLACEHOLDER} 
+									alt={item.image?.alt || "News image"}
+									loading="lazy"
 								/>
 							</div>
 							<div class="flex grow flex-col p-5">

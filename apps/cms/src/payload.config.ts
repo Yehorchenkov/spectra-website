@@ -1,7 +1,6 @@
 // storage-adapter-import-placeholder
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { postgresAdapter } from '@payloadcms/db-postgres'
-// import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { lexicalEditor, FixedToolbarFeature, BlocksFeature } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig, SharpDependency } from 'payload'
@@ -44,7 +43,6 @@ import { Partners } from './collections/Partners'
 import { SocialPlatforms } from './collections/SocialPlatforms'
 import { ScientificPlatforms } from './collections/ScientificPlatforms'
 import { ProjectRoles } from './collections/ProjectRoles'
-import { UserMedia } from './collections/UserMedia'
 import { Footer } from './globals/Footer'
 import { SeoSettings } from './collections/SeoSettings'
 import { Outputs } from './collections/Outputs'
@@ -94,7 +92,6 @@ export default buildConfig({
   collections: [
     Users,
     Media,
-    UserMedia,
     Partners,
     News,
     NewsTags,
@@ -193,6 +190,5 @@ export default buildConfig({
         return `${baseUrl}/${collectionSlug}/${doc.slug}/`
       },
     }),
-    // payloadCloudPlugin(),
   ],
 })

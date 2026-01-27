@@ -22,6 +22,7 @@ export const InlineImage: Block = {
         {
             name: 'imageWidth',
             type: 'radio',
+            defaultValue: '1/3',
             options: [
                 {
                     label: '25% (for icons)',

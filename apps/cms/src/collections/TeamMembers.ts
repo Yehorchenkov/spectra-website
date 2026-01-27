@@ -46,7 +46,7 @@ export const TeamMembers: CollectionConfig = {
             {
               name: 'photo',
               type: 'upload',
-              relationTo: 'user-media',
+              relationTo: 'media',
             },
             {
               name: 'email',

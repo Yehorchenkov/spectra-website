@@ -69,7 +69,11 @@
         <article class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Left Column: Photo, Contact, Links -->
             <aside class="lg:col-span-1 flex flex-col items-center lg:items-start space-y-6">
-                <Avatar photo={teamMember.photo} class="w-48 h-48 md:w-64 md:h-64" />
+                <Avatar 
+                    photo={teamMember.photo} 
+                    variant="large" 
+                    class="w-48 h-48 md:w-64 md:h-64" 
+                />
                 <div class="text-center lg:text-left w-full">
                     <h1 class="text-3xl font-bold text-foreground">{teamMember.name}</h1>
                     <p class="text-lg text-primary">{teamMember.title}</p>

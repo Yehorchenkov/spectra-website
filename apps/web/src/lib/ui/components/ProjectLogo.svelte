@@ -28,7 +28,7 @@
             >
                 <!-- Hidden title for accessibility requirements -->
                 <AlertDialog.Title class="sr-only">Project Logo Full View</AlertDialog.Title>
-                
+
                 <div class="relative">
                     <img
                         src={project.projectLogo.url}

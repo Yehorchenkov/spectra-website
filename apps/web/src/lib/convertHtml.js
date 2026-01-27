@@ -84,25 +84,33 @@ export function convertContentToHTML(content) {
                 };
 
                 const widthClass = widthClasses[imageWidth] || 'w-1/3'; // Default to w-1/3 if mapping not found
-
                 const imgClasses = `${floatClass} object-cover ${widthClass} ${marginClass}`;
 
-                return `<img class="rounded shadow ${imgClasses}" src=${node.fields.image.url} alt=${node.fields.image.alt} />`;
+                // Use 'large' for inline images (better quality for larger display)
+                const src = node.fields.image.sizes?.large?.url || node.fields.image.url;
+                const alt = node.fields.image.alt || '';
+
+                return `<img class="rounded shadow ${imgClasses}" src="${src}" alt="${alt}" loading="lazy" />`;
             },
             imageGallery: ({ node }) => {
                 const images = node.fields.images
                     .map((image) => {
+                        const lightboxSrc = image.sizes?.large?.url || image.url;
+                        const lightboxWidth = image.sizes?.large?.width || image.width;
+                        const lightboxHeight = image.sizes?.large?.height || image.height;
+                        const thumbSrc = image.sizes?.thumbnail?.url || image.url;
+
                         return `<a
-                        href="${image.url}"
-                        data-pswp-width="${image.width}"
-                        data-pswp-height="${image.height}"
-                        target="_blank"
-                        rel="noopener"
-                        class="block flex-shrink-0"
-                    >
+                            href="${lightboxSrc}"
+                            data-pswp-width="${lightboxWidth}"
+                            data-pswp-height="${lightboxHeight}"
+                            target="_blank"
+                            rel="noopener"
+                            class="block shrink-0"
+                        >
                         <img
                             class="object-cover w-full rounded shadow"
-                            src="${image.thumbnailURL}"
+                            src="${thumbSrc}"
                             alt="${image.alt || ''}"
                             loading="lazy"
                         />
