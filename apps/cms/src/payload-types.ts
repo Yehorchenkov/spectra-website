@@ -69,7 +69,6 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    'user-media': UserMedia;
     partners: Partner;
     news: News;
     newsTags: NewsTag;
@@ -111,7 +110,6 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    'user-media': UserMediaSelect<false> | UserMediaSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
     newsTags: NewsTagsSelect<false> | NewsTagsSelect<true>;
@@ -245,7 +243,7 @@ export interface Media {
       filesize?: number | null;
       filename?: string | null;
     };
-    tablet?: {
+    large?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -280,38 +278,6 @@ export interface FolderInterface {
   folderType?: 'media'[] | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "user-media".
- */
-export interface UserMedia {
-  id: number;
-  /**
-   * Alternative text for the media, describing its content for accessibility purposes.
-   */
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    avatar?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -751,7 +717,7 @@ export interface TeamMember {
    * Job title or position, e.g., Project Manager, etc.
    */
   title: string;
-  photo?: (number | null) | UserMedia;
+  photo?: (number | null) | Media;
   /**
    * Email address of the team member.
    */
@@ -1296,10 +1262,6 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'user-media';
-        value: number | UserMedia;
-      } | null)
-    | ({
         relationTo: 'partners';
         value: number | Partner;
       } | null)
@@ -1488,39 +1450,7 @@ export interface MediaSelect<T extends boolean = true> {
               filesize?: T;
               filename?: T;
             };
-        tablet?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-      };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "user-media_select".
- */
-export interface UserMediaSelect<T extends boolean = true> {
-  alt?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-  sizes?:
-    | T
-    | {
-        avatar?:
+        large?:
           | T
           | {
               url?: T;

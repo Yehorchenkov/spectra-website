@@ -15,7 +15,7 @@
 	let newsItem = $derived(data.news);
 
 	// Always show a header image: use the article image when available, otherwise a placeholder.
-	const headerImageUrl = $derived(newsItem?.image?.url ?? NEWS_PLACEHOLDER);
+	const headerImageUrl = $derived(newsItem?.image?.sizes?.card?.url ?? newsItem?.image?.url ?? NEWS_PLACEHOLDER);
 	const headerImageAlt = $derived(newsItem?.image?.alt ?? newsItem?.title ?? 'News');
 
 	const publishDateLabel = $derived(
@@ -80,7 +80,7 @@
 						<img
 							src={headerImageUrl}
 							alt={headerImageAlt}
-							class="w-full md:w-[360px] aspect-16/10 rounded-xl border border-border object-cover shadow-sm"
+							class="w-full md:w-[360px] aspect-3/2 rounded-xl border border-border object-cover shadow-sm"
 							loading="lazy"
 						/>
 					</figure>

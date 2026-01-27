@@ -5,7 +5,7 @@
     let {
         class: className,
         photo,
-        variant = 'full', // 'full' | 'thumbnail'
+        variant = 'large', // 'thumbnail' | 'large'
 
         // NEW: optional link + optional hover scaling
         href = undefined,
@@ -16,16 +16,34 @@
     } = $props();
 
     // Determine source based on variant
-    let src = $derived(
-        variant === 'thumbnail'
-            ? (photo?.thumbnailURL ?? placeholderAvatarThumbnail)
-            : (photo?.url ?? placeholderAvatar)
-    );
+    // let src = $derived(
+    //     variant === 'thumbnail'
+    //         ? (photo?.thumbnailURL ?? placeholderAvatarThumbnail)
+    //         : (photo?.url ?? placeholderAvatar)
+    // );
+
+    let src = $derived.by(() => {
+        if (!photo) {
+            return variant === 'thumbnail' ? placeholderAvatarThumbnail : placeholderAvatar;
+        }
+
+        if (variant === 'large') {
+            return photo.sizes?.large?.url || photo.url;
+        }
+
+        return photo.sizes?.thumbnail?.url || photo.url || placeholderAvatar;
+    });
 
     // Default sizes if no class is provided
-    let defaultSize = $derived(
-        variant === 'thumbnail' ? 'size-[100px]' : 'size-32'
-    );
+    // let defaultSize = $derived(
+    //     variant === 'thumbnail' ? 'size-[100px]' : 'size-32'
+    // );
+
+    let defaultSize = $derived.by(() => {
+        if (variant === 'thumbnail') return 'size-[100px]';
+        if (variant === 'large') return 'size-48 md:size-64'; // Matches your profile page
+        return 'size-32';
+    });
 
     let imgBaseClass = $derived(
         "rounded-full shadow-lg object-cover transition-transform duration-200 " +
@@ -52,13 +70,13 @@
         <img
             class={imgClass}
             src={src}
-            alt={photo?.url ? "Avatar" : "Avatar placeholder"}
+            alt={photo?.alt || "Avatar"}
         />
     </a>
 {:else}
     <img
         class={imgClass}
         src={src}
-        alt={photo?.url ? "Avatar" : "Avatar placeholder"}
+        alt={photo?.alt || "Avatar"}
     />
 {/if}

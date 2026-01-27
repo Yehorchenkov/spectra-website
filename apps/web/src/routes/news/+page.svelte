@@ -122,8 +122,10 @@
                     >
                         {#if item.image?.url}
                             <img
-                                src={item.image.url}
+                                src={item.image.sizes?.thumbnail?.url || item.image.url}
                                 alt={item.title}
+                                width="160" 
+                                height="160"
                                 class="size-32 rounded-lg object-cover md:size-40 shadow-sm"
                             />
                         {:else}

@@ -28,6 +28,7 @@
 			<div class="text-center">
 				<Avatar
 					photo={member.photo}
+					variant="thumbnail"
 					class="mx-auto mb-4 h-36 w-36"
 					href={"/team-members/" + member.slug}
 					hoverScale
