@@ -3,6 +3,14 @@ import { anyone } from '@/access/anyone'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import AltTextInstructions from '@/components/AltTextInstructions'
 
+const generateCustomName = ({ originalName, sizeName, extension }) => {
+  
+  const nameWithoutExtension = originalName.replace(/\.[^/.]+$/, "");
+  
+  // Return format: img10-thumbnail.jpg
+  return `${nameWithoutExtension}-${sizeName}.${extension}`;
+};
+
 export const Media: CollectionConfig = {
   slug: 'media',
   folders: true,
@@ -33,18 +41,21 @@ export const Media: CollectionConfig = {
         width: 400,
         height: 400,
         position: 'centre',
+        generateImageName: generateCustomName,
       },
       {
         name: 'card',
         width: 768,
         height: 512,
         position: 'centre',
+        generateImageName: generateCustomName,
       },
       {
         name: 'large',
         width: 1920,
         height: undefined, // undefined = maintain original aspect ratio
         withoutEnlargement: true, // If image is smaller than 1920, don't stretch it
+        generateImageName: generateCustomName,
       },
     ],
     adminThumbnail: 'thumbnail',

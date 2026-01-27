@@ -79,34 +79,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"sizes_card_mime_type" varchar,
   	"sizes_card_filesize" numeric,
   	"sizes_card_filename" varchar,
-  	"sizes_tablet_url" varchar,
-  	"sizes_tablet_width" numeric,
-  	"sizes_tablet_height" numeric,
-  	"sizes_tablet_mime_type" varchar,
-  	"sizes_tablet_filesize" numeric,
-  	"sizes_tablet_filename" varchar
-  );
-  
-  CREATE TABLE "user_media" (
-  	"id" serial PRIMARY KEY NOT NULL,
-  	"alt" varchar NOT NULL,
-  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
-  	"url" varchar,
-  	"thumbnail_u_r_l" varchar,
-  	"filename" varchar,
-  	"mime_type" varchar,
-  	"filesize" numeric,
-  	"width" numeric,
-  	"height" numeric,
-  	"focal_x" numeric,
-  	"focal_y" numeric,
-  	"sizes_avatar_url" varchar,
-  	"sizes_avatar_width" numeric,
-  	"sizes_avatar_height" numeric,
-  	"sizes_avatar_mime_type" varchar,
-  	"sizes_avatar_filesize" numeric,
-  	"sizes_avatar_filename" varchar
+  	"sizes_large_url" varchar,
+  	"sizes_large_width" numeric,
+  	"sizes_large_height" numeric,
+  	"sizes_large_mime_type" varchar,
+  	"sizes_large_filesize" numeric,
+  	"sizes_large_filename" varchar
   );
   
   CREATE TABLE "partners" (
@@ -622,7 +600,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"path" varchar NOT NULL,
   	"users_id" integer,
   	"media_id" integer,
-  	"user_media_id" integer,
   	"partners_id" integer,
   	"news_id" integer,
   	"news_tags_id" integer,
@@ -814,7 +791,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "team_members_social_links" ADD CONSTRAINT "team_members_social_links_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."team_members"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "team_members_scientific_links" ADD CONSTRAINT "team_members_scientific_links_platform_id_scientific_platforms_id_fk" FOREIGN KEY ("platform_id") REFERENCES "public"."scientific_platforms"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "team_members_scientific_links" ADD CONSTRAINT "team_members_scientific_links_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."team_members"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "team_members" ADD CONSTRAINT "team_members_photo_id_user_media_id_fk" FOREIGN KEY ("photo_id") REFERENCES "public"."user_media"("id") ON DELETE set null ON UPDATE no action;
+  ALTER TABLE "team_members" ADD CONSTRAINT "team_members_photo_id_media_id_fk" FOREIGN KEY ("photo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "team_members" ADD CONSTRAINT "team_members_meta_image_id_media_id_fk" FOREIGN KEY ("meta_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "events" ADD CONSTRAINT "events_meta_image_id_media_id_fk" FOREIGN KEY ("meta_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "events_rels" ADD CONSTRAINT "events_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."events"("id") ON DELETE cascade ON UPDATE no action;
@@ -852,7 +829,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_locked_documents"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_media_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_user_media_fk" FOREIGN KEY ("user_media_id") REFERENCES "public"."user_media"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_partners_fk" FOREIGN KEY ("partners_id") REFERENCES "public"."partners"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_news_fk" FOREIGN KEY ("news_id") REFERENCES "public"."news"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_news_tags_fk" FOREIGN KEY ("news_tags_id") REFERENCES "public"."news_tags"("id") ON DELETE cascade ON UPDATE no action;
@@ -907,11 +883,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE UNIQUE INDEX "media_filename_idx" ON "media" USING btree ("filename");
   CREATE INDEX "media_sizes_thumbnail_sizes_thumbnail_filename_idx" ON "media" USING btree ("sizes_thumbnail_filename");
   CREATE INDEX "media_sizes_card_sizes_card_filename_idx" ON "media" USING btree ("sizes_card_filename");
-  CREATE INDEX "media_sizes_tablet_sizes_tablet_filename_idx" ON "media" USING btree ("sizes_tablet_filename");
-  CREATE INDEX "user_media_updated_at_idx" ON "user_media" USING btree ("updated_at");
-  CREATE INDEX "user_media_created_at_idx" ON "user_media" USING btree ("created_at");
-  CREATE UNIQUE INDEX "user_media_filename_idx" ON "user_media" USING btree ("filename");
-  CREATE INDEX "user_media_sizes_avatar_sizes_avatar_filename_idx" ON "user_media" USING btree ("sizes_avatar_filename");
+  CREATE INDEX "media_sizes_large_sizes_large_filename_idx" ON "media" USING btree ("sizes_large_filename");
   CREATE INDEX "partners_logo_idx" ON "partners" USING btree ("logo_id");
   CREATE INDEX "partners_updated_at_idx" ON "partners" USING btree ("updated_at");
   CREATE INDEX "partners_created_at_idx" ON "partners" USING btree ("created_at");
@@ -1117,7 +1089,6 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "payload_locked_documents_rels_path_idx" ON "payload_locked_documents_rels" USING btree ("path");
   CREATE INDEX "payload_locked_documents_rels_users_id_idx" ON "payload_locked_documents_rels" USING btree ("users_id");
   CREATE INDEX "payload_locked_documents_rels_media_id_idx" ON "payload_locked_documents_rels" USING btree ("media_id");
-  CREATE INDEX "payload_locked_documents_rels_user_media_id_idx" ON "payload_locked_documents_rels" USING btree ("user_media_id");
   CREATE INDEX "payload_locked_documents_rels_partners_id_idx" ON "payload_locked_documents_rels" USING btree ("partners_id");
   CREATE INDEX "payload_locked_documents_rels_news_id_idx" ON "payload_locked_documents_rels" USING btree ("news_id");
   CREATE INDEX "payload_locked_documents_rels_news_tags_id_idx" ON "payload_locked_documents_rels" USING btree ("news_tags_id");
@@ -1183,7 +1154,6 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
    DROP TABLE "users_sessions" CASCADE;
   DROP TABLE "users" CASCADE;
   DROP TABLE "media" CASCADE;
-  DROP TABLE "user_media" CASCADE;
   DROP TABLE "partners" CASCADE;
   DROP TABLE "news" CASCADE;
   DROP TABLE "news_rels" CASCADE;

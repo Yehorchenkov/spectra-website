@@ -417,38 +417,38 @@
           "primaryKey": false,
           "notNull": false
         },
-        "sizes_tablet_url": {
-          "name": "sizes_tablet_url",
+        "sizes_large_url": {
+          "name": "sizes_large_url",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
-        "sizes_tablet_width": {
-          "name": "sizes_tablet_width",
+        "sizes_large_width": {
+          "name": "sizes_large_width",
           "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },
-        "sizes_tablet_height": {
-          "name": "sizes_tablet_height",
+        "sizes_large_height": {
+          "name": "sizes_large_height",
           "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },
-        "sizes_tablet_mime_type": {
-          "name": "sizes_tablet_mime_type",
+        "sizes_large_mime_type": {
+          "name": "sizes_large_mime_type",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
-        "sizes_tablet_filesize": {
-          "name": "sizes_tablet_filesize",
+        "sizes_large_filesize": {
+          "name": "sizes_large_filesize",
           "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },
-        "sizes_tablet_filename": {
-          "name": "sizes_tablet_filename",
+        "sizes_large_filename": {
+          "name": "sizes_large_filename",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
@@ -545,11 +545,11 @@
           "method": "btree",
           "with": {}
         },
-        "media_sizes_tablet_sizes_tablet_filename_idx": {
-          "name": "media_sizes_tablet_sizes_tablet_filename_idx",
+        "media_sizes_large_sizes_large_filename_idx": {
+          "name": "media_sizes_large_sizes_large_filename_idx",
           "columns": [
             {
-              "expression": "sizes_tablet_filename",
+              "expression": "sizes_large_filename",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -576,196 +576,6 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.user_media": {
-      "name": "user_media",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "alt": {
-          "name": "alt",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp(3) with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "url": {
-          "name": "url",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "thumbnail_u_r_l": {
-          "name": "thumbnail_u_r_l",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "filename": {
-          "name": "filename",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "mime_type": {
-          "name": "mime_type",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "filesize": {
-          "name": "filesize",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "width": {
-          "name": "width",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "height": {
-          "name": "height",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "focal_x": {
-          "name": "focal_x",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "focal_y": {
-          "name": "focal_y",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "sizes_avatar_url": {
-          "name": "sizes_avatar_url",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "sizes_avatar_width": {
-          "name": "sizes_avatar_width",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "sizes_avatar_height": {
-          "name": "sizes_avatar_height",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "sizes_avatar_mime_type": {
-          "name": "sizes_avatar_mime_type",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "sizes_avatar_filesize": {
-          "name": "sizes_avatar_filesize",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "sizes_avatar_filename": {
-          "name": "sizes_avatar_filename",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {
-        "user_media_updated_at_idx": {
-          "name": "user_media_updated_at_idx",
-          "columns": [
-            {
-              "expression": "updated_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "user_media_created_at_idx": {
-          "name": "user_media_created_at_idx",
-          "columns": [
-            {
-              "expression": "created_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "user_media_filename_idx": {
-          "name": "user_media_filename_idx",
-          "columns": [
-            {
-              "expression": "filename",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "user_media_sizes_avatar_sizes_avatar_filename_idx": {
-          "name": "user_media_sizes_avatar_sizes_avatar_filename_idx",
-          "columns": [
-            {
-              "expression": "sizes_avatar_filename",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -4382,10 +4192,10 @@
         }
       },
       "foreignKeys": {
-        "team_members_photo_id_user_media_id_fk": {
-          "name": "team_members_photo_id_user_media_id_fk",
+        "team_members_photo_id_media_id_fk": {
+          "name": "team_members_photo_id_media_id_fk",
           "tableFrom": "team_members",
-          "tableTo": "user_media",
+          "tableTo": "media",
           "columnsFrom": [
             "photo_id"
           ],
@@ -7755,12 +7565,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "user_media_id": {
-          "name": "user_media_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
         "partners_id": {
           "name": "partners_id",
           "type": "integer",
@@ -7948,21 +7752,6 @@
           "columns": [
             {
               "expression": "media_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "payload_locked_documents_rels_user_media_id_idx": {
-          "name": "payload_locked_documents_rels_user_media_id_idx",
-          "columns": [
-            {
-              "expression": "user_media_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -8307,19 +8096,6 @@
           "tableTo": "media",
           "columnsFrom": [
             "media_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "payload_locked_documents_rels_user_media_fk": {
-          "name": "payload_locked_documents_rels_user_media_fk",
-          "tableFrom": "payload_locked_documents_rels",
-          "tableTo": "user_media",
-          "columnsFrom": [
-            "user_media_id"
           ],
           "columnsTo": [
             "id"
@@ -10664,6 +10440,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "686d0d21-cb9d-499a-9f44-69d0c64490fd",
+  "id": "d4cf68ae-b0eb-4988-91d6-7778f68486ba",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }
