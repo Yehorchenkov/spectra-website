@@ -1,9 +1,9 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, GenerateImageName } from 'payload'
 import { anyone } from '@/access/anyone'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import AltTextInstructions from '@/components/AltTextInstructions'
 
-const generateCustomName = ({ originalName, sizeName, extension }) => {
+const generateCustomName: GenerateImageName = ({ originalName, sizeName, extension }) => {
   
   const nameWithoutExtension = originalName.replace(/\.[^/.]+$/, "");
   
