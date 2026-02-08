@@ -36,7 +36,7 @@
 
 				<div class="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
 					<ButtonRefAnim href="/about" class="w-full sm:w-36" text="About Us" />
-					<ButtonRefAnim href="/network" class="w-full sm:w-36" text="Our Network" />
+					<ButtonRefAnim href="/subcentres" class="w-full sm:w-36" text="Subcentres" />
 				</div>
 			</div>
 			<!-- Close Text Wrapper -->

@@ -2,9 +2,13 @@ import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 import { isLoggedIn } from '@/access/isLoggedIn'
 import { isLoggedInOrPublished } from '@/access/isLoggedInOrPublished'
+import { requireMetaOnPublish } from '@/utils/utils'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
+  hooks: {
+    beforeValidate: [requireMetaOnPublish],
+  },
   access: {
     read: isLoggedInOrPublished,
     create: isLoggedIn,

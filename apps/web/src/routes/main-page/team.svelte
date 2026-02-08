@@ -17,12 +17,12 @@
 </script>
 
 <div class="mx-auto w-full text-center">
-	<div class="mx-auto mb-8 max-w-screen-sm lg:mb-16">
+	<!-- <div class="mx-auto mb-8 max-w-screen-sm lg:mb-16">
 		<p class="text-foreground font-light sm:text-xl">
 			We are a dynamic research team dedicated to advancing knowledge and innovation through
 			interdisciplinary projects that address real-world challenges.
 		</p>
-	</div>
+	</div> -->
 	<div class="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-16">
 		{#each teamMembers as member}
 			<div class="text-center">

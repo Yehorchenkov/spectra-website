@@ -4,8 +4,7 @@ import { safeFetch, buildQuery } from '$lib/utils/apiHandler.js';
 import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 
 export async function load() {
-    // We use buildQuery instead of buildSelectQuery so we can pass 'sort' directly
-    const teamMembersParams = buildQuery({
+    const subcentresParams = buildQuery({
         select: ['title', 'slug', 'logo'],
         limit: 100,
         sort: 'title'
@@ -14,7 +13,7 @@ export async function load() {
     const seoParams = buildSeoQuery('subcentres');
 
     const [subcentres, seoData] = await Promise.all([
-        safeFetch('subcentres', teamMembersParams),
+        safeFetch('subcentres', subcentresParams),
         safeFetch('seo-settings', seoParams)
     ]);
 

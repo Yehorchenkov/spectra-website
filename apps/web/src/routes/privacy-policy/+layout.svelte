@@ -4,11 +4,11 @@
 
     let { children } = $props();
 
-    let currentPageTitle = $derived(page.data.subcentres?.title ?? null);
+    let currentPageTitle = $derived(page.data.privacyData?.title ?? 'Privacy Policy');
 
 </script>
 
-<div class="bg-background flex w-full flex-col items-center mb-8">
+<div class="bg-background flex w-full flex-col items-center">
     <div class="flex max-w-screen-xl w-full justify-start px-2 mt-4">
         <Breadcrumb currentPageTitle={currentPageTitle} />
     </div>
