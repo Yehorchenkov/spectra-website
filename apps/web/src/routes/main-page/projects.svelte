@@ -1,8 +1,6 @@
 <script>
 	import { Button } from 'bits-ui';
 
-	import projectLogoPlaceholder from '$lib/images/logo-placeholder-image-1024x1024.png';
-
 	const projectItems = [
 		{
 			title: 'Project 1',

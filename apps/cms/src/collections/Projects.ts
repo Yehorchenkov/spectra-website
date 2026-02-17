@@ -155,12 +155,14 @@ export const Projects: CollectionConfig = {
                   type: 'relationship',
                   relationTo: 'team-members',
                   hasMany: false,
+                  required: true,
                 },
                 {
                   name: 'participantRole',
                   type: 'relationship',
                   relationTo: 'projectRoles',
                   hasMany: false,
+                  required: true,
                   admin: {
                     description:
                       'Role of the participant in the project including the responsible person.',

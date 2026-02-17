@@ -66,7 +66,7 @@
 
 <div class="flex w-full flex-col items-center overflow-x-hidden">
 	<h1 class="text-foreground mt-8 mb-2 text-3xl font-bold tracking-tight">Projects</h1>
-	<p class="text-foreground mb-8 text-2xl">The list of project we are involved in</p>
+	<p class="text-foreground mb-8 text-2xl px-4 text-center">Projects we are involved in</p>
 
 	<!-- Filter and Sort Controls -->
 	<FilterSortBar

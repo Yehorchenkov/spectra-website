@@ -68,7 +68,7 @@
     <!-- centered title/subtitle wrapper -->
     <div class="w-full max-w-screen-xl px-4 lg:px-2 text-center">
         <h1 class="text-foreground mt-8 mb-2 text-3xl font-bold tracking-tight">Events</h1>
-        <p class="text-foreground mb-8 text-2xl">Events we are organizing and participating in</p>
+        <p class="text-foreground mb-8 text-2xl px-4 text-center">Events we are organizing and participating in</p>
     </div>
 
     <!-- Filter and Sort Controls -->

@@ -12,10 +12,12 @@
 
 <ModeWatcher />
 
-<SiteHeader data={data.headerData}/>
+<div class="flex min-h-screen flex-col">
+	<SiteHeader data={data.headerData}/>
 
-<div class="pt-16 md:pt-32">
-	{@render children()}
+	<main class="grow pt-16 md:pt-32">
+		{@render children()}
+	</main>
+
+	<SiteFooter footer={data.footerData} />
 </div>
-
-<SiteFooter footer={data.footerData} />

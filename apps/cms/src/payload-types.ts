@@ -633,11 +633,11 @@ export interface Project {
    */
   projectParticipants?:
     | {
-        participantName?: (number | null) | TeamMember;
+        participantName: number | TeamMember;
         /**
          * Role of the participant in the project including the responsible person.
          */
-        participantRole?: (number | null) | ProjectRole;
+        participantRole: number | ProjectRole;
         isResponsible?: boolean | null;
         id?: string | null;
       }[]
