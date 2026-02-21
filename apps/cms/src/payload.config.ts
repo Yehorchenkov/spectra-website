@@ -88,6 +88,18 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    meta: {
+      titleSuffix: ' - SPECTRA CE EU CMS',
+      icons: [
+        { rel: 'icon', type: 'image/svg+xml', url: `${serverUrl}/assets/favicon.svg` },
+      ],
+    },
+    components: {
+      graphics: {
+        Logo: '@/components/CustomLogo',
+        // Icon: '@/components/CustomLogo',
+      },
+    },
   },
   collections: [
     Users,
@@ -170,23 +182,17 @@ export default buildConfig({
       generateURL: ({ doc, collectionSlug }) => {
         const baseUrl = clientUrl
 
-        // 1. Use a robust fallback for the base URL
-        // const baseUrl = (process.env.PUBLIC_SITE_URL || 'http://localhost:3000').replace(
-        //   /\/$/,
-        //   '',
-        // )
-
-        // 2. Handle the Homepage special case
+        // Handle the Homepage special case
         if (collectionSlug === 'pages' && doc.slug === 'home') {
           return `${baseUrl}/`
         }
 
-        // 3. Handle Top-Level Pages (remove the "pages" prefix)
+        // Handle Top-Level Pages (remove the "pages" prefix)
         if (collectionSlug === 'pages') {
           return `${baseUrl}/${doc.slug}/`
         }
 
-        // 4. Handle Nested Collections (news, projects, etc.)
+        // Handle Nested Collections (news, projects, etc.)
         return `${baseUrl}/${collectionSlug}/${doc.slug}/`
       },
     }),

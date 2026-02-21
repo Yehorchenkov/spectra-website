@@ -1,9 +1,15 @@
 import React from 'react'
 import './styles.css'
+// import Icon from '@/assets/favicon.svg'
 
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  description: 'SPECTRA CE EU CMS admin panel',
+  title: 'SPECTRA CE EU CMS',
+  icons: {
+    icon: [
+      { url: '/assets/favicon.svg', type: 'image/svg+xml' },
+    ],
+  },
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
