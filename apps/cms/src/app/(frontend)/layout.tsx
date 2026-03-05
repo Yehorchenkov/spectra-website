@@ -10,6 +10,10 @@ export const metadata = {
       { url: '/assets/favicon.svg', type: 'image/svg+xml' },
     ],
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {

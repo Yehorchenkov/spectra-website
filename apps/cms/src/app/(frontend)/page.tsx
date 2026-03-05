@@ -29,11 +29,12 @@ export default async function HomePage() {
         <div className="links">
           <a
             className="admin"
-            href={payloadConfig.routes.admin}
+            // href={payloadConfig.routes.admin}
+            href="https://spectra-perseus.org"
             rel="noopener noreferrer"
             target="_blank"
           >
-            Go to admin panel
+            Visit Our Website
           </a>
         </div>
       </div>
