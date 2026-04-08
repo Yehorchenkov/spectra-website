@@ -1,5 +1,5 @@
 {
-  "projectRoot": "frontend/",
+  "projectRoot": "web/",
   "port": 5173,
   "enablePageContentView": true
 }
