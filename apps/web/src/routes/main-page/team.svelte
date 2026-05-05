@@ -1,19 +1,11 @@
 <script>
-	import ButtonLink from '$lib/ui/components/ButtonLink.svelte';
+	import Carousel from '$lib/ui/components/Carousel.svelte';
 	import ButtonRefAnim from '$lib/ui/components/ButtonRefAnim.svelte';
 	import Avatar from '$lib/ui/components/Avatar.svelte';
+
 	let { data } = $props();
 
-	// filter and order team members
-	// let teamMembers = $derived(
-	// 	(data?.docs ?? [])
-	// 		.filter((member) => member.showOnLandingPage)
-	// 		.sort((a, b) => a.order - b.order)
-	// );
-
-	let teamMembers = $derived(
-		data?.docs ?? []
-	);
+	let teamMembers = $derived(data?.docs ?? []);
 </script>
 
 <div class="mx-auto w-full text-center">
@@ -23,8 +15,14 @@
 			interdisciplinary projects that address real-world challenges.
 		</p>
 	</div> -->
-	<div class="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-16">
-		{#each teamMembers as member}
+
+	<Carousel
+		items={teamMembers}
+		getKey={(member) => member.id ?? member.slug}
+		slideClass="min-w-0 shrink-0 grow-0 basis-full pl-6 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+		wrapperClass="w-full py-4"
+	>
+		{#snippet item(member)}
 			<div class="text-center">
 				<Avatar
 					photo={member.photo}
@@ -34,16 +32,23 @@
 					hoverScale
 					ariaLabel={"View " + member.name}
 				/>
-				<p
-					class="text-foreground mb-1 text-xl font-bold tracking-tight"
-				>
+
+				<p class="text-foreground mb-1 text-xl font-bold tracking-tight">
 					{member.name}
 				</p>
-				<p class="text-muted-foreground">{member.title}</p>
+
+				<p class="text-muted-foreground">
+					{member.title}
+				</p>
 			</div>
-		{/each}
-	</div>
-	<div class="mx-auto py-4 lg:py-8">
-		<ButtonRefAnim class="ml-4 w-56" href="/team-members" text="View all team members" />
-	</div>
+		{/snippet}
+
+		{#snippet afterControls()}
+			<ButtonRefAnim
+				class="w-56"
+				href="/team-members"
+				text="View all team members"
+			/>
+		{/snippet}
+	</Carousel>
 </div>
