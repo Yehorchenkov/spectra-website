@@ -18,19 +18,19 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
   },
   "dependencies": {
-    "@payloadcms/db-postgres": "3.82.0",
-    "@payloadcms/db-sqlite": "3.82.0",
-    "@payloadcms/next": "3.82.0",
-    "@payloadcms/plugin-search": "^3.82.0",
-    "@payloadcms/plugin-seo": "^3.82.0",
-    "@payloadcms/richtext-lexical": "3.82.0",
-    "@payloadcms/ui": "3.82.0",
+    "@payloadcms/db-postgres": "3.86.0",
+    "@payloadcms/db-sqlite": "3.86.0",
+    "@payloadcms/next": "3.86.0",
+    "@payloadcms/plugin-search": "^3.86.0",
+    "@payloadcms/plugin-seo": "^3.86.0",
+    "@payloadcms/richtext-lexical": "3.86.0",
+    "@payloadcms/ui": "3.86.0",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
     "graphql": "^16.8.1",
     "libsql": "^0.5.22",
-    "next": "16.2.4",
-    "payload": "3.82.0",
+    "next": "16.2.12",
+    "payload": "3.86.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "sharp": "0.34.2"
@@ -52,10 +52,10 @@
     "prettier": "^3.4.2",
     "typescript": "5.7.3",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "3.2.3"
+    "vitest": "4.1.10"
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0",
-    "pnpm": "^9 || ^10"
+    "pnpm": "^9 || ^10 || 11"
   }
 }

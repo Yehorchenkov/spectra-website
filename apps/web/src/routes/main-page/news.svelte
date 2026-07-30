@@ -12,8 +12,8 @@
 
 	let { newsData } = $props();
 
-	let newsItems = $state(newsData?.docs ? [...newsData.docs] : []);
-	let hasNextPage = $state(newsData?.hasNextPage ?? false);
+	let newsItems = $derived(newsData?.docs ? [...newsData.docs] : []);
+	let hasNextPage = $derived(newsData?.hasNextPage ?? false);
 
 	async function loadMore() {
 		if (!hasNextPage) return;

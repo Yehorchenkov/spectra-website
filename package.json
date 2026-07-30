@@ -11,38 +11,5 @@
   },
   "engines": {
     "node": ">=20"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "esbuild",
-      "unrs-resolver"
-    ],
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "payload": "*",
-        "@payloadcms/ui": "*",
-        "i18next": "*",
-        "date-fns-tz": "*",
-        "slug": "*"
-      }
-    },
-    "overrides": {
-      "esbuild": "^0.27.2",
-      "cookie": "^1.1.0",
-      "minimatch": "^10.2.4",
-      "ajv": "^8.18.0",
-      "rollup": "^4.59.0",
-      "immutable": "^4.3.8",
-      "dompurify": "^3.4.2",
-      "undici": "^7.24.5",
-      "file-type": "^21.3.4",
-      "happy-dom": "^20.8.9",
-      "lodash": "^4.18.1",
-      "drizzle-orm": "^0.45.2",
-      "uuid": "^14.0.0",
-      "postcss": "^8.5.13",
-      "vitest>vite": "7.3.2"
-    }
   }
 }
