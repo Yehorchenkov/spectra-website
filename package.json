@@ -3,11 +3,27 @@
   "private": true,
   "scripts": {
     "dev": "pnpm --parallel dev",
+    "dev:local": "pnpm db:up && pnpm dev",
     "dev:web": "pnpm --filter web dev",
     "dev:cms": "pnpm --filter cms dev",
+
     "build": "pnpm --filter web build && pnpm --filter cms build",
     "lint": "pnpm -r lint",
-    "test": "pnpm -r test"
+    "test": "pnpm -r test",
+
+    "db:up": "docker compose up -d --wait postgres",
+    "db:stop": "docker compose stop postgres",
+    "db:start": "docker compose start --wait postgres",
+    "db:restart": "docker compose restart postgres",
+    "db:down": "docker compose down",
+    "db:status": "docker compose ps",
+    "db:logs": "docker compose logs -f postgres",
+    "db:config": "docker compose config",
+
+    "db:psql": "docker compose exec postgres psql -U spectra -d spectra",
+    "db:restore": "docker compose exec -T postgres psql -U spectra -d spectra -v ON_ERROR_STOP=1 -f /backup/spectra-db.sql",
+
+    "db:reset": "docker compose down -v && docker compose up -d --wait postgres"
   },
   "engines": {
     "node": ">=20"
