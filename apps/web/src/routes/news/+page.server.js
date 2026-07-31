@@ -1,6 +1,6 @@
 export const prerender = false;
 
-import { NEWS_PAGINATION_LIMIT, NEWS_SEO_SLUG } from '$lib/config/constants.js';
+import { NEWS_PAGINATION_LIMIT, NEWS_SEO_SLUG, NEWS_DEFAULT_FIELDS } from '$lib/config/constants.js';
 import { safeFetch, buildQuery, buildSelectQuery } from '$lib/utils/apiHandler.js';
 import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 
@@ -9,7 +9,7 @@ export async function load({ url }) {
 	const newsParams = buildQuery({
 		baseParams: url.searchParams,
 		limit: NEWS_PAGINATION_LIMIT || 10,
-		select: ['title', 'slug', 'excerpt', 'publishDate', 'image', 'tags', 'projects']
+		select: NEWS_DEFAULT_FIELDS
 	});
 
 	const projectParams = buildSelectQuery(['acronym', 'id'], 100);

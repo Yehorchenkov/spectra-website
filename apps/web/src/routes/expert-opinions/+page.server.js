@@ -12,15 +12,19 @@ export async function load({ url }) {
         select: EXPERT_OPINIONS_DEFAULT_FIELDS
     });
 
+    const tagsParams = buildSelectQuery(['name', 'id'], 100);
+
     const seoParams = buildSeoQuery(EXPERT_OPINIONS_SEO_SLUG);
 
-    const [expertOpinions, seoData] = await Promise.all([
+    const [expertOpinions, tags, seoData] = await Promise.all([
         safeFetch('expert-opinions', expertOpinionsParams),
+        safeFetch('tags', tagsParams),
         safeFetch('seo-settings', seoParams)
     ]);
 
     return {
         expertOpinions,
+        tags,
         // Return the first document found, or null if not configured in CMS
         seoSettings: seoData.docs?.[0] || null
     };

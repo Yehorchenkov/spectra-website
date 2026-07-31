@@ -8,6 +8,8 @@
 
 	let { data } = $props();
 
+	// console.log('site-header.svelte data:', data);
+
     let y = $state(0);
 </script>
 

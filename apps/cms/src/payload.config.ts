@@ -152,7 +152,7 @@ export default buildConfig({
     }),
     seoPlugin({
       tabbedUI: true,
-      collections: ['pages', 'news', 'projects', 'events', 'team-members', 'seo-settings'],
+      collections: ['pages', 'news', 'projects', 'events', 'team-members', 'seo-settings', 'expert-opinions'],
       globals: ['privacy-policy', 'hero'],
       uploadsCollection: 'media',
 

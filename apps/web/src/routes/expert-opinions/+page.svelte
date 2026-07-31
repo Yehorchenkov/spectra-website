@@ -20,15 +20,15 @@
 
     let { data } = $props();
 
-    const totalNews = $derived(data.news?.totalDocs ?? 0);
-    const perPage = $derived(data.news?.limit ?? EXPERT_OPINIONS_PAGINATION_LIMIT);
-    const paginatedDocs = $derived(data.news?.docs ?? []);
+    const totalExpertOpinions = $derived(data.expertOpinions?.totalDocs ?? 0);
+    const perPage = $derived(data.expertOpinions?.limit ?? EXPERT_OPINIONS_PAGINATION_LIMIT);
+    const paginatedDocs = $derived(data.expertOpinions?.docs ?? []);
 
     // console.log('paginatedDocs:', paginatedDocs);
-    const projectFilterItems = $derived(data.projects.docs.map((project) => ({
-		value: project.id,
-		label: project.acronym
-	})));
+    const tagsFilterItems = $derived(data.tags?.docs?.map((tag) => ({
+		value: tag.id,
+		label: tag.name
+	})) || []);
 
     // 1. URL State
     const qs = $derived(page.url.searchParams);
@@ -54,20 +54,20 @@
     description={seo.description}
     canonical={seo.canonical}
     noindex={seo.noindex}
-    collection={data.seoSettings?.label || 'News Archive'}
+    collection={data.seoSettings?.label || 'Expert Opinions'}
 />
 
 <div class="flex w-full flex-col items-center overflow-x-hidden">
-    <h1 class="text-foreground mt-8 mb-2 text-3xl font-bold tracking-tight">News</h1>
-    <p class="text-foreground mb-8 text-2xl">Our news and updates</p>
+    <h1 class="text-foreground mt-8 mb-2 text-3xl font-bold tracking-tight">Expert Opinions</h1>
+    <p class="text-foreground mb-8 text-2xl">Our expert opinions and insights</p>
 
     <!-- Filter and Sort Controls -->
 	<FilterSortBar
-		count={totalNews}
-		countLabel="news item"
+		count={totalExpertOpinions}
+		countLabel="expert opinion"
 		resetParams={[
-			'where[projects][equals]',
-			'where[projects][exists]',
+			'where[tags][equals]',
+			'where[tags][exists]',
 			'sort',
 			]}
 	>
@@ -79,11 +79,11 @@
 			</div>
 
 			<Filter
-                items={projectFilterItems}
+                items={tagsFilterItems}
                 classTrigger="w-full sm:w-[200px]"
                 classContent="w-[200px]"
-                placeholder="All Projects"
-                filterField="projects"
+                placeholder="All Tags"
+                filterField="tags"
                 includeNone={true}
                 noneLabel="Unassigned"
 			/>
@@ -111,7 +111,7 @@
 	</FilterSortBar>
 
     <div class="flex w-full max-w-screen-xl flex-col gap-6 px-4 lg:px-2">
-        {#if totalNews > 0}
+        {#if totalExpertOpinions > 0}
             {#each paginatedDocs as item, index (item.slug)}
                 <div
                     class="text-foreground flex w-full flex-col items-stretch gap-4 md:flex-row md:items-center md:justify-items-start md:gap-0"
@@ -129,8 +129,8 @@
                             />
                         {:else}
                             <img
-                                src={NEWS_PLACEHOLDER}
-                                alt="News placeholder"
+                                src={EXPERT_OPINIONS_PLACEHOLDER}
+                                alt="Expert opinions placeholder"
                                 class="size-32 rounded-lg object-cover md:size-40 shadow-sm"
                             />
                         {/if}
@@ -138,7 +138,7 @@
                     <div class="flex w-full flex-col justify-between p-2 leading-normal md:p-4">
                         <ButtonLink
                             class="mb-2 text-left text-xl font-bold tracking-tight"
-                            href={`/news/${item.slug}${page.url.search}`}
+                            href={`/expert-opinions/${item.slug}${page.url.search}`}
                         >
                             {item.title}
                         </ButtonLink>
@@ -183,19 +183,19 @@
                         {/if}
                     </div>
                 </div>
-                {#if index < totalNews - 1}
+                {#if index < totalExpertOpinions - 1}
                     <!-- Beautiful divider -->
                     <div class="flex w-full justify-center">
                         <div class="bg-primary my-4 h-0.5 w-3/4 rounded-full md:w-2/3"></div>
                     </div>
                 {/if}
             {/each}
-            {#if totalNews > perPage}
+            {#if totalExpertOpinions > perPage}
                 <Pagination 
-                    count={totalNews} 
+                    count={totalExpertOpinions} 
                     perPage={perPage} 
-                    itemLabel="news item"
-                    itemLabelPlural="news items"
+                    itemLabel="expert opinion"
+                    itemLabelPlural="expert opinions"
                 />
             {/if}
         {/if}

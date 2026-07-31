@@ -1166,6 +1166,14 @@ export interface ExpertOpinion {
    */
   generateSlug?: boolean | null;
   slug: string;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   tags?: (number | ExpertOpinionsTag)[] | null;
   /**
    * The date this article was/will be published.
@@ -1781,6 +1789,13 @@ export interface ExpertOpinionsSelect<T extends boolean = true> {
   excerpt?: T;
   generateSlug?: T;
   slug?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   tags?: T;
   publishDate?: T;
   updatedAt?: T;
