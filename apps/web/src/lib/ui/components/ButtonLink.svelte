@@ -36,7 +36,7 @@
     target={external ? '_blank' : undefined}
     rel={external ? 'noopener noreferrer' : undefined}
     class={twMerge(
-        'group inline-flex items-center font-medium transition-colors duration-200 no-underline',
+        'group/link inline-flex items-center font-medium transition-colors duration-200 no-underline',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm',
         variants[variant],
         sizes[size],
@@ -49,7 +49,7 @@
     {#if children}
         <span
             class={twMerge(
-                "relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 after:transition-all after:duration-300 group-hover:after:w-full",
+                "relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1.5px] after:w-0 after:transition-all after:duration-300 group-hover/link:after:w-full",
                 underlineVariants[variant]
             )}
         >

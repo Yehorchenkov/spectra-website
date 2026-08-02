@@ -303,13 +303,17 @@ html {
     @apply font-medium transition-colors duration-200 relative no-underline;
 }
 
-.prose a::after {
+.prose a:not(.no-underline-link)::after {
     content: '';
     @apply absolute bottom-0 left-0 h-[1.5px] w-0 bg-primary transition-all duration-300;
 }
 
-.prose a:hover::after {
+.prose a:not(.no-underline-link):hover::after {
     @apply w-full;
+}
+
+.prose a.no-underline-link::after {
+    content: none;
 }
 
 .prose a:hover {

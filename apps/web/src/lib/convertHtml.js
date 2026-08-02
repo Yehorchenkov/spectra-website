@@ -149,7 +149,7 @@ export function convertContentToHTML(content) {
                             data-pswp-height="${lightboxHeight}"
                             target="_blank"
                             rel="noopener"
-                            class="block shrink-0"
+                            class="block shrink-0 no-underline-link"
                         >
                         <img
                             class="object-cover w-full rounded shadow"
