@@ -2,7 +2,6 @@
 	import qs from 'qs';
 
 	import Carousel from '$lib/ui/components/Carousel.svelte';
-	import ButtonLink from '$lib/ui/components/ButtonLink.svelte';
 	import ButtonRefAnim from '$lib/ui/components/ButtonRefAnim.svelte';
 
 	import { NEWS_CAROUSEL_LIMIT, NEWS_PLACEHOLDER } from '$lib/config/constants.js';
@@ -82,7 +81,12 @@
 
 				<div class="flex grow flex-col p-5">
 					<h5 class="text-foreground mb-2 line-clamp-3 text-lg font-bold">
-						{item.title}
+						<a
+							href="/news/{item.slug}"
+							class="hover:text-primary focus-visible:ring-ring rounded-sm transition-colors focus-visible:outline-none focus-visible:ring-2"
+						>
+							{item.title}
+						</a>
 					</h5>
 
 					{#if item.publishDate}
@@ -101,10 +105,6 @@
 					<p class="text-foreground mb-4 line-clamp-3 text-sm">
 						{item.excerpt}
 					</p>
-
-					<!-- <ButtonLink class="mt-auto" href="/news/{item.slug}">
-						Read More
-					</ButtonLink> -->
 				</div>
 			</div>
 		{/snippet}
