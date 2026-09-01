@@ -6,7 +6,7 @@
 
     let currentPageTitle = $derived(page.data.outputs?.title);
 
-    console.log('currentPageTitle:', currentPageTitle);
+    // console.log('currentPageTitle:', currentPageTitle);
 
 </script>
 

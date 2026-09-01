@@ -24,12 +24,15 @@
 			{
 				page: nextPage,
 				limit: NEWS_CAROUSEL_LIMIT,
-				select: ['title', 'slug', 'image', 'excerpt', 'publishDate']
+				select: {
+					title: true,
+					slug: true,
+					image: true,
+					excerpt: true,
+					publishDate: true
+				}
 			},
-			{
-				encode: true,
-				arrayFormat: 'brackets'
-			}
+			{ encode: true }
 		);
 
 		try {
@@ -78,7 +81,7 @@
 				</div>
 
 				<div class="flex grow flex-col p-5">
-					<h5 class="text-foreground mb-2 line-clamp-2 text-lg font-bold">
+					<h5 class="text-foreground mb-2 line-clamp-3 text-lg font-bold">
 						{item.title}
 					</h5>
 
@@ -99,9 +102,9 @@
 						{item.excerpt}
 					</p>
 
-					<ButtonLink class="mt-auto" href="/news/{item.slug}">
+					<!-- <ButtonLink class="mt-auto" href="/news/{item.slug}">
 						Read More
-					</ButtonLink>
+					</ButtonLink> -->
 				</div>
 			</div>
 		{/snippet}
