@@ -1,22 +1,17 @@
 import { json } from '@sveltejs/kit';
-import qs from 'qs';
 import { safeFetch, buildQuery } from '$lib/utils/apiHandler.js';
-import { NEWS_PAGINATION_LIMIT, NEWS_DEFAULT_FIELDS } from '$lib/config/constants.js';
+import { NEWS_CAROUSEL_LIMIT } from '$lib/config/constants.js';
+
+const CAROUSEL_FIELDS = ['title', 'slug', 'image', 'excerpt', 'publishDate'];
 
 export async function GET({ url }) {
-	// Normalize client-provided `select` (array or object form) into a plain field list
-	const parsedSelect = qs.parse(url.searchParams.toString()).select;
-	const requestedFields = Array.isArray(parsedSelect)
-		? parsedSelect
-		: parsedSelect && typeof parsedSelect === 'object'
-			? Object.keys(parsedSelect)
-			: [];
+	const page = Math.max(1, Number.parseInt(url.searchParams.get('page') ?? '1', 10) || 1);
 
 	const queryParams = buildQuery({
-		baseParams: url.searchParams,
-		sort: url.searchParams.has('sort') ? undefined : '-publishDate',
-		limit: url.searchParams.has('limit') ? undefined : NEWS_PAGINATION_LIMIT,
-		select: requestedFields.length ? requestedFields : NEWS_DEFAULT_FIELDS
+		page,
+		limit: NEWS_CAROUSEL_LIMIT,
+		sort: '-publishDate',
+		select: CAROUSEL_FIELDS
 	});
 
 	const data = await safeFetch('news', queryParams);

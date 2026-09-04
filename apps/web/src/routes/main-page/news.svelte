@@ -11,28 +11,20 @@
 
 	let { newsData } = $props();
 
-	let newsItems = $derived(newsData?.docs ? [...newsData.docs] : []);
-	let hasNextPage = $derived(newsData?.hasNextPage ?? false);
+	let newsItems = $state([]);
+	let hasNextPage = $state(false);
+
+	$effect(() => {
+  		newsItems = [...(newsData?.docs ?? [])];
+  		hasNextPage = newsData?.hasNextPage ?? false;
+	});
 
 	async function loadMore() {
 		if (!hasNextPage) return;
 
 		const nextPage = Math.ceil(newsItems.length / NEWS_CAROUSEL_LIMIT) + 1;
 
-		const queryString = qs.stringify(
-			{
-				page: nextPage,
-				limit: NEWS_CAROUSEL_LIMIT,
-				select: {
-					title: true,
-					slug: true,
-					image: true,
-					excerpt: true,
-					publishDate: true
-				}
-			},
-			{ encode: true }
-		);
+		const queryString = new URLSearchParams({ page: String(nextPage) });
 
 		try {
 			const res = await fetch(`/api/news?${queryString}`);
@@ -53,11 +45,6 @@
 			console.error('Error loading more news:', error);
 		}
 	}
-
-	$effect(() => {
-		newsItems = newsData?.docs ? [...newsData.docs] : [];
-		hasNextPage = newsData?.hasNextPage ?? false;
-	});
 </script>
 
 {#if newsItems.length > 0}
