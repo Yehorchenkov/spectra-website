@@ -28,6 +28,7 @@
 	title={data.heroData?.meta.title}
 	description={data.heroData?.meta.description}
 	collection="Home Page"
+	stripBrand={false}
 />
 
 <div class="">

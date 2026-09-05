@@ -31,6 +31,7 @@
 	title={project.meta.title}
 	description={project.meta?.description}
 	collection="Project Profile"
+    stripBrand={true}
 />
 
 {#if project}

@@ -59,9 +59,10 @@
 </script>
 
 <SEO
-    title={teamMember.meta?.title || teamMember?.name || 'Team Member'}
-    description={teamMember.meta?.description || `Profile of ${teamMember?.name || 'our team member'}`}
-    collection={teamMember.meta?.label || 'Team Members'}
+  title={teamMember.name ?? 'Team Member'}
+  description={teamMember.meta?.description || `Profile of ${teamMember?.name || 'our team member'}`}
+  collection={teamMember.meta?.label || 'Team Members'}
+  stripBrand={true}
 />
 
 {#if teamMember}

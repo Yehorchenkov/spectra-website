@@ -27,6 +27,7 @@
 	title={newsItem.meta.title}
 	description={newsItem.meta?.description}
 	collection="News Article"
+	stripBrand={true}
 />
 
 {#if newsItem}

@@ -1,9 +1,11 @@
 <script>
   import { siteConfig } from '$lib/config/site';
   import { page } from '$app/state';
+  import { dev } from '$app/environment';
   import { normalizePath } from '$lib/utils/seoFactory';
 
-  // Destructure all props properly
+  const OG_IMAGE_VERSION = 4;
+
   let {
     title,
     description = siteConfig.description,
@@ -12,23 +14,35 @@
     manualOgImage,
     collection = 'Page',
     keywords = siteConfig.keywords,
-    type = 'website'
+    type = 'website',
+    stripBrand = false // defaults to keeping the full title
   } = $props();
 
-  const baseUrl = siteConfig.url.replace(/\/$/, '');
+  // Use local port during development, production URL in build
+  const baseUrl = $derived(
+    dev ? page.url.origin : siteConfig.url.replace(/\/$/, '')
+  );
 
-  // Auto-generate canonical if one isn't provided
-  const finalCanonical = $derived.by(() => canonical ?? `${baseUrl}${normalizePath(page.url.pathname)}`);
-
-  const finalTitle = $derived.by(() => title ?? siteConfig.name);
+  const finalCanonical = $derived(canonical ?? `${baseUrl}${normalizePath(page.url.pathname)}`);
+  const finalTitle = $derived(title ?? siteConfig.name);
 
   const ogImageUrl = $derived.by(() => {
     if (manualOgImage) return manualOgImage;
+
     const params = new URLSearchParams();
-    // Use the title but strip the brand if you want cleaner OG images
-    const cleanTitle = finalTitle.split(siteConfig.brandSuffix || ' - ')[0];
-    params.set('title', cleanTitle);
+    const ogTitle = stripBrand
+      ? finalTitle.split(siteConfig.brandSuffix || ' - ')[0].trim()
+      : finalTitle;
+
+    params.set('title', ogTitle);
     params.set('category', collection);
+    params.set('v', OG_IMAGE_VERSION.toString());
+
+    if (description) {
+      const trimmedDesc = description.length > 120 ? `${description.slice(0, 117)}...` : description;
+      params.set('desc', trimmedDesc);
+    }
+
     return `${baseUrl}/api/og?${params.toString()}`;
   });
 </script>

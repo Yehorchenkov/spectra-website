@@ -21,6 +21,7 @@
 	title={event.meta.title}
 	description={event.meta?.description}
 	collection="Event"
+	stripBrand={true}
 />
 
 {#if event}
