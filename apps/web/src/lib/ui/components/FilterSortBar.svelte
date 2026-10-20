@@ -14,7 +14,9 @@
 		sort,
 		showReset = true,
 		resetLabel = undefined,
-		resetParams = [] 
+		resetParams = [],
+		onReset: customReset = undefined,
+    	resetDisabled = undefined
 	} = $props();
 
 	const label = (n) => (n === 1 ? countLabel : `${countLabel}s`);
@@ -22,12 +24,16 @@
 	// The button is active if any resetParams exist OR if we are not on page 1
 	const canReset = $derived(
 		showReset && (
-			resetParams.some((k) => page.url.searchParams.has(k)) || 
-			(page.url.searchParams.has('page') && page.url.searchParams.get('page') !== '1')
+			resetDisabled !== undefined
+				? !resetDisabled
+				: resetParams.some((k) => page.url.searchParams.has(k)) ||
+				(page.url.searchParams.has('page') && page.url.searchParams.get('page') !== '1')
 		)
 	);
 
 	function onReset() {
+		if (customReset) return customReset();
+		
 		const url = new URL(page.url);
 
 		// 1. Always remove the page parameter on reset

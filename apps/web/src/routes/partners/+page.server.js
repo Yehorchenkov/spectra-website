@@ -6,7 +6,7 @@ import { buildSeoQuery } from '$lib/utils/seoFactory.js';
 export async function load() {
     // We use buildQuery instead of buildSelectQuery so we can pass 'sort' directly
     const partnersParams = buildQuery({
-        select: ['name', 'slug', 'website', 'description'],
+        select: ['name', 'slug', 'country', 'website'],
         limit: 100,
         sort: 'name'
     });
