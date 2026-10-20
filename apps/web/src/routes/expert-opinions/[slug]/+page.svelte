@@ -14,7 +14,7 @@
 	let expertOpinionItem = $derived(data.expertOpinion);
 
 	// Always show a header image: use the article image when available, otherwise a placeholder.
-	const headerImageUrl = $derived(expertOpinionItem?.image?.sizes?.card?.url ?? expertOpinionItem?.image?.url ?? EXPERT_OPINIONS_PLACEHOLDER);
+	const headerImageUrl = $derived(expertOpinionItem?.image?.sizes?.large?.url ?? expertOpinionItem?.image?.url ?? EXPERT_OPINIONS_PLACEHOLDER);
 	const headerImageAlt = $derived(expertOpinionItem?.image?.alt ?? expertOpinionItem?.title ?? 'Expert Opinion');
 
 	const publishDateLabel = $derived(
@@ -66,7 +66,7 @@
 						<img
 							src={headerImageUrl}
 							alt={headerImageAlt}
-							class="w-full md:w-[360px] aspect-3/2 rounded-xl border border-border object-cover shadow-sm"
+							class="w-full md:w-[360px] h-auto rounded-xl border border-border shadow-sm"
 							loading="lazy"
 						/>
 					</figure>

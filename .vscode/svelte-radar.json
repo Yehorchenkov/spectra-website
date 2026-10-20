@@ -1,5 +1,5 @@
 {
-  "projectRoot": "web/",
+  "projectRoot": "apps/web/",
   "port": 5173,
   "enablePageContentView": true
 }
