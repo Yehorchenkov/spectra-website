@@ -18,21 +18,21 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
   },
   "dependencies": {
-    "@payloadcms/db-postgres": "3.88.0",
-    "@payloadcms/db-sqlite": "3.88.0",
-    "@payloadcms/next": "3.88.0",
-    "@payloadcms/plugin-search": "^3.88.0",
-    "@payloadcms/plugin-seo": "^3.88.0",
-    "@payloadcms/richtext-lexical": "3.88.0",
-    "@payloadcms/ui": "3.88.0",
+    "@payloadcms/db-postgres": "3.91.0",
+    "@payloadcms/db-sqlite": "3.91.0",
+    "@payloadcms/next": "3.91.0",
+    "@payloadcms/plugin-search": "^3.91.0",
+    "@payloadcms/plugin-seo": "^3.91.0",
+    "@payloadcms/richtext-lexical": "3.91.0",
+    "@payloadcms/ui": "3.91.0",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
     "graphql": "^16.8.1",
     "libsql": "^0.5.22",
-    "next": "16.2.12",
-    "payload": "3.86.0",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
+    "next": "16.4.2",
+    "payload": "3.91.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
     "sharp": "0.34.2"
   },
   "devDependencies": {
@@ -40,8 +40,8 @@
     "@playwright/test": "1.56.1",
     "@testing-library/react": "16.3.0",
     "@types/node": "^22.5.4",
-    "@types/react": "19.2.1",
-    "@types/react-dom": "19.2.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "4.5.2",
     "eslint": "^9.16.0",
     "eslint-config-next": "15.4.7",
@@ -52,7 +52,7 @@
     "prettier": "^3.4.2",
     "typescript": "5.7.3",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "4.1.10"
+    "vitest": "5.0.5"
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0",
