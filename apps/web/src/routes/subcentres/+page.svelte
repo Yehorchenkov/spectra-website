@@ -12,14 +12,14 @@
 </script>
 
 <SEO 
-    title={data.seoSettings?.meta?.title || 'Subcentres'}
-    description={data.seoSettings?.meta?.description || 'Subcentres of SPECTRA CE EU'}
-    collection={data.seoSettings?.label || 'Subcentres'}
+    title={data.seoSettings?.meta?.title || 'Subcentres and Living Labs'}
+    description={data.seoSettings?.meta?.description || 'Subcentres and Living Labsof SPECTRA CE EU'}
+    collection={data.seoSettings?.label || 'Subcentres and Living Labs'}
 />
 
 <div class="flex w-full flex-col items-center">
-    <h1 class="text-foreground mt-8 mb-2 text-3xl font-bold tracking-tight">Subcentres</h1>
-    <p class="text-foreground mb-8 text-2xl">Subcentres of SPECTRA CE EU</p>
+    <h1 class="text-foreground mt-8 mb-2 text-3xl font-bold tracking-tight">Subcentres and Living Labs</h1>
+    <p class="text-foreground mb-8 text-2xl">Subcentres and Living Labs of SPECTRA CE EU</p>
 
     <div
         class="grid w-full max-w-screen-xl gap-8 px-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-16 md:px-0"
