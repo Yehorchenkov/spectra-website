@@ -13,7 +13,7 @@
 
 <SEO 
     title={data.seoSettings?.meta?.title || 'Subcentres and Living Labs'}
-    description={data.seoSettings?.meta?.description || 'Subcentres and Living Labsof SPECTRA CE EU'}
+    description={data.seoSettings?.meta?.description || 'Subcentres and Living Labs of SPECTRA CE EU'}
     collection={data.seoSettings?.label || 'Subcentres and Living Labs'}
 />
 
@@ -27,7 +27,7 @@
                 <a href={"/subcentres/" + subcentre.slug}>
                     <img 
                         src={subcentre.logo?.url} alt={subcentre.logo?.alt || subcentre.title + " logo"} 
-                        class="mx-auto mb-4 h-36 w-full object-contain hover:scale-105 transition-transform duration-200" 
+                        class="mx-auto mb-4 h-36 w-full object-contain hover:scale-105 transition-transform duration-200 dark:invert dark:hue-rotate-180" 
                     />
                 </a>
                 <p
