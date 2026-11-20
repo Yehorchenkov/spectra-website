@@ -21,37 +21,33 @@ const extractTextFromChildren = (children) => {
 function mapCollectionToPath(collection, slug) {
 	if (!slug) return '#';
 
-	switch (collection) {
-		case 'pages':
-			return slug === 'home' ? '/' : `/${slug}`;
-		case 'team-members':
-			return `/team-members/${slug}`;
-		case 'projects':
-			return `/projects/${slug}`;
-		case 'news':
-			return `/news/${slug}`;
-		case 'events':
-			return `/events/${slug}`;
-		default:
-			return `/${slug}`;
+	// Special case: pages collection
+	if (collection === 'pages') {
+		return slug === 'home' ? '/' : `/${slug}`;
 	}
+
+	// Convention: most collections use /{collection}/{slug}
+	return `/${collection}/${slug}`;
 }
 
 function resolveInternalDocHref({ linkNode }) {
-	const doc = linkNode?.fields?.doc;
-	if (!doc) return '#';
+    const doc = linkNode?.fields?.doc;
+    if (!doc) return '#';
 
-	const collection = doc.relationTo;
-	const value = doc.value;
+    const collection = doc.relationTo;
+    const value = doc.value;
 
-	// Internal link doc.value can be either an ID or a populated object.
-	// We need a populated object with slug to build a frontend URL.
-	if (!value || typeof value !== 'object') return '#';
+    if (!value || typeof value !== 'object') return '#';
 
-	const slug = value.slug;
-	if (typeof slug !== 'string' || !slug.trim()) return '#';
+    // Upload collections (e.g. PDFs in media) have no slug – link to the file itself
+    if (collection === 'media') {
+        return value.url || '#';
+    }
 
-	return mapCollectionToPath(collection, slug.trim());
+    const slug = value.slug;
+    if (typeof slug !== 'string' || !slug.trim()) return '#';
+
+    return mapCollectionToPath(collection, slug.trim());
 }
 
 export function extractHeadings(content) {
